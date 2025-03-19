@@ -1,45 +1,20 @@
 // File: PdfDocument.jsx
 import React from "react";
-import { Document, Page, Text, Image, View } from "@react-pdf/renderer";
+import { Document, Page, Text, View } from "@react-pdf/renderer";
 import styles from "../../style/disposisiPdf";
+import Kopsurat from "./kopsurat";
 
 // Komponen PDF
 const PdfDocument = ({ title, content }) => {
   const text = {
-    kabupaten: "PEMERINTAHAN KABUPATEN TANGERANG",
-    kecamatan: "KECAMATAN  SUKADIRI",
-    alamat: "JL. Raya Sukadiri No. 1 Tangerang-Kode Pos: 15530",
-    alamatElektronik:
-      "Laman sukadiri.tangerangkab.go.id, Pos-el kecsukadiri@gmail.com",
     headContent: "LEMBAR DISPOSISI",
   };
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <View style={styles.HeadSection}>
-          <View>
-            <Image
-              src="/img/logokab.png"
-              alt="logo"
-              style={{ width: 70, height: 70 }}
-            />
-          </View>
-          <View style={styles.HeaderText}>
-            <Text style={{ fontSize: "16px", fontWeight: "bold" }}>
-              {text.kabupaten}
-            </Text>
-            <Text style={{ fontSize: "23px", fontWeight: "ultrabold" }}>
-              {text.kecamatan}
-            </Text>
-            <Text style={{ fontSize: "11px", fontWeight: "thin" }}>
-              {text.alamat}
-            </Text>
-            <Text style={{ fontSize: "11px", fontWeight: "thin" }}>
-              {text.alamatElektronik}
-            </Text>
-          </View>
-        </View>
+        {/* Kopsurat */}
+        <Kopsurat />
 
         {/* head table */}
         <View style={styles.ContentSection}>

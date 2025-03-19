@@ -15,6 +15,7 @@ export default function Home() {
     <div>
       <p>Home</p>
       <button onClick={handleNavigate}>Generate PDF</button>
+      <a href="login">Login</a>
     </div>
   );
 }
