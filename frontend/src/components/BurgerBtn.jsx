@@ -1,9 +1,10 @@
 import { useState } from "react";
 import "../style/burger.css";
-const BurgerBtn = () => {
+const BurgerBtn = ({ toggleSidebar }) => {
   const [state, setState] = useState("");
   const burgeHandlerClick = () => {
     setState((prevState) => (prevState === "active" ? "" : "active"));
+    toggleSidebar();
   };
   return (
     <div className={`burger-cont ${state}`} onClick={burgeHandlerClick}>

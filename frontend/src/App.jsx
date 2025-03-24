@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Layout from "./components/layout/layout.jsx";
+import Layout from "./components/layout/Layout.jsx";
 import Home from "./page/home.jsx";
 import Pdf from "./page/pdf.jsx";
 import Login from "./page/Login";
@@ -9,7 +9,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
+          <Route index element={<Home title="dashboard" />} />
           <Route path="about" element={<About />} />
         </Route>
 
