@@ -1,0 +1,34 @@
+
+.burger-cont{
+        width: 50px; /* Ukuran tetap */
+        height: 50px;
+        padding: 0.5em; /* Menyesuaikan font-size parent */
+        background-color: transparent;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        cursor: pointer;
+}
+
+.burger-cont > span{
+    width: 80%; /* Fleksibel tapi tetap proporsional */
+    height: 4px; /* Ukuran tetap supaya konsisten */
+    background-color: rgb(129, 121, 244);
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+}
+
+
+.burger-cont.active span:nth-child(1) {
+    transform: translateY(13px) rotate(45deg);
+  }
+  
+  .burger-cont.active span:nth-child(2) {
+    opacity: 0; 
+   
+  }
+  
+  .burger-cont.active span:nth-child(3) {
+    transform: translateY(-14px) rotate(-45deg);
+  }

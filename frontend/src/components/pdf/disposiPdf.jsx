@@ -2,7 +2,7 @@
 import React from "react";
 import { Document, Page, Text, View } from "@react-pdf/renderer";
 import styles from "../../style/disposisiPdf";
-import Kopsurat from "./kopsurat";
+import Kopsurat from "./Kopsurat";
 
 // Komponen PDF
 const PdfDocument = ({ title, content }) => {

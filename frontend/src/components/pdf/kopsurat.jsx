@@ -1,6 +1,6 @@
 import styles from "../../style/disposisiPdf";
 import { Text, Image, View } from "@react-pdf/renderer";
-export default function kopsurat() {
+const kopsurat = () => {
   const text = {
     kabupaten: "PEMERINTAHAN KABUPATEN TANGERANG",
     kecamatan: "KECAMATAN  SUKADIRI",
@@ -33,4 +33,6 @@ export default function kopsurat() {
       </View>
     </View>
   );
-}
+};
+
+export default kopsurat;

@@ -1,5 +1,6 @@
 import { Navigate, useNavigate } from "react-router-dom";
-
+import BurgerBtn from "../components/BurgerBtn";
+import Sidebar from "../components/layout/sidebar";
 export default function Home() {
   const navigate = useNavigate();
 
@@ -13,9 +14,13 @@ export default function Home() {
 
   return (
     <div>
-      <p>Home</p>
-      <button onClick={handleNavigate}>Generate PDF</button>
-      <a href="login">Login</a>
+      <BurgerBtn />
+      <div className="content">
+        <p>Home</p>
+        <button onClick={handleNavigate}>Generate PDF</button>
+        <a href="login">Login</a>
+        <a href="/about">about</a>
+      </div>
     </div>
   );
 }
