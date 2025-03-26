@@ -15,17 +15,35 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
 
   return (
     <aside className={`sidebar-cont ${displaySidebar}`}>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <button className="close-sidebar">
-          <FaArrowLeft
-            size={30}
-            className="arrow-left"
-            onClick={handlerClickArrow}
-          />
-        </button>
-        <a href="login">Login</a>
-        <a href="/about">about</a>
-        <a onClick={handleNavigate}>Generate PDF</a>
+      <div className="sidebar-content">
+        <div className="side-header">
+          <span>Username</span>
+          <button className="close-sidebar">
+            <FaArrowLeft
+              size={20}
+              className="arrow-left"
+              onClick={handlerClickArrow}
+            />
+          </button>
+        </div>
+        <div
+          style={{
+            marginLeft: "10px",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <span>Dashboard</span>
+          <span>Manajemen Pengguna</span>
+          <span>Tugas Luar</span>
+          <span>Monitoring dan Laporan</span>
+          <span>Dokumentasi Arsip</span>
+          <a href="login">Login</a>
+          <a href="/about">about</a>
+          <a style={{ cursor: "pointer" }} onClick={handleNavigate}>
+            Generate PDF
+          </a>
+        </div>
       </div>
     </aside>
   );
