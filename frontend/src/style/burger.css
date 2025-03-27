@@ -19,7 +19,6 @@
     width: 80%;
     height: 4px; 
     background-color: rgb(129, 121, 244);
-    border-radius: 2px;
     transition: all 0.3s ease-in-out;
 }
 

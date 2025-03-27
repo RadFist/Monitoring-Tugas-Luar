@@ -1,5 +1,5 @@
 import "../style/home.css";
-export default function Home() {
+const Home = () => {
   return (
     <div className="home-container">
       <div className="schedule-cont"></div>
@@ -9,4 +9,5 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+export default Home;

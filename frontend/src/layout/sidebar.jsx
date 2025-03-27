@@ -1,9 +1,9 @@
 import { FaArrowLeft } from "react-icons/fa";
-import "../../style/layout.css";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
   const navigate = useNavigate();
+
   const handleNavigate = (event) => {
     event.preventDefault();
     const data = {
