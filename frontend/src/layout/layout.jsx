@@ -35,7 +35,11 @@ const Layout = () => {
         displaySidebar={sidebarActive ? "active" : ""}
         handlerClickArrow={closeSideBar}
       />
-      <div style={{ width: "100%" }} className={sidebarActive ? "blur" : ""}>
+      <div
+        style={{ width: "100%" }}
+        className={sidebarActive ? "blur" : ""}
+        onClick={closeSideBar}
+      >
         <Header title={pagelocation} onToggleSidebar={toggleSidebar} />
         <main className="content">
           <Outlet />

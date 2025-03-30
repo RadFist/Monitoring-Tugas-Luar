@@ -1,0 +1,44 @@
+.schedule-card-container{  
+    min-height: 256px;
+    min-height: 330px;
+    max-width: 300px;
+
+    background-color: #6393B0;
+    margin: 0 12px;
+    border-radius:  3px;
+}
+.schedule-card-container span{  
+    color: aliceblue;
+    margin-bottom: 1px;
+}
+
+.title-card-schedule{
+    font-weight: 700;
+    font-size: larger;
+    padding: 10px;
+}
+
+.flex-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.border-bottom{
+    border-bottom: 2px solid aliceblue;
+    width: 100%;
+}
+
+.btn-schedule{
+    margin: 10px 0;
+    background-color: aliceblue;
+    border-radius: 3px;
+    padding: 7px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.button-wrapper {
+    margin-top: auto; /* Dorong button ke bawah */
+  }
