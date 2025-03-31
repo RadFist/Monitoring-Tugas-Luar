@@ -6,6 +6,8 @@ import routes from "./routes/routes.js";
 
 const app = express();
 
+//db
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
