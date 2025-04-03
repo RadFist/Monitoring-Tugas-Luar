@@ -26,15 +26,23 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
             />
           </button>
         </div>
-        <div
-          style={{
-            marginLeft: "10px",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <span>Dashboard</span>
-          <span>Manajemen Pengguna</span>
+        <div className="menu-cont">
+          <span
+            onClick={() => {
+              navigate("/");
+              handlerClickArrow();
+            }}
+          >
+            Dashboard
+          </span>
+          <span
+            onClick={() => {
+              navigate("/UserManagemet");
+              handlerClickArrow();
+            }}
+          >
+            Manajemen Pengguna
+          </span>
           <span>Tugas Luar</span>
           <span>Monitoring dan Laporan</span>
           <span>Dokumentasi Arsip</span>

@@ -15,6 +15,7 @@ const Layout = () => {
     "/": "Dashboard",
     "/about": "About Us",
     "/contact": "Contact Us",
+    "/UserManagemet": "User Management",
   };
 
   const pagelocation = pageTitles[location.pathname] || "My Website";

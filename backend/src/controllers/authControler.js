@@ -1,9 +1,9 @@
-import { getAllUsers } from "../model/userModel.js";
+import { getLogin } from "../model/authModel.js";
 export const login = async (req, res) => {
   try {
     const response = {
       message: "Data has been auth successfully",
-      data: await getAllUsers(),
+      data: await getLogin(),
     };
     res.status(200).json(response);
   } catch (error) {
