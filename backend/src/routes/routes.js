@@ -1,18 +1,15 @@
 import express from "express";
 const router = express.Router();
-import * as loginControler from "../controllers/authControler.js";
+import * as authControler from "../controllers/authControler.js";
 import * as userControler from "../controllers/userControler.js";
 
 // auth path route
-//login route
-router.get("/login", loginControler.login);
+router.post("/register", authControler.registration);
+router.post("/login", authControler.login);
 
 //get user
 router.get("/users", userControler.user);
-router.get("/users/:id", (req, ress) => {
-  const id = req.params.id;
-  ress.send(id);
-});
+router.get("/users/:id", userControler.userId);
 
 //joking around, fixed latter
 router.get("*", (req, ress) => {
@@ -22,4 +19,7 @@ router.get("*", (req, ress) => {
   };
   ress.status(400).json(response);
 });
+
+//favicon g jelas
+router.get("/favicon.ico", (req, res) => res.status(204));
 export default router;

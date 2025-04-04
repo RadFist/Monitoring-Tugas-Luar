@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import bodyParser from "body-parser";
 import routes from "./routes/routes.js";
 
 const app = express();
@@ -10,8 +9,8 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //declaration
 const PORT = process.env.PORT || 5000;
