@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use(authRoutes);
-app.use(authRoutes);
+app.use(apiRoute);
 
 // Server
 app.listen(PORT, () => {

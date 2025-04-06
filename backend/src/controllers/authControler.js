@@ -82,13 +82,11 @@ export const login = async (req, res) => {
 
   try {
     //get data from db
-
     const [data] = await auth.getLogin(username, password);
     //check data exist or not
     if (data < 1) {
       return res.status(401).json({ message: "Username or Email Not Found" });
     }
-
     // compare
     const passwordHass = data.password;
     const compare = await bcrypt.compare(password, passwordHass);
@@ -100,15 +98,12 @@ export const login = async (req, res) => {
       username: data.username,
       email: data.email,
     };
-    const accesToken = generateAccessToken(payload);
+    const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
-
-    // verifyToken(accesToken);
-    // verifyToken(refreshToken);
 
     const response = {
       message: "login success",
-      accesToken,
+      accessToken,
       refreshToken,
     };
 

@@ -4,7 +4,6 @@ import BarChart from "../components/chart/barChart";
 import fetchService from "../services/fetchService";
 
 import { useEffect } from "react";
-
 const emplyoee = [
   "udin sarudin mangarudi jalaludin sehat walafiat ss",
   "ucok",
@@ -13,10 +12,22 @@ const emplyoee = [
 ];
 const activity = ["pdip", "komdigi", "kementrian agama", "uhuy"];
 const Home = () => {
-  // useEffect(async () => {
-  //   const response = await fetchService("/dashboard");
-  //   alert(response);
-  // }, []);
+  const token = localStorage.getItem("token");
+  //use effect delete or refactor later
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetchService("/dashboard", token);
+        console.log("id :" + response.data.id_user);
+        console.log("username :" + response.data.username);
+        console.log("email :" + response.data.email);
+      } catch (error) {
+        console.error("Error fetching dashboard:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="home-container">

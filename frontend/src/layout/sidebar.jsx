@@ -1,6 +1,6 @@
 import { FaArrowLeft } from "react-icons/fa";
-import { Navigate, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import { clearToken } from "../utils/tokenManpulation";
 const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
   const navigate = useNavigate();
 
@@ -11,6 +11,13 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
       content: "Isi surat yang mau dimunculkan di PDF",
     };
     navigate("/generate", { state: data }); // Pindah ke halaman /generate
+  };
+
+  // refactor later
+  const handlerLogOut = (event) => {
+    event.preventDefault;
+    clearToken();
+    navigate("/login");
   };
 
   return (
@@ -46,7 +53,7 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
           <span>Tugas Luar</span>
           <span>Monitoring dan Laporan</span>
           <span>Dokumentasi Arsip</span>
-          <a href="login">Login</a>
+          <a onClick={handlerLogOut}>Login</a>
           <a href="/about">about</a>
           <a style={{ cursor: "pointer" }} onClick={handleNavigate}>
             Generate PDF

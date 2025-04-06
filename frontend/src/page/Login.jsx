@@ -3,6 +3,7 @@ import bgImage from "../assets/img/BackgroundLogin.jpg"; // Pastikan file ini ad
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authServices";
+import { saveToken } from "../utils/tokenManpulation";
 import LoginForm from "../components/Login/loginForm";
 
 export default function Login() {
@@ -20,7 +21,8 @@ export default function Login() {
     setLoading("Loading..");
 
     try {
-      await loginUser(credential.Username, credential.Password);
+      const data = await loginUser(credential.Username, credential.Password);
+      saveToken(data.accessToken);
       navigate("/home");
     } catch (error) {
       setLoading("");

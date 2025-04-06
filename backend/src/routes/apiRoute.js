@@ -1,5 +1,6 @@
 import express from "express";
 import authenticateToken from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
 //testing
@@ -12,16 +13,17 @@ router.get("/dashboard", authenticateToken, (req, res) => {
 router.get("*", (req, ress) => {
   const response = {
     status: "400",
-    message: "bad request you dipshit",
+    message: "service not found",
   };
   ress.status(400).json(response);
 });
 router.post("*", authenticateToken, (req, ress) => {
   const response = {
-    status: "400",
-    message: "service not available",
+    status: "200",
+    message: "success",
+    data: req.user,
   };
-  ress.status(400).json(response);
+  ress.status(200).json(response);
 });
 
 export default router;

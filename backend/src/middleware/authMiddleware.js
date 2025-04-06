@@ -12,10 +12,10 @@ const authenticateToken = (req, res, next) => {
       console.log("message : " + err.message);
       return res.status(403).json({ message: "forbiden, token not match" });
     }
+    req.user = decoded;
 
     // console.log(decoded);
-    req.user = decoded;
-    console.log("user: " + JSON.stringify(req.user));
+    // console.log("user: " + JSON.stringify(req.user));
   });
 
   next();
