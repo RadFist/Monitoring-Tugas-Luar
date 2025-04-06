@@ -10,7 +10,6 @@ export const loginUser = async (username, password) => {
     });
     const result = await response.json();
     if (!response.ok) {
-      console.log(response);
       throw new Error(result.message);
       // if (response.status === 500) {
       //    throw new Error(

@@ -24,7 +24,7 @@ export default function Login() {
       navigate("/home");
     } catch (error) {
       setLoading("");
-      console.log(error.message);
+      // console.log(error.message);
 
       setFailedLogin({
         class:

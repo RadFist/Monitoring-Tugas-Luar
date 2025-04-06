@@ -3,6 +3,18 @@ import * as auth from "../model/authModel.js";
 import Joi from "joi";
 import bcrypt from "bcrypt";
 import query from "../model/model.js";
+import jwt from "jsonwebtoken";
+
+//secret key
+const accesSecret = process.env.ACCESS_TOKEN_SECRET;
+const refreshSecret = process.env.REFRESH_TOKEN_SECRET;
+
+const generateAccessToken = (payload) => {
+  return jwt.sign(payload, accesSecret, { expiresIn: "15m" });
+};
+const generateRefreshToken = (payload) => {
+  return jwt.sign(payload, refreshSecret, { expiresIn: "7h" });
+};
 
 const schema = Joi.object({
   username: Joi.string().alphanum().min(1).max(40),
@@ -55,16 +67,10 @@ export const registration = async (req, res) => {
 
 export const login = async (req, res) => {
   /* belum di intergasi jwt */
+
   const loginSchema = schema.keys({
     username: Joi.string().min(3).max(30).required(), // tanpa alphanum
   });
-  //validate data
-  // const loginSchema = schema.fork(["username", "password"], (field, key) => {
-  //   if (key === "username") {
-  //     return Joi.string().min(1).max(40).required();
-  //   }
-  //   return field.required();
-  // });
 
   const { error, value } = loginSchema.validate(req.body);
   if (error) {
@@ -73,25 +79,37 @@ export const login = async (req, res) => {
 
   //get data
   const { username, password } = value;
-  const secret = process.env.REFRESH_TOKEN_SECRET;
 
   try {
     //get data from db
 
-    const data = await auth.getLogin(username, password);
+    const [data] = await auth.getLogin(username, password);
     //check data exist or not
     if (data < 1) {
       return res.status(401).json({ message: "Username or Email Not Found" });
     }
 
     // compare
-    const passwordHass = data[0].password;
+    const passwordHass = data.password;
     const compare = await bcrypt.compare(password, passwordHass);
     if (!compare) {
       return res.status(401).json({ message: "wrong password" });
     }
+    const payload = {
+      id_user: data.id_user,
+      username: data.username,
+      email: data.email,
+    };
+    const accesToken = generateAccessToken(payload);
+    const refreshToken = generateRefreshToken(payload);
+
+    // verifyToken(accesToken);
+    // verifyToken(refreshToken);
+
     const response = {
-      message: "Data has been auth successfully",
+      message: "login success",
+      accesToken,
+      refreshToken,
     };
 
     //response

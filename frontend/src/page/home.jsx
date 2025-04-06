@@ -1,6 +1,9 @@
 import "../style/home.css";
 import CardSchedule from "../components/schedule/cardSchedule";
 import BarChart from "../components/chart/barChart";
+import fetchService from "../services/fetchService";
+
+import { useEffect } from "react";
 
 const emplyoee = [
   "udin sarudin mangarudi jalaludin sehat walafiat ss",
@@ -9,8 +12,12 @@ const emplyoee = [
   "urip",
 ];
 const activity = ["pdip", "komdigi", "kementrian agama", "uhuy"];
-
 const Home = () => {
+  // useEffect(async () => {
+  //   const response = await fetchService("/dashboard");
+  //   alert(response);
+  // }, []);
+
   return (
     <div className="home-container">
       <div className="schedule-cont">

@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import routes from "./routes/routes.js";
-
+import authRoutes from "./routes/authRoutes.js";
+import apiRoute from "./routes/apiRoute.js";
 const app = express();
 
 //db
@@ -22,7 +22,8 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use(routes);
+app.use(authRoutes);
+app.use(authRoutes);
 
 // Server
 app.listen(PORT, () => {
