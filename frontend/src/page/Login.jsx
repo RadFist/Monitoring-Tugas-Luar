@@ -24,11 +24,11 @@ export default function Login() {
       navigate("/home");
     } catch (error) {
       setLoading("");
+      console.log(error.message);
 
       setFailedLogin({
         class:
-          error.message ===
-          "Terjadi kesalahan pada server. Silakan coba lagi nanti."
+          error.message === "Internal Server Error, please try again later."
             ? ""
             : "error",
         message: error.message,

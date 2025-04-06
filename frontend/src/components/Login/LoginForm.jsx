@@ -14,11 +14,11 @@ export default function LoginForm({
         <InputComp
           type="text"
           id="Username"
-          placeholder="Enter your username"
+          placeholder="e.x Budi or budi@gmail.com"
           className={failedLogin.class}
           value={credential.Username}
           onChange={handlerInput}
-          labelText={"Username"}
+          labelText={"Username/Email"}
           classlabel={"Login-label"}
         />
       </div>
