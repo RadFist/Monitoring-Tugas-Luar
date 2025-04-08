@@ -17,11 +17,12 @@ router.get("*", (req, ress) => {
   };
   ress.status(400).json(response);
 });
+//refactor later
 router.post("*", authenticateToken, (req, ress) => {
   const response = {
     status: "200",
     message: "success",
-    data: req.user,
+    data: req.custom.user,
   };
   ress.status(200).json(response);
 });

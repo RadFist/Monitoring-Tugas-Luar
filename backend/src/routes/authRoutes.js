@@ -3,9 +3,13 @@ const router = express.Router();
 import * as authControler from "../controllers/authControler.js";
 import * as userControler from "../controllers/userControler.js";
 
-// auth path route
+// create auth path route
 router.post("/regist", authControler.registration);
 router.post("/login", authControler.login);
+
+//auth token path
+router.post("/auth/referesh", authControler.refereshTokenAuth);
+router.post("/auth/logout", authControler.logout);
 
 //get user
 // router.get("/users", userControler.user);

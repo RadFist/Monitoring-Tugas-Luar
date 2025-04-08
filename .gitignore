@@ -10,6 +10,7 @@ lerna-debug.log*
 **/node_modules/
 backend/.env
 frontend/.env
+catatan.txt
 .env
 dist
 dist-ssr

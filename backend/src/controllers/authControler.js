@@ -11,9 +11,11 @@ const refreshSecret = process.env.REFRESH_TOKEN_SECRET;
 
 const generateAccessToken = (payload) => {
   return jwt.sign(payload, accesSecret, { expiresIn: "15m" });
+  // return jwt.sign(payload, accesSecret, { expiresIn: "1000" });
 };
 const generateRefreshToken = (payload) => {
   return jwt.sign(payload, refreshSecret, { expiresIn: "7h" });
+  // return jwt.sign(payload, refreshSecret, { expiresIn: "1000" });
 };
 
 const schema = Joi.object({
@@ -66,8 +68,6 @@ export const registration = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  /* belum di intergasi jwt */
-
   const loginSchema = schema.keys({
     username: Joi.string().min(3).max(30).required(), // tanpa alphanum
   });
@@ -79,16 +79,19 @@ export const login = async (req, res) => {
 
   //get data
   const { username, password } = value;
-
   try {
     //get data from db
-    const [data] = await auth.getLogin(username, password);
+    const [data] = await auth.getLogin(username);
+
     //check data exist or not
-    if (data < 1) {
+
+    if (!data || data < 1) {
       return res.status(401).json({ message: "Username or Email Not Found" });
     }
+
     // compare
     const passwordHass = data.password;
+
     const compare = await bcrypt.compare(password, passwordHass);
     if (!compare) {
       return res.status(401).json({ message: "wrong password" });
@@ -97,24 +100,56 @@ export const login = async (req, res) => {
       id_user: data.id_user,
       username: data.username,
       email: data.email,
+      level: data.level,
     };
     const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
 
+    //simpan ke cookie
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      // secure: true, //buat production kocak kocak
+      // sameSite: "Strict", //buat 1 domain
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      // maxAge: 10000, //debug only
+    });
+
     const response = {
       message: "login success",
       accessToken,
-      refreshToken,
     };
 
-    //response
     return res.status(200).json(response);
-
-    //json structure
   } catch (error) {
     console.log(error.message);
     res
       .status(500)
       .json({ message: "Internal Server Error, please try again later." });
   }
+};
+
+export const refereshTokenAuth = (req, res) => {
+  const refresToken = req.cookies.refreshToken;
+  jwt.verify(refresToken, refreshSecret, (err, decoded) => {
+    if (!err) {
+      const payload = {
+        id_user: decoded.id_user,
+        username: decoded.username,
+        email: decoded.email,
+        level: decoded.level,
+      };
+      const token = generateAccessToken(payload);
+      return res.status(200).json({ message: "Refreshed", token: token });
+    }
+    return res.status(403).json({ message: "token expired" });
+  });
+};
+
+export const logout = (req, res) => {
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    // secure: true, // buat production kocak kocak
+    // sameSite: "Strict", //buat 1 domain
+  });
+  res.status(200).json({ message: "logout success" });
 };

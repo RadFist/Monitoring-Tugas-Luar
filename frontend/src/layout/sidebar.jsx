@@ -1,6 +1,8 @@
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+
 import { clearToken } from "../utils/tokenManpulation";
+import { logoutUser } from "../services/authServices";
 const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
   const navigate = useNavigate();
 
@@ -14,9 +16,14 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
   };
 
   // refactor later
-  const handlerLogOut = (event) => {
-    event.preventDefault;
-    clearToken();
+  const handlerLogOut = async (event) => {
+    event.preventDefault();
+    try {
+      await logoutUser();
+    } catch (error) {
+      clearToken();
+      console.error("Logout gagal:", error.message);
+    }
     navigate("/login");
   };
 
@@ -53,11 +60,11 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
           <span>Tugas Luar</span>
           <span>Monitoring dan Laporan</span>
           <span>Dokumentasi Arsip</span>
-          <a onClick={handlerLogOut}>Login</a>
           <a href="/about">about</a>
           <a style={{ cursor: "pointer" }} onClick={handleNavigate}>
             Generate PDF
           </a>
+          <a onClick={handlerLogOut}>Logout</a>
         </div>
       </div>
     </aside>

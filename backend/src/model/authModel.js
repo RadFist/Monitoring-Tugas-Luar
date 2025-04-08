@@ -11,10 +11,10 @@ export const register = async (id, username, password, email) => {
   }
 };
 
-export const getLogin = async (username, password) => {
+export const getLogin = async (username) => {
   try {
     const [rows] = await db.query(
-      "SELECT id_user, username, email ,password FROM tb_user WHERE (username = ? OR email = ?)",
+      "SELECT id_user, username, email ,password ,level FROM tb_user WHERE (username = ? OR email = ?)",
       [username, username]
     );
 

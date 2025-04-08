@@ -5,15 +5,44 @@ import Pdf from "./page/pdf.jsx";
 import Login from "./page/Login";
 import About from "./page/About.jsx";
 import UserManagement from "./page/userManagment.jsx";
+import { privateWraper as PrivateRoute } from "./components/logic/PrivateWarperAuth.jsx";
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home title="dashboard" />} />
-          <Route path="/home" element={<Home title="dashboard" />} />
-          <Route path="UserManagemet" element={<UserManagement />} />
-          <Route path="about" element={<About />} />
+          <Route
+            index
+            element={
+              <PrivateRoute>
+                <Home title="dashboard" />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              <PrivateRoute>
+                <Home title="dashboard" />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="UserManagemet"
+            element={
+              <PrivateRoute>
+                <UserManagement />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="about"
+            element={
+              <PrivateRoute>
+                <About title="about" />
+              </PrivateRoute>
+            }
+          />
         </Route>
 
         <Route path="/Login" element={<Login />} />

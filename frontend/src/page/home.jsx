@@ -2,8 +2,10 @@ import "../style/home.css";
 import CardSchedule from "../components/schedule/cardSchedule";
 import BarChart from "../components/chart/barChart";
 import fetchService from "../services/fetchService";
-
+import { getToken, clearToken } from "../utils/tokenManpulation";
 import { useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+
 const emplyoee = [
   "udin sarudin mangarudi jalaludin sehat walafiat ss",
   "ucok",
@@ -12,17 +14,26 @@ const emplyoee = [
 ];
 const activity = ["pdip", "komdigi", "kementrian agama", "uhuy"];
 const Home = () => {
-  const token = localStorage.getItem("token");
+  // const navigate = useNavigate();
+  const token = getToken("token");
+
   //use effect delete or refactor later
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetchService("/dashboard", token);
+        //fix later
+        const response = await fetchService("/asalGamink", token);
         console.log("id :" + response.data.id_user);
         console.log("username :" + response.data.username);
         console.log("email :" + response.data.email);
+        console.log("level :" + response.data.level);
       } catch (error) {
-        console.error("Error fetching dashboard:", error);
+        console.error("Error fetching :", error.message);
+        //refactor jelek bet cok
+        if (error.message === "token expired") {
+          // navigate("/login");
+          // clearToken();
+        }
       }
     };
 
