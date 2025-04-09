@@ -7,23 +7,10 @@ import {
 } from "../../utils/tokenManpulation";
 import { useEffect, useState } from "react";
 import { authRefreshToken } from "../../services/authServices";
+import LoadingPage from "../LoadingComp";
 
-// const isTokenValid = (token) => {
-//   if (!token) return false;
-
-//   try {
-//     const payload = JSON.parse(atob(token.split(".")[1]));
-//     const currentTime = Math.floor(Date.now() / 1000);
-//     return payload.exp > currentTime;
-//   } catch (error) {
-//     return false;
-//   }
-// };
-
-// fixed later
-export const privateWraper = ({ children }) => {
+const PrivateWraper = ({ children }) => {
   const [isAuth, setIsAuth] = useState(null);
-  // const base_url = import.meta.env.VITE_API_BACKEND_BASE_URL;
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -38,6 +25,7 @@ export const privateWraper = ({ children }) => {
         } catch (error) {
           clearToken();
           setIsAuth(false);
+
           throw error;
         }
       } else {
@@ -48,11 +36,11 @@ export const privateWraper = ({ children }) => {
     checkAuth();
   }, []);
 
-  if (isAuth === null) return <div>Loading...</div>;
+  if (isAuth === null) return <LoadingPage />;
 
   if (isAuth === false) return <Navigate to="/login" />;
 
   return children;
 };
 
-export default privateWraper;
+export default PrivateWraper;
