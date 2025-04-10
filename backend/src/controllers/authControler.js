@@ -58,6 +58,7 @@ export const registration = async (req, res) => {
 
     //stored data to db
     await auth.register(id, username, hashedPassword, email);
+
     return res.status(200).json({ message: "data stored succesfully" });
   } catch (error) {
     console.error("Registration Error:", error);
@@ -139,9 +140,10 @@ export const refereshTokenAuth = (req, res) => {
         level: decoded.level,
       };
       const token = generateAccessToken(payload);
+
       return res.status(200).json({ message: "Refreshed", token: token });
     }
-    return res.status(403).json({ message: "token expired" });
+    return res.status(401).json({ message: "token expired" });
   });
 };
 

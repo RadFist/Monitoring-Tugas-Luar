@@ -1,7 +1,19 @@
 import express from "express";
 import authenticateToken from "../middleware/authMiddleware.js";
-
+import * as userControler from "../controllers/userControler.js";
 const router = express.Router();
+
+//user route
+
+//get
+router.get("/users", authenticateToken, userControler.allUser);
+router.get("/user/:id", authenticateToken, userControler.userId);
+//post
+router.post("/user/add", authenticateToken, userControler.addUser);
+//patch
+// router.patch("/user/update:id", authenticateToken, userControler.editUser);
+//delete
+router.delete("/user/delete/:id", authenticateToken, userControler.userDelete);
 
 //testing
 router.get("/dashboard", authenticateToken, (req, res) => {
