@@ -15,6 +15,13 @@ catatan.txt
 dist
 dist-ssr
 *.local
+package-lock.json
+package.json
+
+!/front/package-lock.json
+!/back/package-lock.json
+!/front/package.json
+!/back/package.json
 
 # Editor directories and files
 .vscode/*
