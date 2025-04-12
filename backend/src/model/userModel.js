@@ -39,6 +39,21 @@ export const addingUser = async (id, username, password, email, level) => {
   }
 };
 
+export const editUser = async (field, value) => {
+  try {
+    const [result] = await db.query(
+      `UPDATE tb_user SET ${field} WHERE id_user = ? `,
+      value
+    );
+    if (result.affectedRows === 0) {
+      throw new Error("user not found");
+    }
+    return "success";
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const deletUserById = async (id) => {
   try {
     const [result] = await db.query(`DELETE FROM tb_user WHERE id_user = ?`, [
@@ -46,7 +61,7 @@ export const deletUserById = async (id) => {
     ]);
 
     if (result.affectedRows === 0) {
-      throw new Error(`User with ID ${id} not found or already deleted.`);
+      throw new Error(`User with ID not found or already deleted.`);
     }
 
     return `Successfully deleted user with ID: ${id}`;

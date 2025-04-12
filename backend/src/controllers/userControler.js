@@ -1,12 +1,14 @@
 import Joi from "joi";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
-import query from "../model/model.js";
+import { checkUserExists } from "../model/model.js";
+import dayjs from "dayjs";
 import {
   deletUserById,
   getAllUsers,
   getUsersById,
   addingUser,
+  editUser,
 } from "../model/userModel.js";
 
 export const allUser = async (req, res) => {
@@ -57,9 +59,9 @@ export const addUser = async (req, res) => {
 
   const registSchema = Joi.object({
     username: Joi.string().alphanum().min(1).max(40).required(),
-    password: Joi.string().min(8).required().required(),
+    password: Joi.string().min(8).required(),
     email: Joi.string().email().required(),
-    level: Joi.string(),
+    level: Joi.string().valid("admin", "super admin").default("admin"),
   });
 
   try {
@@ -75,13 +77,9 @@ export const addUser = async (req, res) => {
     const level = value.level || "admin";
 
     //get data from db
-    const [existingUser] = await query(
-      "SELECT id_user FROM tb_user WHERE username = ? OR email = ?",
-      [username, email]
-    );
+    const checkUser = await checkUserExists(username, email);
 
-    //check data alredy exists or not
-    if (existingUser.length > 0) {
+    if (checkUser) {
       return res
         .status(409)
         .json({ message: "Username or email already exists" });
@@ -104,7 +102,7 @@ export const addUser = async (req, res) => {
     }
 
     return res
-      .status(200)
+      .status(201)
       .json({ message: "The user has been created successfully" });
   } catch (error) {
     console.log(error.message);
@@ -112,7 +110,67 @@ export const addUser = async (req, res) => {
   }
 };
 
-export const userEdit = (req, res) => {};
+export const userEdit = async (req, res) => {
+  // const userLevel = req.custom.user.level;
+
+  // if (userLevel != "super admin") {
+  //   return res.status(403).json({ message: "Access denied." });
+  // }
+
+  const registSchema = Joi.object({
+    username: Joi.string().alphanum().min(1).max(40),
+    password: Joi.string().min(8),
+    email: Joi.string().email(),
+    level: Joi.string(),
+  });
+
+  try {
+    //get data and validate
+    const dataUpdate = req.body;
+    const { value, error } = registSchema.validate(dataUpdate);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+    //get datetime
+    const updateTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
+    const idUser = req.params.id;
+
+    //array init
+    const fields = [];
+    const values = [];
+
+    // push data to array
+    for (let key in dataUpdate) {
+      fields.push(`${key} = ?`);
+      values.push(dataUpdate[key]);
+    }
+
+    if (fields.length === 0) {
+      return res.status(400).json({ message: "update data is null" });
+    }
+    fields.push(`updated_at = ?`);
+    values.push(updateTime);
+    values.push(idUser);
+    const checkUser = await checkUserExists(value.username, value.email);
+    if (checkUser) {
+      return res
+        .status(409)
+        .json({ message: "Username or email already exists" });
+    }
+    const queryField = `${fields.join(", ")}`;
+
+    //send data to db
+    await editUser(queryField, values);
+
+    return res.status(200).json({ message: "update success" });
+  } catch (error) {
+    console.log(error.message);
+    if (error.message === "user not found") {
+      return res.status(404).json({ message: "user not found" });
+    }
+    return res.status(500).json({ message: "Internal Server Error." });
+  }
+};
 
 export const userDelete = async (req, res) => {
   const idData = req.params.id;

@@ -10,8 +10,10 @@ router.get("/users", authenticateToken, userControler.allUser);
 router.get("/user/:id", authenticateToken, userControler.userId);
 //post
 router.post("/user/add", authenticateToken, userControler.addUser);
+
 //patch
-// router.patch("/user/update:id", authenticateToken, userControler.editUser);
+// router.patch("/user/update:id", authenticateToken, userControler.userEdit);
+router.patch("/user/edit/:id", userControler.userEdit);
 //delete
 router.delete("/user/delete/:id", authenticateToken, userControler.userDelete);
 

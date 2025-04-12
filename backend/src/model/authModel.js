@@ -3,7 +3,7 @@ import db from "../config/db_mysql.js";
 export const register = async (id, username, password, email) => {
   try {
     await db.query(
-      `INSERT INTO tb_user(id_user, username, email, password, level) VALUES (?,?,?,?,?)`,
+      `INSERT INTO tb_user(id_user, username, email, password) VALUES (?,?,?,?)`,
       [id, username, email, password]
     );
   } catch (error) {

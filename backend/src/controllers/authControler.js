@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
+import { checkUserExists } from "../model/model.js";
 import * as auth from "../model/authModel.js";
 import Joi from "joi";
 import bcrypt from "bcrypt";
-import query from "../model/model.js";
 import jwt from "jsonwebtoken";
 
 //secret key
@@ -41,13 +41,9 @@ export const registration = async (req, res) => {
     const { username, email, password } = value;
 
     //get data from db
-    const [existingUser] = await query(
-      "SELECT id_user FROM tb_user WHERE username = ? OR email = ?",
-      [username, email]
-    );
+    const checkUser = await checkUserExists(username, email);
 
-    //check data alredy exists or not
-    if (existingUser.length > 0) {
+    if (checkUser) {
       return res
         .status(409)
         .json({ message: "Username or email already exists" });
@@ -56,12 +52,14 @@ export const registration = async (req, res) => {
     //hassing password
     const hashedPassword = await bcrypt.hash(password, 6);
 
+    console.log(`${id} ${username} ${hashedPassword} ${email}`);
+
     //stored data to db
     await auth.register(id, username, hashedPassword, email);
 
     return res.status(200).json({ message: "data stored succesfully" });
   } catch (error) {
-    console.error("Registration Error:", error);
+    console.error("Registration Error:", error.message);
     res
       .status(500)
       .json({ message: "Internal Server Error, please try again later." });
