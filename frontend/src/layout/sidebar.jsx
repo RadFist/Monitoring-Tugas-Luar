@@ -1,6 +1,5 @@
-import { FaArrowLeft } from "react-icons/fa";
+import BackArrow from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
-
 import { clearToken } from "../utils/tokenManpulation";
 import { logoutUser } from "../services/authServices";
 const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
@@ -15,7 +14,7 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
     navigate("/generate", { state: data }); // Pindah ke halaman /generate
   };
 
-  // refactor later
+  // refactor later revoke token
   const handlerLogOut = async (event) => {
     event.preventDefault();
     try {
@@ -33,7 +32,7 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
         <div className="side-header">
           <span>Username</span>
           <button className="close-sidebar">
-            <FaArrowLeft
+            <BackArrow
               size={20}
               className="arrow-left"
               onClick={handlerClickArrow}

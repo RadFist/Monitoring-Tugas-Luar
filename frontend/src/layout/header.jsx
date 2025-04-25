@@ -1,5 +1,6 @@
 import BurgerBtn from "../components/BurgerBtn";
-import { IoIosNotificationsOutline } from "react-icons/io";
+import Notif from "@mui/icons-material/NotificationsNone";
+
 const Header = (props) => {
   const { title, onToggleSidebar } = props;
 
@@ -11,7 +12,7 @@ const Header = (props) => {
       </div>
       <div>
         <button className="icon-btn">
-          <IoIosNotificationsOutline size={30} />
+          <Notif sx={{ fontSize: 30 }} />
           <span className="icon-badge">5</span>
         </button>
       </div>

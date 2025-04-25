@@ -18,6 +18,12 @@ db.getConnection()
     conn.release();
   })
   .catch((err) => {
+    console.log({
+      host: env.DB_HOST,
+      user: env.DB_USER,
+      password: env.DB_PASSWORD,
+      database: env.DB_NAME,
+    });
     console.error("Database connection failed:", err.message);
   });
 

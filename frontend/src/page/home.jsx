@@ -2,7 +2,7 @@ import "../style/home.css";
 import CardSchedule from "../components/schedule/cardSchedule";
 import BarChart from "../components/chart/barChart";
 import fetchService from "../services/fetchService";
-import { getToken, clearToken } from "../utils/tokenManpulation";
+import { getToken } from "../utils/tokenManpulation";
 import { useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
 

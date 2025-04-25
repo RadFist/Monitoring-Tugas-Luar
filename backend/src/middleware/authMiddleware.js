@@ -11,8 +11,8 @@ const authenticateToken = (req, res, next) => {
   jwt.verify(token, accesSecret, (err, decoded) => {
     if (err) {
       if (err.name === "TokenExpiredError") {
-        console.log("Token sudah expired!");
-        return res.status(403).json({ message: "token expired" });
+        console.log("Token has been expired!");
+        return res.status(401).json({ message: "token expired" });
       }
       console.log("message : " + err.message);
       return res.status(403).json({ message: "forbiden, token not match" });

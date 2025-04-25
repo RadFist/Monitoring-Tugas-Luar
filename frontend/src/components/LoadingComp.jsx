@@ -1,5 +1,5 @@
 import "../style/loading.css";
-import { BarLoader } from "react-spinners";
+import { BarLoader, MoonLoader } from "react-spinners";
 const loadingPage = () => {
   return (
     <div className="loading-page-cont">
@@ -12,4 +12,11 @@ const loadingPage = () => {
   );
 };
 
+export const loadingCompSpin = () => {
+  return (
+    <div className="laoding-spin-cont">
+      <MoonLoader color="#2e55e3" size={60} speedMultiplier={0.5} />
+    </div>
+  );
+};
 export default loadingPage;

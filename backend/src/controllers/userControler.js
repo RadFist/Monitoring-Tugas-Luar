@@ -111,11 +111,11 @@ export const addUser = async (req, res) => {
 };
 
 export const userEdit = async (req, res) => {
-  // const userLevel = req.custom.user.level;
+  const userLevel = req.custom.user.level;
 
-  // if (userLevel != "super admin") {
-  //   return res.status(403).json({ message: "Access denied." });
-  // }
+  if (userLevel != "super admin") {
+    return res.status(403).json({ message: "Access denied." });
+  }
 
   const registSchema = Joi.object({
     username: Joi.string().alphanum().min(1).max(40),
