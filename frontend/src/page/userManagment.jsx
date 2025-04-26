@@ -9,11 +9,14 @@ import { useEffect, useMemo, useState } from "react";
 import { chekAuthToken } from "../components/logic/PrivateWarperAuth";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import { useNavigate } from "react-router-dom";
+import FormModal from "../components/modal";
+import { AddUser } from "../services/authServices";
 
 const UserManagment = () => {
   const navigate = useNavigate();
   const [getData, setGetData] = useState({ data: [], keys: [] });
   const [loading, setLoading] = useState(true);
+  const [modalActive, setModalActive] = useState(false);
   let token = getToken();
 
   useEffect(() => {
@@ -72,7 +75,7 @@ const UserManagment = () => {
     [getData.keys]
   );
 
-  // passing data ke
+  // penambahan id sebagai key untuk dipasing ke Data Grid
   const rows = useMemo(
     () =>
       getData.data.map((row, index) => ({
@@ -83,7 +86,7 @@ const UserManagment = () => {
     [getData]
   );
 
-  //function
+  //function handler and logic
   async function handlerDelete(id) {
     try {
       const confirmed = window.confirm("Yakin ingin menghapus user ini?");
@@ -107,10 +110,46 @@ const UserManagment = () => {
     }
   }
 
+  function handlerShowModal() {
+    setModalActive(!modalActive);
+  }
+  function handlerCloseModal() {
+    setModalActive(false);
+  }
+
+  async function handlerSubmitAdd(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = {
+      username: formData.get("username"),
+      password: formData.get("password"),
+      email: formData.get("email"),
+      level: formData.get("level"),
+    };
+
+    try {
+      await AddUser(data.username, data.password, data.email, data.level);
+
+      const response = await getService("/users", token);
+      const dataUserBaru = response.data || [];
+
+      setGetData({
+        data: dataUserBaru,
+        keys: dataUserBaru.length > 0 ? Object.keys(dataUserBaru[0]) : [],
+      });
+
+      e.target.reset();
+
+      setModalActive(false);
+    } catch (error) {
+      console.error("Error saat sign in:", error);
+    }
+  }
+  //loading
   if (loading) {
     return (
       <div style={{ margin: "10px", padding: "10px" }}>
-        <span>User Table</span>
+        <span className="title-table-user">USER TABLE</span>
         <div className="lo-bg-usermanagemnt">
           <Loading />
         </div>
@@ -120,8 +159,32 @@ const UserManagment = () => {
 
   return (
     <div style={{ margin: "10px", padding: "10px" }}>
-      <span>User Table</span>
-      <Table columns={columns} rows={rows} />
+      <FormModal
+        displayModal={modalActive ? "active" : ""}
+        onSubmit={handlerSubmitAdd}
+        onClose={handlerCloseModal}
+      >
+        <label htmlFor="username">Username</label>
+        <input type="text" id="username" name="username" required />
+
+        <label htmlFor="password">Password</label>
+        <input type="password" id="password" name="password" required />
+
+        <label htmlFor="email">Email</label>
+        <input type="email" id="email" name="email" required />
+
+        <label htmlFor="level">Level</label>
+        <select name="level" id="level">
+          <option value="">-- Pilih Level --</option>
+          <option value="admin">Admin</option>
+          <option value="user">User</option>
+          <option value="guest">Guest</option>
+        </select>
+
+        <button type="submit">Create</button>
+      </FormModal>
+      <span className="title-table-user">USER TABLE</span>
+      <Table columns={columns} rows={rows} handlerClickAdd={handlerShowModal} />
     </div>
   );
 };

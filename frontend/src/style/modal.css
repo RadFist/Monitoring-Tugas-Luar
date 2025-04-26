@@ -1,0 +1,124 @@
+/* Style for the modal background */
+.form-modal {
+    z-index: 20;
+    position: fixed; /* Use fixed so it stays at the viewport */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden; /* Hide by default */
+    background: rgba(0, 0, 0, 0.4); /* Dark transparent background */
+    transition: visibility 0.3s ease, opacity 0.3s ease; /* Smooth visibility and fade-in transition */
+    opacity: 0;
+}
+
+/* When modal is active */
+.form-modal.active {
+    visibility: visible; /* Make the modal visible */
+    opacity: 1;
+}
+
+/* Style for the modal container */
+.form-modal-cont {
+    background-color: #fff;
+    width: 400px; /* Set a fixed width */
+    max-width: 90%; /* Allow some flexibility in width */
+    height: auto;
+    padding: 20px;
+    border-radius: 15px;
+    border: 4px solid #5f5fea; /* Slightly lighter color for the border */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease-in-out; /* Add smooth scale effect */
+}
+
+/* Optional: Add a zoom-in effect when the modal opens */
+.form-modal.active .form-modal-cont {
+    transform: scale(1.05); /* Slight zoom-in effect */
+}
+
+/* Style for the form inside the modal */
+.form-modal-cont > form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%; /* Make sure form takes up the full width of the modal */
+    gap: 15px; /* Add space between form elements */
+}
+
+/* Style for the form labels */
+.form-modal-cont label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px; /* Space between label and input */
+}
+
+/* Style for the form inputs */
+.form-modal-cont input, .form-modal-cont select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease; /* Smooth transition on focus */
+}
+
+/* Focus effect on input and select */
+.form-modal-cont input:focus, .form-modal-cont select:focus {
+    border-color: #5f5fea; /* Highlight with the same color as border */
+    outline: none; /* Remove default browser focus outline */
+}
+
+/* Style for the button */
+.form-modal-cont button {
+    background-color: #5f5fea; /* Button color */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth color transition */
+    width: 100%;
+}
+
+/* Button hover effect */
+.form-modal-cont button:hover {
+    background-color: #4e4bdb; /* Darken the button on hover */
+}
+
+/* Close button style */
+.form-modal-cont .close-btn {
+    position: absolute;
+    top: 10px; /* Jarak dari atas lebih kecil */
+    right: 10px; /* Jarak dari kanan lebih kecil */
+    background: none;
+    border: none;
+    font-size: 24px; /* Ukuran font yang lebih besar untuk tombol X */
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    padding: 8px; /* Memberikan padding agar area klik lebih besar */
+    width: 30px; /* Ukuran lebar tombol */
+    height: 30px; /* Ukuran tinggi tombol */
+    display: flex;
+    justify-content: center; /* Center-kan konten di dalam tombol */
+    align-items: center; /* Center-kan konten di dalam tombol */
+    border-radius: 50%; /* Membuat tombol berbentuk bulat */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Menambahkan bayangan untuk tombol */
+}
+
+/* Close button hover effect */
+.form-modal-cont .close-btn:hover {
+    color: #5f5fea; /* Ganti warna tombol saat hover */
+    background-color: rgba(0, 0, 0, 0.1); /* Background transparan saat hover */
+}

@@ -8,6 +8,7 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
 
   const handleNavigate = (event) => {
     event.preventDefault();
+    //refactor later or delete
     const data = {
       title: "Disposisi Surat",
       content: "Isi surat yang mau dimunculkan di PDF",

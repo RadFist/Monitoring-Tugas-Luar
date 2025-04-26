@@ -43,8 +43,8 @@ export const PrivateWraper = ({ children }) => {
   return children;
 };
 
-export const chekAuthToken = async (token, navigate) => {
-  if (!isTokenValid(token)) {
+export const chekAuthToken = async (tokenParam, navigate) => {
+  if (!isTokenValid(tokenParam)) {
     try {
       const data = await authRefreshToken();
       saveToken(data.token);
@@ -55,5 +55,5 @@ export const chekAuthToken = async (token, navigate) => {
       throw error;
     }
   }
-  return token;
+  return tokenParam;
 };
