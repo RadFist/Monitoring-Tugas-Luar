@@ -2,6 +2,8 @@ export const saveToken = (token) => localStorage.setItem("token", token);
 export const getToken = () => localStorage.getItem("token");
 export const clearToken = () => localStorage.removeItem("token");
 export const checkTokenExp = (token) => {
+  console.log("cheking token");
+
   if (!token) return false;
 
   try {

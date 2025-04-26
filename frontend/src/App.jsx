@@ -6,7 +6,7 @@ import Login from "./page/login.jsx";
 import About from "./page/about.jsx";
 import NotFound from "./page/notFound.jsx";
 import UserManagement from "./page/userManagment.jsx";
-import PrivateRoute from "./components/logic/PrivateWarperAuth.jsx";
+import { PrivateWraper as PrivateRoute } from "./components/logic/PrivateWarperAuth.jsx";
 function App() {
   return (
     <Router>

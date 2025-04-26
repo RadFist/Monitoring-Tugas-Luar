@@ -11,11 +11,11 @@ const refreshSecret = process.env.REFRESH_TOKEN_SECRET;
 
 const generateAccessToken = (payload) => {
   return jwt.sign(payload, accesSecret, { expiresIn: "15m" });
-  // return jwt.sign(payload, accesSecret, { expiresIn: "1000" });
+  // return jwt.sign(payload, accesSecret, { expiresIn: "10000" });
 };
 const generateRefreshToken = (payload) => {
   return jwt.sign(payload, refreshSecret, { expiresIn: "7h" });
-  // return jwt.sign(payload, refreshSecret, { expiresIn: "1000" });
+  // return jwt.sign(payload, refreshSecret, { expiresIn: "10000" });
 };
 
 const schema = Joi.object({

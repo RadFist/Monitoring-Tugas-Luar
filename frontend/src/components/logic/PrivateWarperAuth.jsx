@@ -9,18 +9,18 @@ import { useEffect, useState } from "react";
 import { authRefreshToken } from "../../services/authServices";
 import LoadingPage from "../LoadingComp";
 
-const PrivateWraper = ({ children }) => {
+export const PrivateWraper = ({ children }) => {
   const [isAuth, setIsAuth] = useState(null);
+  const token = getToken();
 
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem("token");
-
-      if (!isTokenValid(token)) {
+      const tokenCond = isTokenValid(token);
+      if (!tokenCond) {
         try {
           const data = await authRefreshToken();
           saveToken(data.token);
-          console.log("token di wrap " + getToken());
+          console.log("token refereshed in privateWraper " + getToken());
           setIsAuth(true);
         } catch (error) {
           clearToken();
@@ -43,4 +43,17 @@ const PrivateWraper = ({ children }) => {
   return children;
 };
 
-export default PrivateWraper;
+export const chekAuthToken = async (token, navigate) => {
+  if (!isTokenValid(token)) {
+    try {
+      const data = await authRefreshToken();
+      saveToken(data.token);
+      return getToken();
+    } catch (error) {
+      clearToken();
+      navigate("/login");
+      throw error;
+    }
+  }
+  return token;
+};

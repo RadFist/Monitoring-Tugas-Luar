@@ -2,6 +2,7 @@ import BackArrow from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
 import { clearToken } from "../utils/tokenManpulation";
 import { logoutUser } from "../services/authServices";
+
 const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
   const navigate = useNavigate();
 
@@ -59,7 +60,14 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
           <span>Tugas Luar</span>
           <span>Monitoring dan Laporan</span>
           <span>Dokumentasi Arsip</span>
-          <a href="/about">about</a>
+          <span
+            onClick={() => {
+              navigate("/about");
+              handlerClickArrow();
+            }}
+          >
+            About
+          </span>
           <a style={{ cursor: "pointer" }} onClick={handleNavigate}>
             Generate PDF
           </a>

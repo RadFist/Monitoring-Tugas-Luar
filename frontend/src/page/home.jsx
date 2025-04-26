@@ -4,6 +4,7 @@ import BarChart from "../components/chart/barChart";
 import fetchService from "../services/fetchService";
 import { getToken } from "../utils/tokenManpulation";
 import { useEffect } from "react";
+
 // import { useNavigate } from "react-router-dom";
 
 const emplyoee = [
