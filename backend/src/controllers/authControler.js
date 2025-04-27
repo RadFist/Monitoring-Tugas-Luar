@@ -11,7 +11,7 @@ const refreshSecret = process.env.REFRESH_TOKEN_SECRET;
 
 const generateAccessToken = (payload) => {
   return jwt.sign(payload, accesSecret, { expiresIn: "15m" });
-  // return jwt.sign(payload, accesSecret, { expiresIn: "10000" });
+  // return jwt.sign(payload, accesSecret, { expiresIn: "1000" });
 };
 const generateRefreshToken = (payload) => {
   return jwt.sign(payload, refreshSecret, { expiresIn: "7h" });
@@ -85,7 +85,7 @@ export const login = async (req, res) => {
     //check data exist or not
 
     if (!data || data < 1) {
-      return res.status(401).json({ message: "Username or Email Not Found" });
+      return res.status(404).json({ message: "Username or Email Not Found" });
     }
 
     // compare
@@ -93,7 +93,7 @@ export const login = async (req, res) => {
 
     const compare = await bcrypt.compare(password, passwordHass);
     if (!compare) {
-      return res.status(401).json({ message: "wrong password" });
+      return res.status(403).json({ message: "wrong password" });
     }
     const payload = {
       id_user: data.id_user,
@@ -141,7 +141,7 @@ export const refereshTokenAuth = (req, res) => {
 
       return res.status(200).json({ message: "Refreshed", token: token });
     }
-    return res.status(401).json({ message: "token expired" });
+    return res.status(403).json({ message: "token refresh expired" });
   });
 };
 

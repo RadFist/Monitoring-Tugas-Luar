@@ -3,7 +3,6 @@ import bgImage from "../assets/img/BackgroundLogin.jpg"; // Pastikan file ini ad
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authServices";
-import { saveToken } from "../utils/tokenManpulation";
 import LoginForm from "../components/Login/loginForm";
 
 export default function Login() {
@@ -21,19 +20,18 @@ export default function Login() {
     setLoading("Loading..");
 
     try {
-      const data = await loginUser(credential.Username, credential.Password);
-      saveToken(data.accessToken);
+      await loginUser(credential.Username, credential.Password);
       navigate("/home");
     } catch (error) {
       setLoading("");
-      // console.log(error.message);
+      const message = error.response.data.message;
 
       setFailedLogin({
         class:
-          error.message === "Internal Server Error, please try again later."
+          message === "Internal Server Error, please try again later."
             ? ""
             : "error",
-        message: error.message,
+        message: message,
       });
     }
   };

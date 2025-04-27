@@ -3,7 +3,7 @@ import db from "../config/db_mysql.js";
 export const getAllUsers = async () => {
   try {
     const [rows] = await db.query(
-      "SELECT id_user,username, email FROM tb_user"
+      "SELECT id_user,username, email, level FROM tb_user"
     );
     return rows;
   } catch (error) {

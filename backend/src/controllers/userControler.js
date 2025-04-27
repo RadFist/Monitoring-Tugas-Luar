@@ -1,7 +1,7 @@
 import Joi from "joi";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
-import { checkUserExists } from "../model/model.js";
+import { checkUserExists, customQuery } from "../model/model.js";
 import dayjs from "dayjs";
 import {
   deletUserById,
@@ -61,7 +61,9 @@ export const addUser = async (req, res) => {
     username: Joi.string().alphanum().min(1).max(40).required(),
     password: Joi.string().min(8).required(),
     email: Joi.string().email().required(),
-    level: Joi.string().valid("admin", "super admin").default("admin"),
+    level: Joi.string()
+      .valid("admin", "super admin", "user", "verifikator")
+      .default("admin"),
   });
 
   try {
@@ -127,6 +129,7 @@ export const userEdit = async (req, res) => {
   try {
     //get data and validate
     const dataUpdate = req.body;
+
     const { value, error } = registSchema.validate(dataUpdate);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
@@ -151,12 +154,17 @@ export const userEdit = async (req, res) => {
     fields.push(`updated_at = ?`);
     values.push(updateTime);
     values.push(idUser);
-    const checkUser = await checkUserExists(value.username, value.email);
-    if (checkUser) {
-      return res
-        .status(409)
-        .json({ message: "Username or email already exists" });
+
+    //check username or email
+    if (value.username || value.email) {
+      const checkUser = await checkUserExists(value.username, value.email);
+      if (checkUser) {
+        return res
+          .status(409)
+          .json({ message: "Username or email already exists" });
+      }
     }
+
     const queryField = `${fields.join(", ")}`;
 
     //send data to db

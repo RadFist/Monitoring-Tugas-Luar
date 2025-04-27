@@ -3,27 +3,28 @@ import { Button } from "@mui/material";
 import { DataTable as Table } from "../components/listManagement";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { getService, deleteService } from "../services/fetchService";
-import { getToken } from "../utils/tokenManpulation";
 import { useEffect, useMemo, useState } from "react";
-import { chekAuthToken } from "../components/logic/PrivateWarperAuth";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
-import { useNavigate } from "react-router-dom";
 import FormModal from "../components/modal";
 import { AddUser } from "../services/authServices";
+import api from "../services/api";
 
 const UserManagment = () => {
-  const navigate = useNavigate();
   const [getData, setGetData] = useState({ data: [], keys: [] });
   const [loading, setLoading] = useState(true);
   const [modalActive, setModalActive] = useState(false);
-  let token = getToken();
+  const [inputs, setInputs] = useState({});
+  const [oldInputs, setOldInputs] = useState({});
+  const [errorHandling, setErrorHandiling] = useState({
+    message: "",
+    class: "",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = await chekAuthToken(getToken(), navigate);
-        const response = await getService("/users", token);
+        const response = (await api.get("/users")).data;
+
         const data = response.data || [];
         setGetData({
           data,
@@ -31,8 +32,6 @@ const UserManagment = () => {
         });
       } catch (error) {
         console.error("Error fetching :", error.message);
-        //navigate to 500 server error
-        // navigate("/login");
       } finally {
         setLoading(false);
       }
@@ -42,24 +41,20 @@ const UserManagment = () => {
   }, []);
 
   //column setting
-
   const columns = useMemo(
     () => [
       { field: "id", headerName: "ID", width: 70 },
       { field: "number", headerName: "No", width: 70 },
       { field: getData.keys[1], headerName: "Username", width: 130 },
-      { field: getData.keys[2], headerName: "Email", width: 130 },
+      { field: getData.keys[2], headerName: "Email", width: 200 },
+      { field: getData.keys[3], headerName: "Level", width: 130 },
       {
         field: "action",
         width: 170,
         sortable: false,
         renderCell: (params) => (
           <>
-            <Button
-              onClick={() => {
-                alert("edit id: " + params.id);
-              }}
-            >
+            <Button onClick={() => handlerEdit(params.id)}>
               <EditIcon />
             </Button>
             <Button
@@ -74,8 +69,8 @@ const UserManagment = () => {
     ],
     [getData.keys]
   );
-
   // penambahan id sebagai key untuk dipasing ke Data Grid
+
   const rows = useMemo(
     () =>
       getData.data.map((row, index) => ({
@@ -87,12 +82,138 @@ const UserManagment = () => {
   );
 
   //function handler and logic
-  async function handlerDelete(id) {
+  const handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setInputs((values) => ({ ...values, [name]: value }));
+  };
+
+  const handlerShowModal = () => {
+    setModalActive(!modalActive);
+  };
+
+  const handlerCloseModal = () => {
+    setInputs({});
+    setModalActive(false);
+    setErrorHandiling({
+      message: "",
+      class: "",
+    });
+  };
+
+  const handlerSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!inputs.id_user) {
+      //add user
+      try {
+        await AddUser(
+          inputs.username,
+          inputs.password,
+          inputs.email,
+          inputs.level
+        );
+
+        const response = (await api.get("/users")).data;
+        const newDataUser = response.data || [];
+
+        setGetData({
+          data: newDataUser,
+          keys: newDataUser.length > 0 ? Object.keys(newDataUser[0]) : [],
+        });
+
+        setInputs({});
+        setModalActive(false);
+
+        setErrorHandiling({
+          message: "",
+          class: "",
+        });
+      } catch (error) {
+        let message = "";
+        if (error.status) {
+          message = error.response.data.message;
+        } else {
+          message = "Sorry something error";
+        }
+
+        console.error("Error saat adding:", error);
+
+        setErrorHandiling({
+          message: message,
+          class: "active",
+        });
+      }
+    } else {
+      //edit user
+
+      const dataUpdate = Object.keys(inputs).reduce((acc, key) => {
+        if (inputs[key] !== oldInputs[key]) {
+          acc[key] = inputs[key]; // Hanya simpan data yang berubah
+        }
+        return acc;
+      }, {});
+
+      try {
+        await api.patch(`/user/edit/${inputs.id_user}`, {
+          ...dataUpdate,
+        });
+
+        const response = (await api.get("/users")).data;
+        const newDataUser = response.data || [];
+
+        setGetData({
+          data: newDataUser,
+          keys: newDataUser.length > 0 ? Object.keys(newDataUser[0]) : [],
+        });
+
+        setInputs({});
+        setOldInputs({});
+        setModalActive(false);
+      } catch (error) {
+        let message = "";
+        if (error.status) {
+          message = error.response.data.message;
+        } else {
+          message = "Sorry something error";
+        }
+
+        console.error("Error saat adding:", error);
+
+        setErrorHandiling({
+          message: message,
+          class: "active",
+        });
+      }
+    }
+  };
+
+  const handlerEdit = (id) => {
+    const dataEdit = getData.data.find((user) => user.id_user === id);
+    setInputs({
+      id_user: dataEdit.id_user,
+      username: dataEdit.username,
+      password: "", //g ngirim pw dari db cok, biar aman
+      email: dataEdit.email,
+      level: dataEdit.level,
+    });
+    setOldInputs({
+      id_user: dataEdit.id_user,
+      username: dataEdit.username,
+      password: "", //g ngirim pw dari db cok, biar aman
+      email: dataEdit.email,
+      level: dataEdit.level,
+    });
+
+    setModalActive(!modalActive);
+  };
+
+  const handlerDelete = async (id) => {
     try {
       const confirmed = window.confirm("Yakin ingin menghapus user ini?");
       if (!confirmed) return;
 
-      const response = await deleteService(`/user/delete/${id}`, token);
+      const response = await api.delete(`/user/delete/${id}`);
       if (response) {
         setGetData((prev) => ({
           ...prev,
@@ -102,49 +223,9 @@ const UserManagment = () => {
       console.log("User deleted:", id);
     } catch (error) {
       console.error("Error fetching :", error.message);
-      //refactor if token exp
-      if (error.message === "token expired") {
-        // navigate("/login");
-        // clearToken();
-      }
     }
-  }
+  };
 
-  function handlerShowModal() {
-    setModalActive(!modalActive);
-  }
-  function handlerCloseModal() {
-    setModalActive(false);
-  }
-
-  async function handlerSubmitAdd(e) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = {
-      username: formData.get("username"),
-      password: formData.get("password"),
-      email: formData.get("email"),
-      level: formData.get("level"),
-    };
-
-    try {
-      await AddUser(data.username, data.password, data.email, data.level);
-
-      const response = await getService("/users", token);
-      const dataUserBaru = response.data || [];
-
-      setGetData({
-        data: dataUserBaru,
-        keys: dataUserBaru.length > 0 ? Object.keys(dataUserBaru[0]) : [],
-      });
-
-      e.target.reset();
-
-      setModalActive(false);
-    } catch (error) {
-      console.error("Error saat sign in:", error);
-    }
-  }
   //loading
   if (loading) {
     return (
@@ -161,26 +242,55 @@ const UserManagment = () => {
     <div style={{ margin: "10px", padding: "10px" }}>
       <FormModal
         displayModal={modalActive ? "active" : ""}
-        onSubmit={handlerSubmitAdd}
+        onSubmit={handlerSubmit}
         onClose={handlerCloseModal}
       >
         <label htmlFor="username">Username</label>
-        <input type="text" id="username" name="username" required />
+        <input
+          type="text"
+          id="username"
+          name="username"
+          value={inputs.username || ""}
+          onChange={handleChange}
+          required
+        />
 
         <label htmlFor="password">Password</label>
-        <input type="password" id="password" name="password" required />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={inputs.password || ""}
+          onChange={handleChange}
+          required
+        />
 
         <label htmlFor="email">Email</label>
-        <input type="email" id="email" name="email" required />
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={inputs.email || ""}
+          onChange={handleChange}
+          required
+        />
 
         <label htmlFor="level">Level</label>
-        <select name="level" id="level">
+        <select
+          name="level"
+          id="level"
+          value={inputs.level || ""}
+          onChange={handleChange}
+        >
           <option value="">-- Pilih Level --</option>
           <option value="admin">Admin</option>
           <option value="user">User</option>
-          <option value="guest">Guest</option>
+          <option value="verifikator">monitoring</option>
+          <option value="super admin">Super Admin</option>
         </select>
-
+        <span className={`error-message ${errorHandling.class}`}>
+          {errorHandling.message || ""}
+        </span>
         <button type="submit">Create</button>
       </FormModal>
       <span className="title-table-user">USER TABLE</span>

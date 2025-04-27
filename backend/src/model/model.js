@@ -1,10 +1,9 @@
 import db from "../config/db_mysql.js";
 
-const customQuery = async (query, params) => {
-  const result = await db.query(query, params);
-  return result;
+export const customQuery = async (query, params) => {
+  const [result] = await db.query(query, params);
+  return result[0];
 };
-
 export const checkUserExists = async (username, email) => {
   try {
     const [rows] = await db.query(
@@ -16,5 +15,3 @@ export const checkUserExists = async (username, email) => {
     throw error;
   }
 };
-
-export default customQuery;

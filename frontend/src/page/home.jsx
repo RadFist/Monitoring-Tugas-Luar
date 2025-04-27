@@ -1,11 +1,8 @@
 import "../style/home.css";
 import CardSchedule from "../components/schedule/cardSchedule";
 import BarChart from "../components/chart/barChart";
-import fetchService from "../services/fetchService";
-import { getToken } from "../utils/tokenManpulation";
 import { useEffect } from "react";
-
-// import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 const emplyoee = [
   "udin sarudin mangarudi jalaludin sehat walafiat ss",
@@ -16,18 +13,23 @@ const emplyoee = [
 const activity = ["pdip", "komdigi", "kementrian agama", "uhuy"];
 const Home = () => {
   // const navigate = useNavigate();
-  const token = getToken("token");
 
   //use effect delete or refactor later
   useEffect(() => {
     const fetchData = async () => {
       try {
         //fix later
-        const response = await fetchService("/asalGamink", token);
-        console.log("id :" + response.data.id_user);
-        console.log("username :" + response.data.username);
-        console.log("email :" + response.data.email);
-        console.log("level :" + response.data.level);
+        const response = (await api.post("/asalGamink")).data;
+
+        // refactor later
+        const data = {
+          A_id: response.data.id_user,
+          B_username: response.data.username,
+          C_email: response.data.email,
+          D_level: response.data.level,
+        };
+
+        console.log(data);
       } catch (error) {
         console.error("Error fetching :", error.message);
         //refactor jelek bet cok
