@@ -15,6 +15,8 @@ const Layout = () => {
     "/about": "About Us",
     "/contact": "Contact Us",
     "/UserManagemet": "User Management",
+    "/InputTugas": "Input Tugas",
+    "/TugasLuar": "List Tugas",
   };
 
   const pagelocation = pageTitles[location.pathname] || "My Website";

@@ -58,8 +58,22 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
           >
             Manajemen Pengguna
           </span>
-          <span>Tugas Luar</span>
-          <span>Monitoring dan Laporan</span>
+          <span
+            onClick={() => {
+              navigate("/TugasLuar");
+              handlerClickArrow();
+            }}
+          >
+            Tugas Luar
+          </span>
+          <span
+            onClick={() => {
+              navigate("/InputTugas");
+              handlerClickArrow();
+            }}
+          >
+            Input Tugas
+          </span>
           <span>Dokumentasi Arsip</span>
           <span
             onClick={() => {

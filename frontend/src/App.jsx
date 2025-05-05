@@ -1,11 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Layout from "./layout/Layout.jsx";
+import Layout from "./layout/layout.jsx";
 import Home from "./page/home.jsx";
 import Pdf from "./page/pdf.jsx";
 import Login from "./page/login.jsx";
 import About from "./page/about.jsx";
 import NotFound from "./page/notFound.jsx";
 import UserManagement from "./page/userManagment.jsx";
+import ListTugasLuar from "./page/listTugasLuar.jsx";
+import InputTugasLuar from "./page/inputTugasLuar.jsx";
 import { PrivateWraper as PrivateRoute } from "./components/logic/PrivateWarperAuth.jsx";
 function App() {
   return (
@@ -33,6 +35,22 @@ function App() {
             element={
               <PrivateRoute>
                 <UserManagement />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="TugasLuar"
+            element={
+              <PrivateRoute>
+                <ListTugasLuar title="Tugas Luar" />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="InputTugas"
+            element={
+              <PrivateRoute>
+                <InputTugasLuar title="Input Tugas Luar" />
               </PrivateRoute>
             }
           />

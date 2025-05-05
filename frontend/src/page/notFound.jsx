@@ -3,7 +3,7 @@ const notFound = () => {
   return (
     <div className="not-found-page-cont">
       <div className="not-found-logo-wrap">
-        <img src="/img/logokab_white.png" alt="Logo kab tangerang" />
+        <img src="/img/logo.png" alt="Logo kab tangerang" />
         <div>
           <span>PAGE NOT</span>
           <span>FOUND</span>
