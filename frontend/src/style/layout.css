@@ -9,66 +9,87 @@ body{
   }
   /* sidebar */
   .sidebar-cont {
-    position: absolute;
-    margin: auto;
-    padding-top: 10px;
-    left: 0;
+    position: fixed;
     top: 0;
-    min-height: 100vh;
+    left: 0;
+    height: 100vh;
     width: 0;
     opacity: 0;
-    background-color: rgb(95, 95, 238);
-    transition:  width 0.5s ease, opacity 0.5s ease;
-    z-index: 10; 
+    background-color: #3f51b5;
+    color: white;
+    transition: width 0.3s ease, opacity 0.3s ease;
+    z-index: 100;
+    overflow-x: hidden;
   }
   
   .sidebar-cont.active {
-    width: 250px; /* Atur lebar sidebar */
+    width: 250px;
     opacity: 1;
-    transform: translateX(0);
   }
-  .sidebar-cont> * {
+  
+  .sidebar-cont > * {
     visibility: hidden;
   }
+  
   .sidebar-cont.active > * {
     visibility: visible;
   }
-
-  .sidebar-content{
-    margin-top: 20px;
- 
+  
+  .sidebar-content {
+    padding: 20px;
   }
-
-  .side-header{
-    width: 100%;
+  
+  .side-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #5c6bc0;
+    padding: 10px;
+    border-radius: 6px;
+  }
+  
+  .side-header > span {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-left: 10px;
+  }
+  
+  .close-sidebar {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .arrow-left {
+    color: white;
+  }
+  
+  .menu-cont {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .menu-item {
     display: flex;
     align-items: center;
-    color: white;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    background-color: rgb(141, 146, 222);
-    padding: 10px;
-  }
-  .side-header>span{
-    margin-left: 30px ;
-    font-weight: 700;
-    font-size: larger;
-  }
-
-  .close-sidebar{
-    width: 36px;
-    height: 32px;
-    background-color: rgb(66, 66, 235);
-    border: none;   
-    cursor: default;
-    border-radius: 2px;
-    
-  }
-  .arrow-left{
+    gap: 12px;
     cursor: pointer;
-    color: white;
-    margin-left: auto;
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
   }
+  
+  .menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
 /* menu side bar */
 .menu-cont{
   display: flex;
@@ -85,61 +106,81 @@ body{
 }
 
 /* header */
-.header-cont{
+/* HEADER CONTAINER */
+.header-cont {
   display: flex;
-  align-items: center;
-  flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   background-color: white;
-  width: 99%;
-  margin: 10px auto;   
-  padding: 10px 0px;
-  border-radius: 10px;
+  width: 98%;
+  margin: 10px auto;
+  padding: 12px 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
 }
-.left-side > p{
-  font-weight: 700;
-  font-size: larger;
-  color:  rgb(95, 95, 238); 
+
+/* LEFT SECTION */
+.left-side {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* TITLE */
+.header-title {
   margin: 0;
-}
-.header-cont > div{
-  margin: 0px 20px;
-}
-
-.left-side{
-  display: flex;
-  align-items: center;
-}
-
-/* icon in header */
-.icon-btn{
-  display: flex;
-  position: relative;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  color: #333333;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  border-radius: 50%;
-}
-
-.icon-badge{
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: red;
-  color: white;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-size: 1.25rem;
   font-weight: 700;
+  color: #5f5fee;
 }
+
+/* RIGHT SECTION */
+.right-side {
+  display: flex;
+  align-items: center;
+}
+
+/* ICON BUTTON */
+.icon-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.icon-btn:hover {
+  background-color: #e0e0ff;
+}
+
+.icon-btn svg {
+  color: #555;
+}
+
+/* NOTIF BADGE */
+.icon-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 18px;
+  height: 18px;
+  background-color: #e53935;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 .blur{
   -webkit-filter: blur(5px);

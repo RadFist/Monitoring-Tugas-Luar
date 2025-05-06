@@ -1,4 +1,13 @@
 import BackArrow from "@mui/icons-material/KeyboardBackspace";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PeopleIcon from "@mui/icons-material/People";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import ArchiveIcon from "@mui/icons-material/Archive";
+import InfoIcon from "@mui/icons-material/Info";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import LogoutIcon from "@mui/icons-material/Logout";
+
 import { useNavigate } from "react-router-dom";
 import { clearToken } from "../utils/tokenManpulation";
 import { logoutUser } from "../services/authServices";
@@ -8,15 +17,13 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
 
   const handleNavigate = (event) => {
     event.preventDefault();
-    //refactor later or delete
     const data = {
       title: "Disposisi Surat",
       content: "Isi surat yang mau dimunculkan di PDF",
     };
-    navigate("/generate", { state: data }); // Pindah ke halaman /generate
+    navigate("/generate", { state: data });
   };
 
-  // refactor later revoke token
   const handlerLogOut = async (event) => {
     event.preventDefault();
     try {
@@ -35,58 +42,67 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
           <span>Username</span>
           <button className="close-sidebar">
             <BackArrow
-              size={20}
+              fontSize="medium"
               className="arrow-left"
               onClick={handlerClickArrow}
             />
           </button>
         </div>
         <div className="menu-cont">
-          <span
+          <div
+            className="menu-item"
             onClick={() => {
               navigate("/");
               handlerClickArrow();
             }}
           >
-            Dashboard
-          </span>
-          <span
+            <DashboardIcon /> <span>Dashboard</span>
+          </div>
+          <div
+            className="menu-item"
             onClick={() => {
-              navigate("/UserManagemet");
+              navigate("/User-Managemet");
               handlerClickArrow();
             }}
           >
-            Manajemen Pengguna
-          </span>
-          <span
+            <PeopleIcon /> <span>Manajemen Pengguna</span>
+          </div>
+          <div
+            className="menu-item"
             onClick={() => {
-              navigate("/TugasLuar");
+              navigate("/Tugas-Luar");
               handlerClickArrow();
             }}
           >
-            Tugas Luar
-          </span>
-          <span
+            <TravelExploreIcon /> <span>Tugas Luar</span>
+          </div>
+          <div
+            className="menu-item"
             onClick={() => {
-              navigate("/InputTugas");
+              navigate("/Input-Tugas");
               handlerClickArrow();
             }}
           >
-            Input Tugas
-          </span>
-          <span>Dokumentasi Arsip</span>
-          <span
+            <AssignmentIcon /> <span>Input Tugas</span>
+          </div>
+          <div className="menu-item">
+            <ArchiveIcon /> <span>Dokumentasi Arsip</span>
+          </div>
+          <div
+            className="menu-item"
             onClick={() => {
               navigate("/about");
               handlerClickArrow();
             }}
           >
-            About
-          </span>
-          <a style={{ cursor: "pointer" }} onClick={handleNavigate}>
-            Generate PDF
-          </a>
-          <a onClick={handlerLogOut}>Logout</a>
+            <InfoIcon /> <span>About</span>
+          </div>
+          <div className="menu-item" onClick={handleNavigate}>
+            <PictureAsPdfIcon /> <span>Generate PDF</span>
+          </div>
+          <div className="menu-item" onClick={handlerLogOut}>
+            <LogoutIcon /> <span>Logout</span>
+          </div>
         </div>
       </div>
     </aside>

@@ -1,26 +1,31 @@
 
-.burger-cont{
-    width: 20px; 
-    height: 20px;
-    padding: 0.3em; 
-    background-color: transparent;
-    border: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    cursor: pointer;
-    border-radius: 10px;
-    margin-right: 10px;
-    margin-left: 10px;
+.burger-cont {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
-.burger-cont > span{
-    width: 80%;
-    height: 4px; 
-    background-color: rgb(129, 121, 244);
-    transition: all 0.3s ease-in-out;
+.burger-cont:hover {
+  background-color: #f0f0ff;
 }
+
+.burger-cont .bar {
+  width: 24px;
+  height: 3px;
+  background-color: rgb(129, 121, 244);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
 
 
 /* .burger-cont.active span:nth-child(1) {

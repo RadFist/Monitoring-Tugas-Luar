@@ -31,7 +31,7 @@ function App() {
             }
           />
           <Route
-            path="UserManagemet"
+            path="User-Managemet"
             element={
               <PrivateRoute>
                 <UserManagement />
@@ -39,7 +39,7 @@ function App() {
             }
           />
           <Route
-            path="TugasLuar"
+            path="Tugas-Luar"
             element={
               <PrivateRoute>
                 <ListTugasLuar title="Tugas Luar" />
@@ -47,7 +47,7 @@ function App() {
             }
           />
           <Route
-            path="InputTugas"
+            path="Input-Tugas"
             element={
               <PrivateRoute>
                 <InputTugasLuar title="Input Tugas Luar" />

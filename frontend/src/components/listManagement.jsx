@@ -14,7 +14,14 @@ export const DataTable = ({ rows, columns, handlerClickAdd }) => {
   // };
 
   return (
-    <Paper sx={{ width: "100%", padding: "20px", boxSizing: "border-box" }}>
+    <Paper
+      sx={{
+        width: "100%",
+        padding: "20px",
+        marginTop: "5px",
+        boxSizing: "border-box",
+      }}
+    >
       <Button variant="contained" color="primary" onClick={handlerClickAdd}>
         Tambah Data
       </Button>

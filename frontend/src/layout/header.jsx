@@ -1,22 +1,54 @@
 import BurgerBtn from "../components/BurgerBtn";
-import Notif from "@mui/icons-material/NotificationsNone";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import { Tooltip, Avatar, Typography } from "@mui/material";
+import { deepPurple } from "@mui/material/colors";
 
-const Header = (props) => {
-  const { title, onToggleSidebar } = props;
+const Header = ({ title, onToggleSidebar }) => {
+  const username = "";
+
+  // Fungsi waktu berdasarkan jam lokal
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Selamat pagi";
+    else if (hour < 18) return "Selamat siang";
+    else return "Selamat malam";
+  };
 
   return (
-    <div className="header-cont">
+    <header className="header-cont">
       <div className="left-side">
         <BurgerBtn toggleSidebar={onToggleSidebar} />
-        <p>{title}</p>
+        <div>
+          <Typography variant="h6" className="header-title">
+            {title}
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            {getGreeting()} 👋
+          </Typography>
+        </div>
       </div>
-      <div>
-        <button className="icon-btn">
-          <Notif sx={{ fontSize: 30 }} />
-          <span className="icon-badge">5</span>
-        </button>
+
+      <div className="right-side">
+        <Tooltip title="Notifikasi">
+          <button className="icon-btn" aria-label="notifications">
+            <NotificationsNoneIcon sx={{ fontSize: 28 }} />
+            <span className="icon-badge">5</span>
+          </button>
+        </Tooltip>
+
+        <Avatar
+          sx={{
+            bgcolor: deepPurple[500],
+            marginLeft: 2,
+            width: 40,
+            height: 40,
+          }}
+        >
+          {username[0]}
+        </Avatar>
       </div>
-    </div>
+    </header>
   );
 };
+
 export default Header;

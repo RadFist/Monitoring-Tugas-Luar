@@ -4,35 +4,26 @@ import BarChart from "../components/chart/barChart";
 import { useEffect } from "react";
 import api from "../services/api";
 
-const emplyoee = [
-  "udin sarudin mangarudi jalaludin sehat walafiat ss",
-  "ucok",
-  "ucup",
-  "urip",
-];
-const activity = ["pdip", "komdigi", "kementrian agama", "uhuy"];
-const Home = () => {
-  // const navigate = useNavigate();
+const employee = ["Udin Sarudin", "Ucok", "Ucup", "Urip"];
 
-  //use effect delete or refactor later
+const activities = ["PDIP", "Komdigi", "Kementerian Agama", "Uhuy"];
+
+const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        //fix later
         const response = (await api.post("/asalGamink")).data;
 
-        // refactor later
         const data = {
-          A_id: response.data.id_user,
-          B_username: response.data.username,
-          C_email: response.data.email,
-          D_level: response.data.level,
+          id: response.data.id_user,
+          username: response.data.username,
+          email: response.data.email,
+          level: response.data.level,
         };
 
         console.log(data);
       } catch (error) {
-        console.error("Error fetching :", error.message);
-        //refactor jelek bet cok
+        console.error("Error fetching:", error.message);
         if (error.message === "token expired") {
           // navigate("/login");
           // clearToken();
@@ -45,28 +36,30 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <div className="schedule-cont">
-        <span className="title-schedule">Jadwal</span>
-        <div className="schedule-card-cont">
+      <section className="schedule-section">
+        <h2 className="schedule-title">📅 Jadwal Kegiatan</h2>
+        <div className="schedule-list">
           <CardSchedule
-            time="10 march 2025"
-            listActivity={activity}
-            listEmployee={emplyoee}
+            time="10 Maret 2025"
+            listActivity={activities}
+            listEmployee={employee}
           />
           <CardSchedule />
           <CardSchedule />
           <CardSchedule />
         </div>
-      </div>
-      <div className="chart-cont">
-        <div className="chart1-cont">
+      </section>
+
+      <section className="chart-section">
+        <div className="chart-box">
           <BarChart />
         </div>
-        <div className="chart2-cont">
+        <div className="chart-box">
           <BarChart />
         </div>
-      </div>
+      </section>
     </div>
   );
 };
+
 export default Home;

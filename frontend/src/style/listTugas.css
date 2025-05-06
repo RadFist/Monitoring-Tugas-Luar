@@ -1,0 +1,109 @@
+/* Tambahkan global font dan reset margin */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f1f3f6;
+  }
+  
+  /* Kontainer utama */
+  .content-list-tugas {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 99%;
+    margin: 20px auto;
+  }
+  
+  /* Kotak putih berisi daftar */
+  .list-tugas {
+    width: 100%;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border-radius: 12px;
+    box-sizing: border-box;
+  }
+  
+  /* Setiap item */
+  .tugas-item {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 4px 6px 6px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+  }
+  
+  /* Hover efek */
+  .tugas-item:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* Header tugas (nama + status) */
+  .tugas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .tugas-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* Status badge */
+  .status {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: white;
+    text-transform: capitalize;
+  }
+  
+  .status.selesai {
+    background-color: #4caf50;
+  }
+  .status.belum-selesai {
+    background-color: #f44336;
+  }
+  .status.diproses {
+    background-color: #ff9800;
+  }
+  
+  /* Text dalam item */
+  .tugas-item p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.5;
+  }
+  
+  .tugas-item p strong {
+    color: #222;
+  }
+  
+  /* Tombol detail */
+  .detail-button {
+    margin-top: 14px;
+    padding: 10px 16px;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+    display: flex;
+    gap: 2px;
+  }
+  
+  .detail-button:hover {
+    background-color: #1259a8;
+  }
+  

@@ -1,47 +1,62 @@
-
-.schedule-cont{
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  background-color: white;
-  width: 99%;
-  margin: 10px auto; /* Supaya tetap di tengah */
-  padding: 10px;
-  border-radius: 10px;
-  box-sizing: border-box; 
-    
-}
-.schedule-card-cont{
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 10px;
-}
-.title-schedule{
-  font-size: x-large;
-  font-weight: 700;
-}
-.chart-cont{
-  display: flex;
- /* Menyatukan chart di tengah */
-  align-items: center;
-  margin: 10px auto;
-  width: 99%;
-  flex-wrap: wrap; /* Agar tetap responsif jika layarnya kecil */
-  gap: 20px; /* Kurangi jarak antar chart */
-}
-.chart1-cont,
-.chart2-cont{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 600px; /* Maksimal lebar */
-  height: 400px;
-  background-color: white;
-  border-radius: 10px;
+.home-container {
   padding: 20px;
-
+  background-color: #f4f6f8;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-  
+/* Jadwal Section */
+.schedule-section {
+  background-color: #ffffff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.schedule-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.schedule-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+/* Chart Section */
+.chart-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.chart-box {
+  flex: 1 1 300px;
+  max-width: 600px;
+  min-height: 400px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .schedule-list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .chart-box {
+    width: 100%;
+  }
+}

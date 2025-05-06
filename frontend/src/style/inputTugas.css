@@ -1,0 +1,84 @@
+.page-container {
+    max-width: 70%;
+    margin: 40px auto;
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    font-family: "Segoe UI", sans-serif;
+  }
+  
+  .page-header h2 {
+    font-size: 1.75rem;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  .page-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .info-icon {
+    color: #5f5fee;
+  }
+  
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  
+  label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+    color: #444;
+  }
+  
+  input,
+  textarea {
+    margin-top: 6px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+  }
+  
+  .date-row {
+    display: flex;
+    gap: 20px;
+  }
+  
+  textarea {
+    resize: vertical;
+  }
+  
+  .submit-btn {
+    background-color: #5f5fee;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+  }
+  
+  .submit-btn:hover {
+    background-color: #4949d6;
+  }
+  
+  .home-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #5f5fee;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
