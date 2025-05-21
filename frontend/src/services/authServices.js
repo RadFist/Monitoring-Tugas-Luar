@@ -11,10 +11,11 @@ export const logoutUser = async () => {
   clearToken();
 };
 
-//refactor later
-export const SignInUser = async (username, password, email) => {
-  const response = await api.post("/user/add", {
+export const SignInUser = async (username, nama, nip, password, email) => {
+  const response = await api.post("/regist", {
     username,
+    nama,
+    nip,
     password,
     email,
   });

@@ -3,6 +3,7 @@ import Layout from "./layout/layout.jsx";
 import Home from "./page/home.jsx";
 import Pdf from "./page/pdf.jsx";
 import Login from "./page/login.jsx";
+import Regist from "./page/registration.jsx";
 import About from "./page/about.jsx";
 import NotFound from "./page/notFound.jsx";
 import UserManagement from "./page/userManagment.jsx";
@@ -65,6 +66,7 @@ function App() {
         </Route>
 
         <Route path="/Login" element={<Login />} />
+        <Route path="/SignIn" element={<Regist />} />
         <Route path="/generate" element={<Pdf />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>

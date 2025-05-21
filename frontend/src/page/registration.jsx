@@ -2,12 +2,12 @@ import "../style/Login.css";
 import bgImage from "../assets/img/BackgroundLogin.jpg"; // Pastikan file ini ada di folder yang sesuai
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../services/authServices";
-import LoginForm from "../components/Login/authForm";
+import { SignInUser } from "../services/authServices";
+import { RegistForm } from "../components/Login/authForm";
 
 export default function Login() {
-  const [credential, setCredential] = useState({ Username: "", Password: "" });
-  const [failedLogin, setFailedLogin] = useState("");
+  const [credential, setCredential] = useState({});
+  const [failedSignIn, setFailedSignIn] = useState("");
   const [Loading, setLoading] = useState("");
   const navigate = useNavigate();
 
@@ -18,15 +18,22 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading("Loading..");
+    console.log(credential);
 
     try {
-      await loginUser(credential.Username, credential.Password);
-      navigate("/home");
+      await SignInUser(
+        credential.Username,
+        credential.Nama,
+        credential.Nip,
+        credential.Password,
+        credential.Email
+      );
+      navigate("/login");
     } catch (error) {
       setLoading("");
       const message = error.response.data.message;
 
-      setFailedLogin({
+      setFailedSignIn({
         class:
           message === "Internal Server Error, please try again later."
             ? ""
@@ -42,24 +49,24 @@ export default function Login() {
       <div className="CardContainer">
         <div className="CardWraper">
           <div className="CardHeader">
-            <h1 className="Login-Text">Login</h1>
+            <h1 className="Login-Text">SignIn</h1>
           </div>
           <div className="CardBody">
-            <LoginForm
+            <RegistForm
               credential={credential}
               Loading={Loading}
-              failedLogin={failedLogin}
+              failedLogin={failedSignIn}
               submit={handleSubmit}
               handlerInput={handlerInput}
             />
             <p>
-              Don’t have an account?{" "}
+              have an account?{" "}
               <a
                 onClick={() => {
-                  navigate("/SignIn");
+                  navigate("/login");
                 }}
               >
-                Sign up
+                Login
               </a>
             </p>
           </div>
