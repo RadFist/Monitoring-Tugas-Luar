@@ -1,9 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import { checkUserExists } from "../model/model.js";
 import * as auth from "../model/authModel.js";
-import Joi from "joi";
+
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { schemaRegist, schemaLogin } from "../utils/schemaJoi.js";
 
 //secret key
 const accesSecret = process.env.ACCESS_TOKEN_SECRET;
@@ -18,27 +19,17 @@ const generateRefreshToken = (payload) => {
   // return jwt.sign(payload, refreshSecret, { expiresIn: "10000" });
 };
 
-const schema = Joi.object({
-  username: Joi.string().alphanum().min(1).max(40),
-  password: Joi.string().min(8).required(),
-  email: Joi.string().email(),
-});
-
 export const registration = async (req, res) => {
   const id = uuidv4();
   try {
     //validateData
-    const registSchema = schema.fork(
-      ["username", "password", "email"],
-      (field) => field.required()
-    );
-    const { error, value } = registSchema.validate(req.body);
+    const { error, value } = schemaRegist.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
 
     //get data
-    const { username, email, password } = value;
+    const { username, email, password, nip, nama } = value;
 
     //get data from db
     const checkUser = await checkUserExists(username, email);
@@ -55,7 +46,7 @@ export const registration = async (req, res) => {
     console.log(`${id} ${username} ${hashedPassword} ${email}`);
 
     //stored data to db
-    await auth.register(id, username, hashedPassword, email);
+    await auth.register(id, username, nama, hashedPassword, email, nip, "user");
 
     return res.status(200).json({ message: "data stored succesfully" });
   } catch (error) {
@@ -67,11 +58,7 @@ export const registration = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  const loginSchema = schema.keys({
-    username: Joi.string().min(3).max(30).required(), // tanpa alphanum
-  });
-
-  const { error, value } = loginSchema.validate(req.body);
+  const { error, value } = schemaLogin.validate(req.body);
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
   }
@@ -98,11 +85,15 @@ export const login = async (req, res) => {
     const payload = {
       id_user: data.id_user,
       username: data.username,
+      nama: data.nama,
+      nip: data.nip,
       email: data.email,
       level: data.level,
     };
     const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
+
+    console.log(refreshToken);
 
     //simpan ke cookie
     res.cookie("refreshToken", refreshToken, {
@@ -134,11 +125,13 @@ export const refereshTokenAuth = (req, res) => {
       const payload = {
         id_user: decoded.id_user,
         username: decoded.username,
+        nama: decoded.nama,
+        nip: decoded.nip,
         email: decoded.email,
         level: decoded.level,
       };
       const token = generateAccessToken(payload);
-
+      console.log(decoded);
       return res.status(200).json({ message: "Refreshed", token: token });
     }
     return res.status(403).json({ message: "token refresh expired" });

@@ -21,11 +21,20 @@ export const SignInUser = async (username, password, email) => {
   return response.data;
 };
 
-export const AddUser = async (username, password, email, level = "user") => {
+export const AddUser = async (
+  username,
+  nama,
+  password,
+  email,
+  nip,
+  level = "user"
+) => {
   const response = await api.post("/user/add", {
     username,
+    nama,
     password,
     email,
+    nip,
     level,
   });
   return response.data;

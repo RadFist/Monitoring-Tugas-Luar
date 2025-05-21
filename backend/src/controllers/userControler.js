@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import { checkUserExists, customQuery } from "../model/model.js";
 import dayjs from "dayjs";
+import { schemaAdd, schemaEdit } from "../utils/schemaJoi.js";
+
 import {
   deletUserById,
   getAllUsers,
@@ -57,26 +59,17 @@ export const addUser = async (req, res) => {
     return res.status(403).json({ message: "Access denied." });
   }
 
-  const registSchema = Joi.object({
-    username: Joi.string().alphanum().min(1).max(40).required(),
-    password: Joi.string().min(8).required(),
-    email: Joi.string().email().required(),
-    level: Joi.string()
-      .valid("admin", "super admin", "user", "verifikator")
-      .default("admin"),
-  });
-
   try {
     //validateData
-    const { error, value } = registSchema.validate(req.body);
+    const { error, value } = schemaAdd.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
 
     //get data
     const id = uuidv4();
-    const { username, email, password } = value;
-    const level = value.level || "admin";
+    const { username, email, password, nip, nama } = value;
+    const level = value.level || "user";
 
     //get data from db
     const checkUser = await checkUserExists(username, email);
@@ -92,7 +85,7 @@ export const addUser = async (req, res) => {
 
     //stored data to db
     try {
-      await addingUser(id, username, hashedPassword, email, level);
+      await addingUser(id, username, nama, hashedPassword, email, nip, level);
     } catch (error) {
       console.log(error.message);
       if ((error.message ?? "").toLowerCase().includes("adding")) {
@@ -119,18 +112,11 @@ export const userEdit = async (req, res) => {
     return res.status(403).json({ message: "Access denied." });
   }
 
-  const registSchema = Joi.object({
-    username: Joi.string().alphanum().min(1).max(40),
-    password: Joi.string().min(8),
-    email: Joi.string().email(),
-    level: Joi.string(),
-  });
-
   try {
     //get data and validate
     const dataUpdate = req.body;
 
-    const { value, error } = registSchema.validate(dataUpdate);
+    const { value, error } = schemaEdit.validate(dataUpdate);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
@@ -166,6 +152,8 @@ export const userEdit = async (req, res) => {
     }
 
     const queryField = `${fields.join(", ")}`;
+
+    console.log(queryField);
 
     //send data to db
     await editUser(queryField, values);

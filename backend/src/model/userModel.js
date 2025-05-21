@@ -3,7 +3,7 @@ import db from "../config/db_mysql.js";
 export const getAllUsers = async () => {
   try {
     const [rows] = await db.query(
-      "SELECT id_user,username, email, level FROM tb_user"
+      "SELECT id_user,username, nama, email, nip, level FROM tb_user"
     );
     return rows;
   } catch (error) {
@@ -23,11 +23,19 @@ export const getUsersById = async (id) => {
   }
 };
 
-export const addingUser = async (id, username, password, email, level) => {
+export const addingUser = async (
+  id,
+  username,
+  nama,
+  password,
+  email,
+  nip,
+  level
+) => {
   try {
     const [result] = await db.query(
-      `INSERT INTO tb_user(id_user, username, email, password, level) VALUES (?,?,?,?,?)`,
-      [id, username, email, password, level]
+      `INSERT INTO tb_user(id_user, username, nama, email, password, nip, level) VALUES (?,?,?,?,?,?,?)`,
+      [id, username, nama, email, password, nip, level]
     );
     if (result.affectedRows === 0) {
       throw new Error(`error adding user.`);

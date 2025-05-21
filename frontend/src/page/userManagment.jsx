@@ -41,13 +41,16 @@ const UserManagment = () => {
   }, []);
 
   //column setting
+
   const columns = useMemo(
     () => [
       { field: "id", headerName: "ID", width: 70 },
       { field: "number", headerName: "No", width: 70 },
       { field: getData.keys[1], headerName: "Username", width: 130 },
-      { field: getData.keys[2], headerName: "Email", width: 200 },
-      { field: getData.keys[3], headerName: "Level", width: 130 },
+      { field: getData.keys[2], headerName: "Nama", width: 130 },
+      { field: getData.keys[3], headerName: "Email", width: 200 },
+      { field: getData.keys[4], headerName: "nip", width: 200 },
+      { field: getData.keys[5], headerName: "Level", width: 130 },
       {
         field: "action",
         width: 170,
@@ -109,8 +112,10 @@ const UserManagment = () => {
       try {
         await AddUser(
           inputs.username,
+          inputs.nama,
           inputs.password,
           inputs.email,
+          inputs.nip,
           inputs.level
         );
 
@@ -144,9 +149,8 @@ const UserManagment = () => {
           class: "active",
         });
       }
-    } else {
       //edit user
-
+    } else {
       const dataUpdate = Object.keys(inputs).reduce((acc, key) => {
         if (inputs[key] !== oldInputs[key]) {
           acc[key] = inputs[key]; // Hanya simpan data yang berubah
@@ -169,6 +173,10 @@ const UserManagment = () => {
 
         setInputs({});
         setOldInputs({});
+        setErrorHandiling({
+          message: "",
+          class: "",
+        });
         setModalActive(false);
       } catch (error) {
         let message = "";
@@ -193,15 +201,19 @@ const UserManagment = () => {
     setInputs({
       id_user: dataEdit.id_user,
       username: dataEdit.username,
+      nama: dataEdit.nama,
       password: "", //g ngirim pw dari db cok, biar aman
       email: dataEdit.email,
+      nip: dataEdit.nip,
       level: dataEdit.level,
     });
     setOldInputs({
       id_user: dataEdit.id_user,
       username: dataEdit.username,
+      nama: dataEdit.nama,
       password: "", //g ngirim pw dari db cok, biar aman
       email: dataEdit.email,
+      nip: dataEdit.nip,
       level: dataEdit.level,
     });
 
@@ -254,6 +266,15 @@ const UserManagment = () => {
           onChange={handleChange}
           required
         />
+        <label htmlFor="nama">Nama</label>
+        <input
+          type="text"
+          id="nama"
+          name="nama"
+          value={inputs.nama || ""}
+          onChange={handleChange}
+          required
+        />
 
         <label htmlFor="password">Password</label>
         <input
@@ -271,6 +292,16 @@ const UserManagment = () => {
           id="email"
           name="email"
           value={inputs.email || ""}
+          onChange={handleChange}
+          required
+        />
+
+        <label htmlFor="nip">Nip</label>
+        <input
+          type="number"
+          id="nip"
+          name="nip"
+          value={inputs.nip || ""}
           onChange={handleChange}
           required
         />

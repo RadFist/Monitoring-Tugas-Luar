@@ -1,10 +1,18 @@
 import db from "../config/db_mysql.js";
 
-export const register = async (id, username, password, email) => {
+export const register = async (
+  id,
+  username,
+  nama,
+  password,
+  email,
+  nip,
+  level
+) => {
   try {
     await db.query(
-      `INSERT INTO tb_user(id_user, username, email, password) VALUES (?,?,?,?)`,
-      [id, username, email, password]
+      `INSERT INTO tb_user(id_user, username, nama, email, password, nip, level) VALUES (?,?,?,?,?,?,?)`,
+      [id, username, nama, email, password, nip, level]
     );
   } catch (error) {
     throw new Error(error);
@@ -14,7 +22,7 @@ export const register = async (id, username, password, email) => {
 export const getLogin = async (username) => {
   try {
     const [rows] = await db.query(
-      "SELECT id_user, username, email ,password ,level FROM tb_user WHERE (username = ? OR email = ?)",
+      "SELECT id_user, username, nama, nip, email ,password ,level FROM tb_user WHERE (username = ? OR email = ?)",
       [username, username]
     );
 
