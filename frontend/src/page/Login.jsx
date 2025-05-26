@@ -1,5 +1,6 @@
 import "../style/Login.css";
-import bgImage from "../assets/img/BackgroundLogin.jpg"; // Pastikan file ini ada di folder yang sesuai
+import bgImage from "../assets/img/bgAuth2.jpg"; // Pastikan file ini ada di folder yang sesuai
+import bgLoginCard from "../assets/img/bgLoginCard.jpg"; // Pastikan file ini ada di folder yang sesuai
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authServices";
@@ -38,9 +39,23 @@ export default function Login() {
 
   return (
     <div className="LoginContainer">
-      <img className="LoginBackground" src={bgImage} alt="Login background" />
+      <div className="bg-container">
+        <img className="LoginBackground" src={bgImage} alt="Login background" />
+      </div>
       <div className="CardContainer">
-        <div className="CardWraper">
+        <div className="CardWraperLeft">
+          <img src={bgLoginCard} className="LoginBackgroundCard" />
+          <img
+            src="/img/logokab.png"
+            className="logoBg"
+            alt="Logo kab tangerang"
+          />
+          <div className="welcome-text">
+            <h2>Selamat Datang</h2>
+            <p>Login Untuk Mengakses Sistem</p>
+          </div>
+        </div>
+        <div className="CardWraperRight">
           <div className="CardHeader">
             <h1 className="Login-Text">Login</h1>
           </div>

@@ -1,7 +1,7 @@
 import BackArrow from "@mui/icons-material/KeyboardBackspace";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
-import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import ListAlt from "@mui/icons-material/ListAlt";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import InfoIcon from "@mui/icons-material/Info";
@@ -74,7 +74,7 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
               handlerClickArrow();
             }}
           >
-            <TravelExploreIcon /> <span>Tugas Luar</span>
+            <ListAlt /> <span>Tugas Luar</span>
           </div>
           <div
             className="menu-item"
@@ -83,7 +83,7 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
               handlerClickArrow();
             }}
           >
-            <AssignmentIcon /> <span>Input Tugas</span>
+            <AssignmentIcon /> <span>Penugasan</span>
           </div>
           <div className="menu-item">
             <ArchiveIcon /> <span>Dokumentasi Arsip</span>

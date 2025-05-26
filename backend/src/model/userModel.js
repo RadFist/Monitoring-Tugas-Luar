@@ -3,7 +3,7 @@ import db from "../config/db_mysql.js";
 export const getAllUsers = async () => {
   try {
     const [rows] = await db.query(
-      "SELECT id_user,username, nama, email, nip, level FROM tb_user"
+      "SELECT u.id_user,u.username, u.nama, u.email, u.nip, u.level, j.jabatan FROM tb_user AS u  JOIN tb_jabatan AS j ON u.jabatan = j.id_jabatan"
     );
     return rows;
   } catch (error) {
@@ -11,6 +11,8 @@ export const getAllUsers = async () => {
   }
 };
 
+// level nip dan jabatan pada user apakah harus?
+//refactor later
 export const getUsersById = async (id) => {
   try {
     const [rows] = await db.query(
