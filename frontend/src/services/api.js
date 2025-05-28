@@ -5,6 +5,13 @@ import { saveToken } from "../utils/tokenManpulation";
 
 const base_url = import.meta.env.VITE_API_BACKEND_BASE_URL;
 
+export const plainApi = axios.create({
+  baseURL: base_url,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 const api = axios.create({
   baseURL: base_url,
   withCredentials: true, // buat ngirim cookie kayak refreshToken

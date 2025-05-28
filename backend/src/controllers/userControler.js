@@ -1,7 +1,6 @@
-import Joi from "joi";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
-import { checkUserExists, customQuery } from "../model/model.js";
+import { checkUserExists } from "../model/model.js";
 import dayjs from "dayjs";
 import { schemaAdd, schemaEdit } from "../utils/schemaJoi.js";
 
@@ -68,7 +67,7 @@ export const addUser = async (req, res) => {
 
     //get data
     const id = uuidv4();
-    const { username, email, password, nip, nama } = value;
+    const { username, email, password, nip, nama, jabatan } = value;
     const level = value.level || "user";
 
     //get data from db
@@ -85,7 +84,16 @@ export const addUser = async (req, res) => {
 
     //stored data to db
     try {
-      await addingUser(id, username, nama, hashedPassword, email, nip, level);
+      await addingUser(
+        id,
+        username,
+        nama,
+        hashedPassword,
+        email,
+        nip,
+        level,
+        jabatan
+      );
     } catch (error) {
       console.log(error.message);
       if ((error.message ?? "").toLowerCase().includes("adding")) {
@@ -152,8 +160,6 @@ export const userEdit = async (req, res) => {
     }
 
     const queryField = `${fields.join(", ")}`;
-
-    console.log(queryField);
 
     //send data to db
     await editUser(queryField, values);

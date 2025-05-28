@@ -11,13 +11,21 @@ export const logoutUser = async () => {
   clearToken();
 };
 
-export const SignInUser = async (username, nama, nip, password, email) => {
+export const SignInUser = async (
+  username,
+  nama,
+  nip,
+  password,
+  email,
+  jabatan
+) => {
   const response = await api.post("/regist", {
     username,
     nama,
     nip,
     password,
     email,
+    jabatan,
   });
   return response.data;
 };
@@ -28,6 +36,7 @@ export const AddUser = async (
   password,
   email,
   nip,
+  jabatan,
   level = "user"
 ) => {
   const response = await api.post("/user/add", {
@@ -36,6 +45,7 @@ export const AddUser = async (
     password,
     email,
     nip,
+    jabatan,
     level,
   });
   return response.data;

@@ -29,6 +29,7 @@ export const DataTable = ({ rows, columns, handlerClickAdd }) => {
         // visibility
         columnVisibilityModel={{
           id: false,
+          id_jabatan: false,
         }}
         disableColumnMenu
         disableRowSelectionOnClick

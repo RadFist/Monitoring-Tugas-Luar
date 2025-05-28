@@ -7,12 +7,13 @@ export const register = async (
   password,
   email,
   nip,
+  jabatan,
   level
 ) => {
   try {
     await db.query(
-      `INSERT INTO tb_user(id_user, username, nama, email, password, nip, level) VALUES (?,?,?,?,?,?,?)`,
-      [id, username, nama, email, password, nip, level]
+      `INSERT INTO tb_user(id_user, username, nama, email, password, nip, jabatan , level) VALUES (?,?,?,?,?,?,?,?)`,
+      [id, username, nama, email, password, nip, jabatan, level]
     );
   } catch (error) {
     throw new Error(error);

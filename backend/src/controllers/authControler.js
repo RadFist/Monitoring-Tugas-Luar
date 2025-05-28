@@ -29,7 +29,7 @@ export const registration = async (req, res) => {
     }
 
     //get data
-    const { username, email, password, nip, nama } = value;
+    const { username, email, password, nip, nama, jabatan } = value;
 
     //get data from db
     const checkUser = await checkUserExists(username, email);
@@ -46,7 +46,16 @@ export const registration = async (req, res) => {
     console.log(`${id} ${username} ${hashedPassword} ${email}`);
 
     //stored data to db
-    await auth.register(id, username, nama, hashedPassword, email, nip, "user");
+    await auth.register(
+      id,
+      username,
+      nama,
+      hashedPassword,
+      email,
+      nip,
+      jabatan,
+      "user"
+    );
 
     return res.status(200).json({ message: "data stored succesfully" });
   } catch (error) {

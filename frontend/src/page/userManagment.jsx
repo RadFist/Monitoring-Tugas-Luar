@@ -7,10 +7,11 @@ import { useEffect, useMemo, useState } from "react";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import FormModal from "../components/modal";
 import { AddUser } from "../services/authServices";
-import api from "../services/api";
+import api, { plainApi } from "../services/api";
 
 const UserManagment = () => {
   const [getData, setGetData] = useState({ data: [], keys: [] });
+  const [jabatanOptions, setJabatanOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalActive, setModalActive] = useState(false);
   const [inputs, setInputs] = useState({});
@@ -23,9 +24,10 @@ const UserManagment = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = (await api.get("/users")).data;
-
-        const data = response.data || [];
+        const responseGetUsaer = (await api.get("/users")).data;
+        const responseGetJabatan = (await plainApi.get("/Jabatan")).data;
+        setJabatanOptions(responseGetJabatan.data);
+        const data = responseGetUsaer.data || [];
         setGetData({
           data,
           keys: data.length > 0 ? Object.keys(data[0]) : [],
@@ -50,7 +52,13 @@ const UserManagment = () => {
       { field: getData.keys[2], headerName: "Nama", width: 130 },
       { field: getData.keys[3], headerName: "Email", width: 200 },
       { field: getData.keys[4], headerName: "nip", width: 200 },
+      { field: getData.keys[6], headerName: "Jabatan", width: 130 },
       { field: getData.keys[5], headerName: "Level", width: 130 },
+      {
+        field: getData.keys[7],
+        headerName: "id_jabatan",
+        width: 10,
+      },
       {
         field: "action",
         width: 170,
@@ -116,6 +124,7 @@ const UserManagment = () => {
           inputs.password,
           inputs.email,
           inputs.nip,
+          inputs.Jabatan,
           inputs.level
         );
 
@@ -158,6 +167,8 @@ const UserManagment = () => {
         return acc;
       }, {});
 
+      console.log(dataUpdate);
+
       try {
         await api.patch(`/user/edit/${inputs.id_user}`, {
           ...dataUpdate,
@@ -198,6 +209,7 @@ const UserManagment = () => {
 
   const handlerEdit = (id) => {
     const dataEdit = getData.data.find((user) => user.id_user === id);
+
     setInputs({
       id_user: dataEdit.id_user,
       username: dataEdit.username,
@@ -206,6 +218,7 @@ const UserManagment = () => {
       email: dataEdit.email,
       nip: dataEdit.nip,
       level: dataEdit.level,
+      Jabatan: dataEdit.id_jabatan,
     });
     setOldInputs({
       id_user: dataEdit.id_user,
@@ -215,6 +228,7 @@ const UserManagment = () => {
       email: dataEdit.email,
       nip: dataEdit.nip,
       level: dataEdit.level,
+      Jabatan: dataEdit.id_jabatan,
     });
 
     setModalActive(!modalActive);
@@ -266,15 +280,6 @@ const UserManagment = () => {
           onChange={handleChange}
           required
         />
-        <label htmlFor="nama">Nama</label>
-        <input
-          type="text"
-          id="nama"
-          name="nama"
-          value={inputs.nama || ""}
-          onChange={handleChange}
-          required
-        />
 
         <label htmlFor="password">Password</label>
         <input
@@ -286,39 +291,86 @@ const UserManagment = () => {
           required
         />
 
-        <label htmlFor="email">Email</label>
+        <label htmlFor="nama">Nama</label>
         <input
-          type="email"
-          id="email"
-          name="email"
-          value={inputs.email || ""}
+          type="text"
+          id="nama"
+          name="nama"
+          value={inputs.nama || ""}
           onChange={handleChange}
           required
         />
 
-        <label htmlFor="nip">Nip</label>
-        <input
-          type="number"
-          id="nip"
-          name="nip"
-          value={inputs.nip || ""}
-          onChange={handleChange}
-          required
-        />
-
-        <label htmlFor="level">Level</label>
-        <select
-          name="level"
-          id="level"
-          value={inputs.level || ""}
-          onChange={handleChange}
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+          }}
         >
-          <option value="">-- Pilih Level --</option>
-          <option value="admin">Admin</option>
-          <option value="user">User</option>
-          <option value="verifikator">monitoring</option>
-          <option value="super admin">Super Admin</option>
-        </select>
+          <div>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={inputs.email || ""}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="nip">Nip</label>
+            <input
+              type="number"
+              id="nip"
+              name="nip"
+              value={inputs.nip || ""}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+          }}
+        >
+          <div>
+            <label htmlFor="Jabatan">jabatan</label>
+            <select
+              name="Jabatan"
+              id="Jabatan"
+              value={inputs.Jabatan || ""}
+              onChange={handleChange}
+              required
+            >
+              <option value="">-- Pilih Jabatan--</option>
+              {jabatanOptions.map((item) => (
+                <option key={item.id_jabatan} value={item.id_jabatan}>
+                  {item.jabatan}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="level">Level</label>
+            <select
+              name="level"
+              id="level"
+              value={inputs.level || ""}
+              onChange={handleChange}
+            >
+              <option value="">-- Pilih Level --</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+              <option value="verifikator">monitoring</option>
+              <option value="super admin">Super Admin</option>
+            </select>
+          </div>
+        </div>
         <span className={`error-message ${errorHandling.class}`}>
           {errorHandling.message || ""}
         </span>

@@ -1,12 +1,14 @@
 import express from "express";
 import authenticateToken from "../middleware/authMiddleware.js";
 import * as userControler from "../controllers/userControler.js";
+import { allJabatan } from "../controllers/jabatranController.js";
 const router = express.Router();
 
 //user route
 //get
 router.get("/users", authenticateToken, userControler.allUser);
 router.get("/user/:id", authenticateToken, userControler.userId);
+router.get("/Jabatan", allJabatan);
 //post
 router.post("/user/add", authenticateToken, userControler.addUser);
 //patch

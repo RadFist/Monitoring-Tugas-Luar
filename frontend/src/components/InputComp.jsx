@@ -25,3 +25,37 @@ export default function InputComp({
     </>
   );
 }
+export function SelectedComp({
+  id,
+  className,
+  valueF,
+  onChange,
+  classlabel,
+  labelText,
+  optionValue,
+}) {
+  return (
+    <>
+      <label htmlFor={id} className={classlabel}>
+        {labelText}
+      </label>
+      <select
+        id={id}
+        className={className}
+        value={valueF}
+        onChange={onChange}
+        required
+      >
+        {/* refactor */}
+        <option value="" disabled>
+          -- Pilih Level --
+        </option>
+        {optionValue.map((item) => (
+          <option key={item.id_jabatan} value={item.id_jabatan}>
+            {item.jabatan}
+          </option>
+        ))}
+      </select>
+    </>
+  );
+}
