@@ -1,28 +1,96 @@
 import { InfoOutlined } from "@mui/icons-material";
+import { useEffect } from "react";
 import "../style/inputTugas.css";
 import { useState } from "react";
+import api, { plainApi } from "../services/api";
+import { listItem as ListPegawai } from "../components/listManagement";
 
 const InputTugas = () => {
-  const [formData, setFormData] = useState({
-    namaPegawai: "",
-    tugas: "",
-    tanggalMulai: "",
-    tanggalSelesai: "",
-    keterangan: "",
-  });
+  const [formData, setFormData] = useState({});
+  const [listPegawaiOption, setListPegawaiOption] = useState([]);
+  const [pegawai, setPegawai] = useState([]);
+  const [jabatanOptions, setJabatanOptions] = useState([]);
+  const [selectedJabatan, setSelectedJabatan] = useState();
+  // const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responseGetJabatan = (await plainApi.get("/Jabatan")).data;
+        setJabatanOptions(responseGetJabatan.data);
+      } catch (error) {
+        console.error("Error fetching :", error.message);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedJabatan) return;
+
+    const fetchData = async () => {
+      try {
+        const responseGetUser = (
+          await api.post("/users/jabatan", { id_jabatan: selectedJabatan })
+        ).data;
+        setListPegawaiOption(responseGetUser.data);
+      } catch (error) {
+        console.error("Error fetching :", error.message);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [selectedJabatan]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    let parsedValue = value;
+    if (name === "pegawai" && value) {
+      parsedValue = JSON.parse(value);
+    }
+    setFormData((prev) => ({ ...prev, [name]: parsedValue }));
+  };
+
+  const handleChangeJabatan = (e) => {
+    const { value } = e.target;
+    setSelectedJabatan(value);
+  };
+
+  const handleAddPegawai = (e) => {
+    e.preventDefault();
+    if (!formData.pegawai) {
+      alert("Pegawai belum dipilih!");
+      return;
+    }
+    const alreadyAdded = pegawai.some((p) => p.id === formData.pegawai.id);
+    if (alreadyAdded) {
+      alert("Pegawai sudah ditambahkan.");
+      return;
+    }
+    setPegawai((prev) => [...prev, formData.pegawai]);
+  };
+
+  const handlerDelete = (e, pegawai) => {
+    e.preventDefault();
+    setPegawai((prev) => prev.filter((p) => p.id !== pegawai.id));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Data tugas:", formData);
+    if (pegawai.length < 1) {
+      return alert("Tugaskan minimal 1 pegawai");
+    }
+    if (formData.tanggalMulai > formData.tanggalSelesai) {
+      return alert("Tanggal tidak valid");
+    }
     // TODO: kirim ke backend pakai API
     alert("Tugas berhasil disimpan!");
   };
-
   return (
     <div className="page-container">
       <div className="page-header">
@@ -35,22 +103,22 @@ const InputTugas = () => {
 
       <form className="form-container" onSubmit={handleSubmit}>
         <label>
-          Nama Pegawai
+          Tugas
           <input
             type="text"
-            name="namaPegawai"
-            value={formData.namaPegawai}
+            name="tugas"
+            value={formData.tugas || ""}
             onChange={handleChange}
             required
           />
         </label>
 
         <label>
-          Tugas
+          Alamat
           <input
             type="text"
-            name="tugas"
-            value={formData.tugas}
+            name="namaPegawai"
+            value={formData.namaPegawai || ""}
             onChange={handleChange}
             required
           />
@@ -62,7 +130,7 @@ const InputTugas = () => {
             <input
               type="date"
               name="tanggalMulai"
-              value={formData.tanggalMulai}
+              value={formData.tanggalMulai || ""}
               onChange={handleChange}
               required
             />
@@ -72,19 +140,81 @@ const InputTugas = () => {
             <input
               type="date"
               name="tanggalSelesai"
-              value={formData.tanggalSelesai}
+              value={formData.tanggalSelesai || ""}
               onChange={handleChange}
               required
             />
           </label>
         </div>
 
+        <div className="cont-penugasan-pegawai">
+          <div className="pegawai-controls">
+            <label htmlFor="pegawai">Pilih Jabatan Pegawai</label>
+            <div className="pegawai-warp">
+              <select
+                name="Jabatan"
+                id="Jabatan"
+                onChange={handleChangeJabatan}
+                className="select-pegawai"
+              >
+                <option value="">-- Pilih Jabtaan --</option>
+                {jabatanOptions.map((item) => (
+                  <option key={item.id_jabatan} value={item.id_jabatan}>
+                    {item.jabatan}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {selectedJabatan && (
+              <>
+                <label htmlFor="pegawai">Pilih Pegawai</label>
+                <div className="pegawai-warp">
+                  <select
+                    name="pegawai"
+                    id="pegawai"
+                    onChange={handleChange}
+                    className="select-pegawai"
+                  >
+                    <option value="">-- Pilih Pegawai --</option>
+                    {listPegawaiOption.map((item) => (
+                      <option
+                        key={item.id_user}
+                        value={JSON.stringify({
+                          id: item.id_user,
+                          nama: item.nama,
+                          nip: item.nip,
+                        })}
+                      >
+                        {item.nama} {item.nip}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
+          </div>
+
+          {selectedJabatan && (
+            <>
+              <button
+                type="button"
+                onClick={handleAddPegawai}
+                className="add-btn-pegawai"
+              >
+                + Tambah Pegawai
+              </button>
+            </>
+          )}
+        </div>
+        {pegawai.length > 0 && (
+          <ListPegawai list={pegawai} onDelete={handlerDelete} />
+        )}
         <label>
           Keterangan
           <textarea
             name="keterangan"
             rows="4"
-            value={formData.keterangan}
+            value={formData.keterangan || ""}
             onChange={handleChange}
           ></textarea>
         </label>

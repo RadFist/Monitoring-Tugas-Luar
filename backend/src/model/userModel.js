@@ -80,3 +80,15 @@ export const deletUserById = async (id) => {
     throw error;
   }
 };
+
+export const getAllUsersWhereJabatan = async (selectedJabatan) => {
+  try {
+    const [rows] = await db.query(
+      "SELECT u.id_user,u.username, u.nama, u.nip, u.level, j.jabatan, j.id_jabatan FROM tb_user AS u  JOIN tb_jabatan AS j ON u.jabatan = j.id_jabatan WHERE j.id_jabatan = ?",
+      [selectedJabatan]
+    );
+    return rows;
+  } catch (error) {
+    throw new Error("Error fetching users: " + error.message);
+  }
+};

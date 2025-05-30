@@ -11,6 +11,11 @@ router.get("/user/:id", authenticateToken, userControler.userId);
 router.get("/Jabatan", allJabatan);
 //post
 router.post("/user/add", authenticateToken, userControler.addUser);
+router.post(
+  "/users/jabatan",
+  authenticateToken,
+  userControler.userWhereJabatan
+);
 //patch
 router.patch("/user/edit/:id", authenticateToken, userControler.userEdit);
 //delete

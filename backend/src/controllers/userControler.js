@@ -10,6 +10,7 @@ import {
   getUsersById,
   addingUser,
   editUser,
+  getAllUsersWhereJabatan,
 } from "../model/userModel.js";
 
 export const allUser = async (req, res) => {
@@ -198,4 +199,20 @@ export const userDelete = async (req, res) => {
   }
 
   return res.status(200).json({ message: "delete success" });
+};
+
+export const userWhereJabatan = async (req, res) => {
+  const { id_jabatan } = req.body;
+  try {
+    const response = {
+      message: "Data user retrieved successfully",
+      data: await getAllUsersWhereJabatan(id_jabatan),
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error.message);
+    res
+      .status(500)
+      .json({ message: " Internal Server Error, please try again later." });
+  }
 };

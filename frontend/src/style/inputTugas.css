@@ -82,3 +82,122 @@
     font-weight: 600;
   }
   
+.add-btn-pegawai {
+  background-color: #5f5fee;
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  /* transition: background-color 0.2s ease, transform 0.1s ease; */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  margin-top: -4px;
+  margin-bottom: 12px;
+  width: fit-content;
+}
+.add-btn-pegawai:hover {
+  background-color: #3b3bea;
+  transform: scale(1.03);
+}
+
+.cont-penugasan-pegawai {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.pegawai-controls {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 200px;
+}
+
+.select-pegawai {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  font-family: inherit;
+  margin-top: 6px;
+  margin-right: 5px;
+  width: 100%;
+}
+
+.add-btn-pegawai {
+  background-color: #5f5fee;
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.add-btn-pegawai:hover {
+  background-color: #3b3bea;
+  transform: scale(1.03);
+}
+
+.pegawai-warp{
+  display: flex;
+  align-items: center;
+  gap: 10px; /* tambah gap */
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+/* adding */
+
+.list-pegawai-container {
+  margin-top: 16px;
+  border-top: 1px solid #ccc;
+  padding-top: 12px;
+}
+
+.pegawai-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pegawai-item {
+  background-color: #f8f9ff;
+  border: 1px solid #d1d5f0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pegawai-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.btn-delete-pegawai {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background-color 0.2s ease;
+}
+
+.btn-delete-pegawai:hover {
+  background-color: #e03b3d;
+}
