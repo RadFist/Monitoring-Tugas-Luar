@@ -10,8 +10,16 @@ const InputTugas = () => {
   const [listPegawaiOption, setListPegawaiOption] = useState([]);
   const [pegawai, setPegawai] = useState([]);
   const [jabatanOptions, setJabatanOptions] = useState([]);
-  const [selectedJabatan, setSelectedJabatan] = useState();
+  const [selectedJabatan, setSelectedJabatan] = useState("");
   // const [loading, setLoading] = useState(true);
+
+  const initialFormState = {
+    tugas: "",
+    alamat: "",
+    deskripsi: "",
+    tanggalMulai: "",
+    tanggalSelesai: "",
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +55,7 @@ const InputTugas = () => {
     fetchData();
   }, [selectedJabatan]);
 
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     let parsedValue = value;
     if (name === "pegawai" && value) {
@@ -80,7 +88,7 @@ const InputTugas = () => {
     setPegawai((prev) => prev.filter((p) => p.id !== pegawai.id));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (pegawai.length < 1) {
       return alert("Tugaskan minimal 1 pegawai");
@@ -88,7 +96,28 @@ const InputTugas = () => {
     if (formData.tanggalMulai > formData.tanggalSelesai) {
       return alert("Tanggal tidak valid");
     }
-    // TODO: kirim ke backend pakai API
+
+    const yakin = window.confirm(
+      "Apakah Anda yakin ingin menambahkan data ini?"
+    );
+    if (!yakin) return; // Jika user klik 'Batal', hentikan
+
+    try {
+      const responseGetJabatan = await api.post("/PenugasanTugasLuar", {
+        namaTugas: formData.tugas,
+        lokasi: formData.alamat,
+        deskripsi: formData.deskripsi,
+        tanggalMulai: formData.tanggalMulai,
+        tanggalSelesai: formData.tanggalSelesai,
+        daftarPegawai: pegawai,
+      });
+
+      setPegawai([]);
+      setFormData(initialFormState);
+      setJabatanOptions([]);
+      setSelectedJabatan("");
+    } catch (error) {}
+
     alert("Tugas berhasil disimpan!");
   };
   return (
@@ -108,7 +137,7 @@ const InputTugas = () => {
             type="text"
             name="tugas"
             value={formData.tugas || ""}
-            onChange={handleChange}
+            onChange={handleInputChange}
             required
           />
         </label>
@@ -117,9 +146,9 @@ const InputTugas = () => {
           Alamat
           <input
             type="text"
-            name="namaPegawai"
-            value={formData.namaPegawai || ""}
-            onChange={handleChange}
+            name="alamat"
+            value={formData.alamat || ""}
+            onChange={handleInputChange}
             required
           />
         </label>
@@ -131,7 +160,7 @@ const InputTugas = () => {
               type="date"
               name="tanggalMulai"
               value={formData.tanggalMulai || ""}
-              onChange={handleChange}
+              onChange={handleInputChange}
               required
             />
           </label>
@@ -141,7 +170,7 @@ const InputTugas = () => {
               type="date"
               name="tanggalSelesai"
               value={formData.tanggalSelesai || ""}
-              onChange={handleChange}
+              onChange={handleInputChange}
               required
             />
           </label>
@@ -149,8 +178,8 @@ const InputTugas = () => {
 
         <div className="cont-penugasan-pegawai">
           <div className="pegawai-controls">
-            <label htmlFor="pegawai">Pilih Jabatan Pegawai</label>
             <div className="pegawai-warp">
+              <label htmlFor="pegawai">Pilih Jabatan Pegawai</label>
               <select
                 name="Jabatan"
                 id="Jabatan"
@@ -167,12 +196,12 @@ const InputTugas = () => {
             </div>
             {selectedJabatan && (
               <>
-                <label htmlFor="pegawai">Pilih Pegawai</label>
                 <div className="pegawai-warp">
+                  <label htmlFor="pegawai">Pilih Pegawai</label>
                   <select
                     name="pegawai"
                     id="pegawai"
-                    onChange={handleChange}
+                    onChange={handleInputChange}
                     className="select-pegawai"
                   >
                     <option value="">-- Pilih Pegawai --</option>
@@ -201,7 +230,7 @@ const InputTugas = () => {
                 onClick={handleAddPegawai}
                 className="add-btn-pegawai"
               >
-                + Tambah Pegawai
+                Tambahkan ke Daftar
               </button>
             </>
           )}
@@ -210,12 +239,12 @@ const InputTugas = () => {
           <ListPegawai list={pegawai} onDelete={handlerDelete} />
         )}
         <label>
-          Keterangan
+          Deskripsi
           <textarea
-            name="keterangan"
+            name="deskripsi"
             rows="4"
-            value={formData.keterangan || ""}
-            onChange={handleChange}
+            value={formData.deskripsi || ""}
+            onChange={handleInputChange}
           ></textarea>
         </label>
 

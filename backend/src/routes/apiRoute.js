@@ -2,6 +2,7 @@ import express from "express";
 import authenticateToken from "../middleware/authMiddleware.js";
 import * as userControler from "../controllers/userControler.js";
 import { allJabatan } from "../controllers/jabatranController.js";
+import { inputPenugasan } from "../controllers/tugasLuarController.js";
 const router = express.Router();
 
 //user route
@@ -16,6 +17,7 @@ router.post(
   authenticateToken,
   userControler.userWhereJabatan
 );
+router.post("/PenugasanTugasLuar", authenticateToken, inputPenugasan);
 //patch
 router.patch("/user/edit/:id", authenticateToken, userControler.userEdit);
 //delete

@@ -114,6 +114,7 @@
   flex-direction: column;
   flex: 1;
   min-width: 200px;
+  gap: 16px;
 }
 
 .select-pegawai {
@@ -147,10 +148,10 @@
 
 .pegawai-warp{
   display: flex;
-  align-items: center;
-  gap: 10px; /* tambah gap */
+  gap: 5px; /* tambah gap */
   width: 100%;
   margin-bottom: 5px;
+  flex-direction: column;
 }
 
 /* adding */
