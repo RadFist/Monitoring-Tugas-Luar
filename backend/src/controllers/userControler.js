@@ -53,12 +53,6 @@ export const userId = async (req, res) => {
 };
 
 export const addUser = async (req, res) => {
-  const userLevel = req.custom.user.level;
-
-  if (userLevel != "super admin") {
-    return res.status(403).json({ message: "Access denied." });
-  }
-
   try {
     //validateData
     const { error, value } = schemaAdd.validate(req.body);
@@ -115,32 +109,26 @@ export const addUser = async (req, res) => {
 };
 
 export const userEdit = async (req, res) => {
-  const userLevel = req.custom.user.level;
-
-  if (userLevel != "super admin") {
-    return res.status(403).json({ message: "Access denied." });
-  }
-
   try {
     //get data and validate
     const dataUpdate = req.body;
 
-    const { value, error } = schemaEdit.validate(dataUpdate);
+    const { value, error } = schemaEdit.validate(dataUpdate); //validasi schema dari joi yang diambil dari import
     if (error) {
-      return res.status(400).json({ message: error.details[0].message });
+      return res.status(400).json({ message: error.details[0].message }); // return status 404 jika tidak ada di schema
     }
     //get datetime
     const updateTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
     const idUser = req.params.id;
 
     //array init
-    const fields = [];
-    const values = [];
+    const fields = []; // deklarasi array field apa saja yang akan dipatch
+    const values = []; // deklarasi array value apa saja sesuai field yang akan dipatch
 
     // push data to array
     for (let key in dataUpdate) {
-      fields.push(`${key} = ?`);
-      values.push(dataUpdate[key]);
+      fields.push(`${key} = ?`); //key dari req.body yang sudah disesuaikan dengan field db dipush satu satu ke arraynya
+      values.push(dataUpdate[key]); // value yang dikirim dari body dimasukan satu satu ke array
     }
 
     if (fields.length === 0) {
@@ -177,12 +165,6 @@ export const userEdit = async (req, res) => {
 
 export const userDelete = async (req, res) => {
   const idData = req.params.id;
-  const userLevel = req.custom.user.level;
-
-  if (userLevel != "super admin") {
-    return res.status(403).json({ message: "Access denied." });
-  }
-
   try {
     await deletUserById(idData);
   } catch (error) {

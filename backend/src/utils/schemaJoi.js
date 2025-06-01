@@ -42,3 +42,12 @@ export const schemaEdit = Joi.object({
     .default("user"),
   Jabatan: Joi.string(),
 });
+
+export const schemaPneguasan = Joi.object({
+  namaTugas: Joi.string().required(),
+  lokasi: Joi.string().required(),
+  deskripsi: Joi.string().required(),
+  tanggalMulai: Joi.date().required(),
+  tanggalSelesai: Joi.date().required(),
+  daftarPegawai: Joi.array().required(),
+});

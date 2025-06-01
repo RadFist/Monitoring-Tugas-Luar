@@ -15,6 +15,10 @@ body {
     margin: 20px auto;
   }
   
+  .content-list-tugas-loading{
+    height: 80vh;
+    width: 100%;
+  }
   /* Kotak putih berisi daftar */
   .list-tugas {
     width: 100%;
@@ -69,7 +73,10 @@ body {
     background-color: #4caf50;
   }
   .status.belum-selesai {
-    background-color: #f44336;
+    background-color: #ff1100;
+  }
+  .status.belum-mulai {
+    background-color: #ff0000;
   }
   .status.diproses {
     background-color: #ff9800;

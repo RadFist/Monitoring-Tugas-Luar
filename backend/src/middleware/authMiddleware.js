@@ -26,4 +26,22 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+export const authRole = (requiredRole) => {
+  return (req, res, next) => {
+    const userLevel = req.custom?.user?.level;
+
+    if (!userLevel) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorized: User level not found." });
+    }
+
+    if (userLevel !== requiredRole) {
+      return res.status(403).json({ message: "Access denied." });
+    }
+
+    next();
+  };
+};
+
 export default authenticateToken;

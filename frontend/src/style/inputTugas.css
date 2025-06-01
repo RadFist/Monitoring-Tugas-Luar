@@ -8,6 +8,11 @@
     font-family: "Segoe UI", sans-serif;
   }
   
+  .content-penugasan-loading{
+    height: 80vh;
+    width: 100%;
+  }
+  
   .page-header h2 {
     font-size: 1.75rem;
     color: #333;

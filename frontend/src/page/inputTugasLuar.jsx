@@ -4,6 +4,7 @@ import "../style/inputTugas.css";
 import { useState } from "react";
 import api, { plainApi } from "../services/api";
 import { listItem as ListPegawai } from "../components/listManagement";
+import { loadingCompSpin as Loading } from "../components/LoadingComp";
 
 const InputTugas = () => {
   const [formData, setFormData] = useState({});
@@ -11,7 +12,7 @@ const InputTugas = () => {
   const [pegawai, setPegawai] = useState([]);
   const [jabatanOptions, setJabatanOptions] = useState([]);
   const [selectedJabatan, setSelectedJabatan] = useState("");
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const initialFormState = {
     tugas: "",
@@ -29,7 +30,7 @@ const InputTugas = () => {
       } catch (error) {
         console.error("Error fetching :", error.message);
       } finally {
-        // setLoading(false);
+        setLoading(false);
       }
     };
 
@@ -120,6 +121,14 @@ const InputTugas = () => {
 
     alert("Tugas berhasil disimpan!");
   };
+
+  if (loading) {
+    return (
+      <div className="content-penugasan-loading">
+        <Loading />
+      </div>
+    );
+  }
   return (
     <div className="page-container">
       <div className="page-header">

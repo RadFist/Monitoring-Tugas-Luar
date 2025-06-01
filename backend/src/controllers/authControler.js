@@ -102,8 +102,6 @@ export const login = async (req, res) => {
     const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
 
-    console.log(refreshToken);
-
     //simpan ke cookie
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,

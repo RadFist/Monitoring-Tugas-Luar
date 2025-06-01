@@ -1,10 +1,10 @@
-import { getAllJabatan } from "../model/jabatanModel.js";
+import { getListJabatan } from "../model/jabatanModel.js";
 
 export const allJabatan = async (req, res) => {
   try {
     const response = {
       message: "Data user retrieved successfully",
-      data: await getAllJabatan(),
+      data: await getListJabatan(),
     };
     res.status(200).json(response);
   } catch (error) {

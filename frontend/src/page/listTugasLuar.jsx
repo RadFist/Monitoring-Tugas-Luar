@@ -1,30 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import "../style/listTugas.css";
 import ArrowIcon from "@mui/icons-material/ArrowForwardIos";
+import api from "../services/api";
 
 const listTugas = () => {
   const [loading, setLoading] = useState(false);
+  const [daftarTugas, setDaftarTugas] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responseGetListTugas = (await api.get("/allTugas")).data;
+        setDaftarTugas(responseGetListTugas.data);
+      } catch (error) {
+        console.error("Error fetching :", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log(daftarTugas);
+  }, [daftarTugas]);
 
   const dummyData = [
     {
-      id: 1,
-      nama: "Tugas Luar 1",
-      alamat: "Jl. Merdeka No.1",
+      id_tugas_luar: 1,
+      judul_tugas: "Tugas Luar 1",
+      lokasi: "Jl. Merdeka No.1",
       tanggal: "2025-05-01",
       status: "Selesai",
     },
     {
-      id: 2,
-      nama: "Tugas Luar 2",
-      alamat: "Jl. Sudirman No.10",
+      id_tugas_luar: 2,
+      judul_tugas: "Tugas Luar 2",
+      lokasi: "Jl. Sudirman No.10",
       tanggal: "2025-05-03",
       status: "Belum Selesai",
     },
     {
-      id: 3,
-      nama: "Tugas Luar 3",
-      alamat: "Jl. Thamrin No.5",
+      id_tugas_luar: 3,
+      judul_tugas: "Tugas Luar 3",
+      lokasi: "Jl. Thamrin No.5",
       tanggal: "2025-05-05",
       status: "Diproses",
     },
@@ -41,10 +62,10 @@ const listTugas = () => {
   return (
     <div className="content-list-tugas">
       <div className="list-tugas">
-        {dummyData.map((item) => (
-          <div className="tugas-item" key={item.id}>
+        {daftarTugas.map((item) => (
+          <div className="tugas-item" key={item.id_tugas_luar}>
             <div className="tugas-header">
-              <h3>{item.nama}</h3>
+              <h3>{item.judul_tugas}</h3>
               <span
                 className={`status ${item.status
                   .replace(" ", "-")
@@ -54,10 +75,10 @@ const listTugas = () => {
               </span>
             </div>
             <p>
-              <strong>Alamat:</strong> {item.alamat}
+              <strong>lokasi:</strong> {item.lokasi}
             </p>
             <p>
-              <strong>Tanggal:</strong> {item.tanggal}
+              <strong>tanggal:</strong> {item.tanggal_mulai}
             </p>
             <button className="detail-button">
               Detail <ArrowIcon sx={{ fontSize: 14 }} />
