@@ -84,8 +84,7 @@ const InputTugas = () => {
     setPegawai((prev) => [...prev, formData.pegawai]);
   };
 
-  const handlerDelete = (e, pegawai) => {
-    e.preventDefault();
+  const handlerDelete = (pegawai) => {
     setPegawai((prev) => prev.filter((p) => p.id !== pegawai.id));
   };
 
@@ -104,7 +103,7 @@ const InputTugas = () => {
     if (!yakin) return; // Jika user klik 'Batal', hentikan
 
     try {
-      const responseGetJabatan = await api.post("/PenugasanTugasLuar", {
+      await api.post("/PenugasanTugasLuar", {
         namaTugas: formData.tugas,
         lokasi: formData.alamat,
         deskripsi: formData.deskripsi,

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import "../style/listTugas.css";
 import ArrowIcon from "@mui/icons-material/ArrowForwardIos";
 import api from "../services/api";
 
 const listTugas = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [daftarTugas, setDaftarTugas] = useState([]);
 
@@ -17,39 +19,16 @@ const listTugas = () => {
         console.error("Error fetching :", error.message);
       } finally {
         setLoading(false);
+        //kalo error dia kosong anjir
       }
     };
 
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log(daftarTugas);
-  }, [daftarTugas]);
-
-  const dummyData = [
-    {
-      id_tugas_luar: 1,
-      judul_tugas: "Tugas Luar 1",
-      lokasi: "Jl. Merdeka No.1",
-      tanggal: "2025-05-01",
-      status: "Selesai",
-    },
-    {
-      id_tugas_luar: 2,
-      judul_tugas: "Tugas Luar 2",
-      lokasi: "Jl. Sudirman No.10",
-      tanggal: "2025-05-03",
-      status: "Belum Selesai",
-    },
-    {
-      id_tugas_luar: 3,
-      judul_tugas: "Tugas Luar 3",
-      lokasi: "Jl. Thamrin No.5",
-      tanggal: "2025-05-05",
-      status: "Diproses",
-    },
-  ];
+  // useEffect(() => {
+  //   console.log(daftarTugas);
+  // }, [daftarTugas]);
 
   if (loading) {
     return (
@@ -59,32 +38,48 @@ const listTugas = () => {
     );
   }
 
+  const handlerClickDetail = (id) => {
+    navigate(`Detail-Penugasan/${id}`);
+  };
+
   return (
     <div className="content-list-tugas">
       <div className="list-tugas">
-        {daftarTugas.map((item) => (
-          <div className="tugas-item" key={item.id_tugas_luar}>
-            <div className="tugas-header">
-              <h3>{item.judul_tugas}</h3>
-              <span
-                className={`status ${item.status
-                  .replace(" ", "-")
-                  .toLowerCase()}`}
+        {daftarTugas.length === 0 ? (
+          <p style={{ textAlign: "center" }} className="no-tugas-message">
+            Tidak ada tugas baru-baru ini
+          </p>
+        ) : (
+          daftarTugas.map((item) => (
+            <div className="tugas-item" key={item.id_tugas_luar}>
+              <div className="tugas-header">
+                <h3>{item.judul_tugas}</h3>
+                <span
+                  className={`status ${item.status
+                    .replace(" ", "-")
+                    .toLowerCase()}`}
+                >
+                  {item.status}
+                </span>
+              </div>
+              <p>
+                <strong>lokasi:</strong> {item.lokasi}
+              </p>
+              <p>
+                <strong>tanggal:</strong> {item.tanggal_mulai}
+              </p>
+              <button
+                className="detail-button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handlerClickDetail(item.id_tugas_luar);
+                }}
               >
-                {item.status}
-              </span>
+                Detail <ArrowIcon sx={{ fontSize: 14 }} />
+              </button>
             </div>
-            <p>
-              <strong>lokasi:</strong> {item.lokasi}
-            </p>
-            <p>
-              <strong>tanggal:</strong> {item.tanggal_mulai}
-            </p>
-            <button className="detail-button">
-              Detail <ArrowIcon sx={{ fontSize: 14 }} />
-            </button>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

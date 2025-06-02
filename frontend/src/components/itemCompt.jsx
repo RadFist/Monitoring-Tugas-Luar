@@ -6,7 +6,13 @@ export const Item = ({ item, onDelete }) => {
       <span>
         {item.nama} - {item.nip}
       </span>
-      <button className="btn-delete-pegawai" onClick={(e) => onDelete(e, item)}>
+      <button
+        className="btn-delete-pegawai"
+        onClick={(e) => {
+          e.preventDefault();
+          onDelete(item);
+        }}
+      >
         <DeleteIcon />
       </button>
     </div>

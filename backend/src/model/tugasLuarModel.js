@@ -35,10 +35,40 @@ export const postTugas = async (
 export const getListTugas = async () => {
   try {
     const [rows] = await db.query(
-      "SELECT id_tugas_luar, judul_tugas, judul_tugas, lokasi, tanggal_mulai, tanggal_selesai, CASE WHEN CURDATE() = tanggal_mulai AND status != 'Selesai' THEN 'Diproses'  ELSE status END as status FROM `tb_tugas_luar` ORDER by tanggal_mulai  ASC "
+      "SELECT id_tugas_luar, judul_tugas, lokasi, tanggal_mulai, tanggal_selesai, CASE WHEN CURDATE() >= tanggal_mulai AND status != 'Selesai' THEN 'Diproses'  ELSE status END as status FROM `tb_tugas_luar` ORDER by tanggal_mulai  ASC "
     );
     return rows;
   } catch (error) {
     throw new Error("Error fetching list tugas: " + error.message);
+  }
+};
+
+export const getDetailTugas = async (id) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT 
+  tugas.id_tugas_luar,
+  tugas.judul_tugas,
+  tugas.deskripsi,
+  tugas.lokasi,
+  tugas.tanggal_mulai,
+  tugas.tanggal_selesai,
+  user.id_user,
+  user.nama,
+  user.nip,
+  CASE 
+    WHEN CURDATE() >= tugas.tanggal_mulai AND tugas.status != 'Selesai' THEN 'Diproses'
+    ELSE tugas.status
+  END AS status
+FROM tb_tugas_luar AS tugas
+JOIN tb_pivot_tugas AS pivot 
+  ON pivot.id_tugas_luar = tugas.id_tugas_luar
+  JOIN tb_user as user on user.id_user = pivot.id_pegawai
+WHERE tugas.id_tugas_luar = ? `,
+      [id]
+    );
+    return rows;
+  } catch (error) {
+    throw new Error("Error fetch data detail: " + error.message);
   }
 };

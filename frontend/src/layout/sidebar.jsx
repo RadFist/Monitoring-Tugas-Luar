@@ -61,7 +61,7 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
           <div
             className="menu-item"
             onClick={() => {
-              navigate("/User-Managemet");
+              navigate("/User-Management");
               handlerClickArrow();
             }}
           >

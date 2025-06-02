@@ -6,9 +6,9 @@ import Login from "./page/login.jsx";
 import Regist from "./page/registration.jsx";
 import About from "./page/about.jsx";
 import NotFound from "./page/notFound.jsx";
-import UserManagement from "./page/userManagment.jsx";
+import UserManagement from "./page/userManagment";
 import ListTugasLuar from "./page/listTugasLuar.jsx";
-import Rev from "./page/review.jsx";
+import Detail from "./page/detailPenugasan.jsx";
 import InputTugasLuar from "./page/inputTugasLuar.jsx";
 import { PrivateWraper as PrivateRoute } from "./components/logic/PrivateWarperAuth.jsx";
 function App() {
@@ -33,7 +33,7 @@ function App() {
             }
           />
           <Route
-            path="User-Managemet"
+            path="User-Management"
             element={
               <PrivateRoute>
                 <UserManagement />
@@ -67,7 +67,12 @@ function App() {
         </Route>
 
         <Route path="/Login" element={<Login />} />
-        <Route path="/review" element={<Rev />} />
+        {/* refactor later */}
+        <Route
+          path="/Tugas-Luar/Detail-Penugasan/:idDetail"
+          element={<Detail />}
+        />
+        <Route path="/Detail-Penugasan/:idDetail" element={<Detail />} />
         <Route path="/SignIn" element={<Regist />} />
         <Route path="/generate" element={<Pdf />} />
         <Route path="/*" element={<NotFound />} />

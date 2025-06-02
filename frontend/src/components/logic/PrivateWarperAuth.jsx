@@ -22,11 +22,6 @@ export const PrivateWraper = ({ children }) => {
           const data = await authRefreshToken();
           saveToken(data.token);
           //refactor later or delete
-          console.log({
-            page: "privateWraper",
-            token: getToken(),
-            message: "refresed token on wraper",
-          });
 
           setIsAuth(true);
         } catch (error) {

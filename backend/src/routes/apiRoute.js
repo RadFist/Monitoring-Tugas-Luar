@@ -5,11 +5,12 @@ import { allJabatan } from "../controllers/jabatranController.js";
 import {
   inputPenugasan,
   listTugas,
+  detailTugas,
 } from "../controllers/tugasLuarController.js";
 
 const router = express.Router();
 
-//======user route======
+//======User Route======
 //get
 router.get("/users", authenticateToken, userControler.allUser);
 router.get("/user/:id", authenticateToken, userControler.userId);
@@ -35,7 +36,7 @@ router.delete(
   userControler.userDelete
 );
 
-// ======jabatan rote======
+// ======jabatan Route======
 // get
 router.get("/Jabatan", allJabatan);
 //post
@@ -45,9 +46,10 @@ router.post(
   userControler.userWhereJabatan
 );
 
-//======Tugas======
+//======Tugas Route======
 //get
 router.get("/allTugas", authenticateToken, listTugas);
+router.get("/Detail-Penugasan/:id", detailTugas);
 //post
 router.post("/PenugasanTugasLuar", authenticateToken, inputPenugasan);
 

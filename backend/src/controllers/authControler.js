@@ -43,8 +43,6 @@ export const registration = async (req, res) => {
     //hassing password
     const hashedPassword = await bcrypt.hash(password, 6);
 
-    console.log(`${id} ${username} ${hashedPassword} ${email}`);
-
     //stored data to db
     await auth.register(
       id,
@@ -138,7 +136,6 @@ export const refereshTokenAuth = (req, res) => {
         level: decoded.level,
       };
       const token = generateAccessToken(payload);
-      console.log(decoded);
       return res.status(200).json({ message: "Refreshed", token: token });
     }
     return res.status(403).json({ message: "token refresh expired" });
