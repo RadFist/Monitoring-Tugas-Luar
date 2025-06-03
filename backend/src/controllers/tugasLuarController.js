@@ -91,6 +91,7 @@ export const detailTugas = async (req, res) => {
         id_user: tugas.id_user,
         nama: tugas.nama,
         nip: tugas.nip,
+        jabatan: tugas.jabatan,
       });
     });
 

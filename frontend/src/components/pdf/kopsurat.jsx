@@ -1,4 +1,4 @@
-import styles from "../../style/pdf/disposisiPdf";
+import styles from "../../style/pdf/Pdf";
 import { Text, Image, View } from "@react-pdf/renderer";
 const kopsurat = () => {
   const text = {

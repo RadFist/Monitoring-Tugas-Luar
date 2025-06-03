@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./layout/layout.jsx";
 import Home from "./page/home.jsx";
-import Pdf from "./page/pdf.jsx";
+import Pdf from "./page/pdf/pdfDisposisi.jsx";
+import PdfSuratTugas from "./page/pdf/pdfSuratTugas.jsx";
 import Login from "./page/login.jsx";
 import Regist from "./page/registration.jsx";
 import About from "./page/about.jsx";
@@ -75,6 +76,7 @@ function App() {
         <Route path="/Detail-Penugasan/:idDetail" element={<Detail />} />
         <Route path="/SignIn" element={<Regist />} />
         <Route path="/generate" element={<Pdf />} />
+        <Route path="/generate/pdf/SPD" element={<PdfSuratTugas />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </Router>

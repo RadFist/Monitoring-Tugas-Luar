@@ -1,7 +1,7 @@
 // File: PdfDocument.jsx
-import React from "react";
+
 import { Document, Page, Text, View } from "@react-pdf/renderer";
-import styles from "../../style/pdf/disposisiPdf";
+import styles from "../../style/pdf/Pdf";
 import Kopsurat from "./Kopsurat";
 
 // Komponen PDF

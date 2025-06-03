@@ -2,15 +2,16 @@ import { StyleSheet } from "@react-pdf/renderer";
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
-    padding: 30,
+    padding: 35,
+    margin: 10,
     fontSize: "11px",
   },
   HeadSection: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
-    margin: 10,
-    padding: 10,
+    marginBottom: 10,
+    // padding: 10,
     paddingBottom: 1,
     borderBottom: "2px solid black",
   },

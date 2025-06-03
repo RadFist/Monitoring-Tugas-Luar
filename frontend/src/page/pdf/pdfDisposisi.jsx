@@ -1,6 +1,6 @@
 import { PDFViewer } from "@react-pdf/renderer";
 import { useLocation } from "react-router-dom";
-import PdfDocument from "../components/pdf/DisposiPdf";
+import PdfDocument from "../../components/pdf/DisposiPdf";
 // Buat style untuk PDF
 export default function pdf() {
   const location = useLocation();

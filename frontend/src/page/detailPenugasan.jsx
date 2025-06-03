@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../style/detailPenugasan.css";
 import DownloadIcon from "@mui/icons-material/Download";
 import { useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import api from "../services/api";
 
 const DetailPenugasan = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [tugas, setTugas] = useState([]);
   const { idDetail } = useParams();
@@ -33,28 +34,11 @@ const DetailPenugasan = () => {
   }, [tugas]);
 
   const handleDownloadPDF = () => {
-    alert("Fitur download PDF akan diimplementasikan.");
-  };
-
-  const penugasan = {
-    namaTugas: "Kunjungan Lapangan",
-    deskripsi: "Monitoring progres pembangunan jembatan penghubung antar desa.",
-    lokasi: "Kecamatan Sukadiri, Kab. Tangerang",
-    tanggalMulai: "2025-06-01",
-    tanggalSelesai: "2025-06-03",
-    status: "Belum Mulai",
-    pegawai: [
-      {
-        id: "1",
-        nama: "Rudi Hartono",
-        nip: "198305152003121004",
+    navigate(`/generate/pdf/SPD`, {
+      state: {
+        data: tugas,
       },
-      {
-        id: "2",
-        nama: "Siti Aminah",
-        nip: "197912302005122007",
-      },
-    ],
+    });
   };
 
   if (loading) {

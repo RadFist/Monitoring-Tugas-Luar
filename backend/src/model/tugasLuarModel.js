@@ -56,6 +56,7 @@ export const getDetailTugas = async (id) => {
   user.id_user,
   user.nama,
   user.nip,
+  jb.jabatan,
   CASE 
     WHEN CURDATE() >= tugas.tanggal_mulai AND tugas.status != 'Selesai' THEN 'Diproses'
     ELSE tugas.status
@@ -64,6 +65,7 @@ FROM tb_tugas_luar AS tugas
 JOIN tb_pivot_tugas AS pivot 
   ON pivot.id_tugas_luar = tugas.id_tugas_luar
   JOIN tb_user as user on user.id_user = pivot.id_pegawai
+  JOIN tb_jabatan as jb on jb.id_jabatan = user.jabatan
 WHERE tugas.id_tugas_luar = ? `,
       [id]
     );
