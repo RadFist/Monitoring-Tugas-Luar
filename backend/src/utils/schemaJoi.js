@@ -46,6 +46,8 @@ export const schemaEdit = Joi.object({
 export const schemaPneguasan = Joi.object({
   namaTugas: Joi.string().required(),
   lokasi: Joi.string().required(),
+  dasar: Joi.string().required(),
+  perihal: Joi.string().required(),
   deskripsi: Joi.string().required(),
   tanggalMulai: Joi.date().required(),
   tanggalSelesai: Joi.date().required(),

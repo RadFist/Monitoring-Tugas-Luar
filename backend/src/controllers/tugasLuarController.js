@@ -5,7 +5,7 @@ import {
   getDetailTugas,
 } from "../model/tugasLuarModel.js";
 import { schemaPneguasan } from "../utils/schemaJoi.js";
-import { formatDateIso } from "../utils/dateFormater.js";
+import { formatDateIso, parseDateTime } from "../utils/dateFormater.js";
 
 export const inputPenugasan = async (req, res) => {
   const data = req.body; //ngambil data dari body request
@@ -19,6 +19,8 @@ export const inputPenugasan = async (req, res) => {
   const {
     namaTugas,
     lokasi,
+    dasar,
+    perihal,
     deskripsi,
     tanggalMulai,
     tanggalSelesai,
@@ -29,6 +31,8 @@ export const inputPenugasan = async (req, res) => {
     await postTugas(
       tugasId,
       namaTugas,
+      dasar,
+      perihal,
       lokasi,
       deskripsi,
       tanggalMulai,
@@ -75,13 +79,17 @@ export const detailTugas = async (req, res) => {
       return res.status(404).json({ message: "Data not found" });
     }
 
+    const waktu = parseDateTime(result[0].tanggal_mulai);
     const data = {
       id_tugas_luar: result[0].id_tugas_luar,
       judul_tugas: result[0].judul_tugas,
+      dasar: result[0].dasar,
+      perihal: result[0].perihal,
       deskripsi: result[0].deskripsi,
       status: result[0].status,
       lokasi: result[0].lokasi,
-      tanggal_mulai: formatDateIso(result[0].tanggal_mulai),
+      tanggal_mulai: waktu.tanggal,
+      jam: waktu.jamMenit,
       tanggal_selesai: formatDateIso(result[0].tanggal_selesai),
       pegawai: [],
     };

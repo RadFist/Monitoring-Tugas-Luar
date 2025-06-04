@@ -60,6 +60,18 @@
     gap: 20px;
   }
   
+  .waktu-label-input{
+    margin-top: 10px;
+  }
+  .waktu-label-input input{
+   margin-top: 6px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+  }
+
   textarea {
     resize: vertical;
   }

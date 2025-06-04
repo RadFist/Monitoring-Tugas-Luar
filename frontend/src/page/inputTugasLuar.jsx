@@ -5,6 +5,8 @@ import { useState } from "react";
 import api, { plainApi } from "../services/api";
 import { listItem as ListPegawai } from "../components/listManagement";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
+import DatePicker from "react-multi-date-picker";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
 
 const InputTugas = () => {
   const [formData, setFormData] = useState({});
@@ -13,13 +15,17 @@ const InputTugas = () => {
   const [jabatanOptions, setJabatanOptions] = useState([]);
   const [selectedJabatan, setSelectedJabatan] = useState("");
   const [loading, setLoading] = useState(true);
+  const [valueTime, setValueTime] = useState(null);
 
   const initialFormState = {
     tugas: "",
     alamat: "",
+    dasar: "",
+    perihal: "",
     deskripsi: "",
     tanggalMulai: "",
     tanggalSelesai: "",
+    waktuMulai: "",
   };
 
   useEffect(() => {
@@ -65,6 +71,21 @@ const InputTugas = () => {
     setFormData((prev) => ({ ...prev, [name]: parsedValue }));
   };
 
+  const handleTimeChange = (newTime) => {
+    if (newTime) {
+      const date = newTime.toDate();
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      const formattedTime = `${hours}:${minutes}`;
+
+      setFormData((prev) => ({
+        ...prev,
+        waktuMulai: formattedTime,
+      }));
+      setValueTime(newTime);
+    }
+  };
+
   const handleChangeJabatan = (e) => {
     const { value } = e.target;
     setSelectedJabatan(value);
@@ -105,9 +126,11 @@ const InputTugas = () => {
     try {
       await api.post("/PenugasanTugasLuar", {
         namaTugas: formData.tugas,
-        lokasi: formData.alamat,
+        lokasi: formData.lokasi,
+        dasar: formData.dasar,
+        perihal: formData.perihal,
         deskripsi: formData.deskripsi,
-        tanggalMulai: formData.tanggalMulai,
+        tanggalMulai: `${formData.tanggalMulai}T${formData.waktuMulai}:00`,
         tanggalSelesai: formData.tanggalSelesai,
         daftarPegawai: pegawai,
       });
@@ -144,6 +167,7 @@ const InputTugas = () => {
           <input
             type="text"
             name="tugas"
+            placeholder="ex: Rapat kordinasi di abc"
             value={formData.tugas || ""}
             onChange={handleInputChange}
             required
@@ -151,11 +175,36 @@ const InputTugas = () => {
         </label>
 
         <label>
-          Alamat
+          Dasar
           <input
             type="text"
-            name="alamat"
-            value={formData.alamat || ""}
+            name="dasar"
+            placeholder="ex: Surat dari dinas Abc"
+            value={formData.dasar || ""}
+            onChange={handleInputChange}
+            required
+          />
+        </label>
+
+        <label>
+          Perihal
+          <input
+            type="text"
+            name="perihal"
+            placeholder="ex: undangan rapat abc xyz"
+            value={formData.perihal || ""}
+            onChange={handleInputChange}
+            required
+          />
+        </label>
+
+        <label>
+          lokasi
+          <input
+            type="text"
+            name="lokasi"
+            value={formData.lokasi || ""}
+            placeholder="ex: gedung abc dixyz"
             onChange={handleInputChange}
             required
           />
@@ -171,7 +220,20 @@ const InputTugas = () => {
               onChange={handleInputChange}
               required
             />
+            <label className="waktu-label-input">
+              waktu Mulai
+              <DatePicker
+                disableDayPicker
+                format="HH:mm"
+                plugins={[<TimePicker />]}
+                value={valueTime}
+                onChange={handleTimeChange}
+                editable={false}
+                required
+              />
+            </label>
           </label>
+
           <label>
             Tanggal Selesai
             <input

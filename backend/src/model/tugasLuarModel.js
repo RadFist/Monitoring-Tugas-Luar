@@ -3,6 +3,8 @@ import db from "../config/db_mysql.js";
 export const postTugas = async (
   id,
   tugas,
+  dasar,
+  perihal,
   lokasi,
   deskripsi,
   mulai,
@@ -12,9 +14,19 @@ export const postTugas = async (
   try {
     // Simpan data utama ke tabel tugas_luar
     await db.query(
-      `INSERT INTO tb_tugas_luar (id_tugas_luar, judul_tugas, deskripsi, lokasi, status, tanggal_mulai, tanggal_selesai)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [id, tugas, deskripsi, lokasi, "belum mulai", mulai, selesai]
+      `INSERT INTO tb_tugas_luar (id_tugas_luar, judul_tugas, dasar, perihal, deskripsi, lokasi, status, tanggal_mulai, tanggal_selesai)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        id,
+        tugas,
+        dasar,
+        perihal,
+        deskripsi,
+        lokasi,
+        "belum mulai",
+        mulai,
+        selesai,
+      ]
     );
 
     // Simpan banyak pegawai ke tabel relasi tugas_pegawai
@@ -47,12 +59,7 @@ export const getDetailTugas = async (id) => {
   try {
     const [rows] = await db.query(
       `SELECT 
-  tugas.id_tugas_luar,
-  tugas.judul_tugas,
-  tugas.deskripsi,
-  tugas.lokasi,
-  tugas.tanggal_mulai,
-  tugas.tanggal_selesai,
+  tugas.*,
   user.id_user,
   user.nama,
   user.nip,

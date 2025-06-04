@@ -1,5 +1,5 @@
 import { PDFViewer } from "@react-pdf/renderer";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Kopsurat from "../../components/pdf/Kopsurat";
 import { Document, Page, Text, View } from "@react-pdf/renderer";
 import styles from "../../style/pdf/Pdf";
@@ -7,7 +7,6 @@ import { TableComponentST } from "../../components/pdf/tablePdf";
 // Buat style untuk PDF
 export const PdfSuratTUgas = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const { data } = location.state || {};
 
   if (data == undefined) {
@@ -56,11 +55,11 @@ export const PdfSuratTUgas = () => {
                     </View>
                     <View style={{ flexDirection: "row", marginBottom: 5 }}>
                       <Text style={{ width: 80 }}>Dasar</Text>
-                      <Text>: {data.judul_tugas}</Text>
+                      <Text>: {data.dasar}</Text>
                     </View>
                     <View style={{ flexDirection: "row", marginBottom: 30 }}>
                       <Text style={{ width: 80 }}>Perihal</Text>
-                      <Text>: {data.deskripsi}</Text>
+                      <Text>: {data.perihal}</Text>
                     </View>
                     <View
                       style={{
@@ -84,10 +83,7 @@ export const PdfSuratTUgas = () => {
                       }}
                     >
                       <Text>untuk </Text>
-                      <Text>
-                        : //tolong diperbaiki tabel tb_tugasnya tambahin
-                        "ditugaskan untuk" pada
-                      </Text>
+                      <Text>: Menghadiri {data.perihal} pada:</Text>
                     </View>
 
                     <View
@@ -104,15 +100,13 @@ export const PdfSuratTUgas = () => {
                         </View>
                         <View style={{ flexDirection: "row", marginBottom: 5 }}>
                           <Text style={{ width: 50 }}>Waktu</Text>
-                          <Text>: // ga ada waktu perbaiki</Text>
+                          <Text>: {data.jam}</Text>
                         </View>
                         <View
                           style={{ flexDirection: "row", marginBottom: 30 }}
                         >
                           <Text style={{ width: 50 }}>Tempat</Text>
-                          <Text>
-                            : // ga ada tempat adanya lokasi atau alamat
-                          </Text>
+                          <Text>: {data.lokasi}</Text>
                         </View>
                       </View>
                     </View>
@@ -140,6 +134,7 @@ export const PdfSuratTUgas = () => {
                   >
                     <Text>Sukadiri, //tanggal disahkannya blm ada om</Text>
                     <Text>Camat Sukadiri</Text>
+                    <Text> </Text>
                     <Text> </Text>
                     <Text> </Text>
                     <Text> </Text>

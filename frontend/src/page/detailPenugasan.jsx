@@ -58,7 +58,10 @@ const DetailPenugasan = () => {
             <strong>Nama Tugas:</strong> {tugas.judul_tugas}
           </p>
           <p>
-            <strong>Deskripsi:</strong> {tugas.deskripsi}
+            <strong>Dasar:</strong> {tugas.dasar}
+          </p>
+          <p>
+            <strong>Perihal:</strong> {tugas.perihal}
           </p>
           <p>
             <strong>Lokasi:</strong> {tugas.lokasi}
@@ -78,6 +81,9 @@ const DetailPenugasan = () => {
             >
               {tugas.status}
             </span>
+          </p>
+          <p>
+            <strong>Deskripsi:</strong> {tugas.deskripsi}
           </p>
         </div>
         <div className="pegawai-list-detail">
