@@ -5,7 +5,7 @@ import "../style/listTugas.css";
 import ArrowIcon from "@mui/icons-material/ArrowForwardIos";
 import api from "../services/api";
 
-const listTugas = () => {
+const ListTugas = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [daftarTugas, setDaftarTugas] = useState([]);
@@ -85,4 +85,4 @@ const listTugas = () => {
   );
 };
 
-export default listTugas;
+export default ListTugas;

@@ -8,10 +8,12 @@ import {
 import { useEffect, useState } from "react";
 import { authRefreshToken } from "../../services/authServices";
 import LoadingPage from "../LoadingComp";
+import { jwtDecode } from "jwt-decode";
 
-export const PrivateWraper = ({ children }) => {
+export const PrivateWraper = ({ children, allowedLevels = [] }) => {
   const [isAuth, setIsAuth] = useState(null);
   const token = getToken();
+  const level = jwtDecode(token).level;
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -22,8 +24,6 @@ export const PrivateWraper = ({ children }) => {
           const data = await authRefreshToken();
           saveToken(data.token);
           //refactor later or delete
-
-          setIsAuth(true);
         } catch (error) {
           clearToken();
           setIsAuth(false);
@@ -37,6 +37,10 @@ export const PrivateWraper = ({ children }) => {
 
     checkAuth();
   }, []);
+
+  if (allowedLevels.length >= 1 && !allowedLevels.includes(level)) {
+    return <Navigate to="/not-found" />;
+  }
 
   if (isAuth === null) return <LoadingPage />;
 

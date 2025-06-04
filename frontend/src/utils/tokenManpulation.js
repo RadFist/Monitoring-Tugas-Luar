@@ -1,4 +1,5 @@
 export const saveToken = (token) => localStorage.setItem("token", token);
+// export const saveLevel = (token) => localStorage.setItem("Level", token);
 export const getToken = () => localStorage.getItem("token");
 export const clearToken = () => localStorage.removeItem("token");
 export const checkTokenExp = (token) => {

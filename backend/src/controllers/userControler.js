@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import { checkUserExists } from "../model/model.js";
 import dayjs from "dayjs";
 import { schemaAdd, schemaEdit } from "../utils/schemaJoi.js";
-
 import {
   deletUserById,
   getAllUsers,
@@ -126,9 +125,15 @@ export const userEdit = async (req, res) => {
     const values = []; // deklarasi array value apa saja sesuai field yang akan dipatch
 
     // push data to array
-    for (let key in dataUpdate) {
-      fields.push(`${key} = ?`); //key dari req.body yang sudah disesuaikan dengan field db dipush satu satu ke arraynya
-      values.push(dataUpdate[key]); // value yang dikirim dari body dimasukan satu satu ke array
+    for (const [key, val] of Object.entries(dataUpdate)) {
+      let value = val;
+
+      if (key === "password") {
+        value = await bcrypt.hash(value, 6);
+      }
+
+      fields.push(`${key} = ?`);
+      values.push(value);
     }
 
     if (fields.length === 0) {

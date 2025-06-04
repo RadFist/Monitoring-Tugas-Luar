@@ -214,7 +214,7 @@ const UserManagment = () => {
       id_user: dataEdit.id_user,
       username: dataEdit.username,
       nama: dataEdit.nama,
-      password: "", //g ngirim pw dari db cok, biar aman
+      password: "value",
       email: dataEdit.email,
       nip: dataEdit.nip,
       level: dataEdit.level,
@@ -224,7 +224,7 @@ const UserManagment = () => {
       id_user: dataEdit.id_user,
       username: dataEdit.username,
       nama: dataEdit.nama,
-      password: "", //g ngirim pw dari db cok, biar aman
+      password: "value",
       email: dataEdit.email,
       nip: dataEdit.nip,
       level: dataEdit.level,

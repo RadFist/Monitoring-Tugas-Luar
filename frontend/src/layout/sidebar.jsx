@@ -7,13 +7,31 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import InfoIcon from "@mui/icons-material/Info";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import LogoutIcon from "@mui/icons-material/Logout";
-
+import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import { clearToken } from "../utils/tokenManpulation";
+import { clearToken, getToken } from "../utils/tokenManpulation";
 import { logoutUser } from "../services/authServices";
+import { useEffect, useState } from "react";
 
 const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
+  const [userLevel, setUserLevel] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = getToken();
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const decoded = jwtDecode(token);
+      setUserLevel(decoded.level);
+    } catch (error) {
+      console.error("Token tidak valid:", error);
+      navigate("/login");
+    }
+  }, []);
 
   const handleNavigate = (event) => {
     event.preventDefault();
@@ -39,7 +57,7 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
     <aside className={`sidebar-cont ${displaySidebar}`}>
       <div className="sidebar-content">
         <div className="side-header">
-          <span>Username</span>
+          <span>Menu</span>
           <button className="close-sidebar">
             <BackArrow
               fontSize="medium"
@@ -58,15 +76,18 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
           >
             <DashboardIcon /> <span>Dashboard</span>
           </div>
-          <div
-            className="menu-item"
-            onClick={() => {
-              navigate("/User-Management");
-              handlerClickArrow();
-            }}
-          >
-            <PeopleIcon /> <span>Manajemen Pengguna</span>
-          </div>
+          {userLevel == "super admin" && (
+            <div
+              className="menu-item"
+              onClick={() => {
+                navigate("/User-Management");
+                handlerClickArrow();
+              }}
+            >
+              <PeopleIcon /> <span>Manajemen Pengguna</span>
+            </div>
+          )}
+
           <div
             className="menu-item"
             onClick={() => {

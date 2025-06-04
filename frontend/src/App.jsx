@@ -36,7 +36,7 @@ function App() {
           <Route
             path="User-Management"
             element={
-              <PrivateRoute>
+              <PrivateRoute allowedLevels={["super admin"]}>
                 <UserManagement />
               </PrivateRoute>
             }
