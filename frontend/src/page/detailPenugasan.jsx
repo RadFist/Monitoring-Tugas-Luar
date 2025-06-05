@@ -1,15 +1,20 @@
 import { useNavigate, useParams } from "react-router-dom";
 import "../style/detailPenugasan.css";
 import DownloadIcon from "@mui/icons-material/Download";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useEffect, useState } from "react";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import api from "../services/api";
+import { getToken } from "../utils/tokenManpulation";
+import { jwtDecode } from "jwt-decode";
 
 const DetailPenugasan = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [tugas, setTugas] = useState([]);
   const { idDetail } = useParams();
+  const token = getToken();
+  const level = token ? jwtDecode(token).level : "";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,9 +104,15 @@ const DetailPenugasan = () => {
         </div>
         <div className="btn-container-detail">
           <button className="btn-pdf-detail" onClick={handleDownloadPDF}>
-            <DownloadIcon />
             Download PDF
+            <DownloadIcon />
           </button>
+          {level === "camat" && (
+            <button className="approve-detail-button">
+              Approve
+              <CheckCircleIcon sx={{ fontSize: 16 }} />
+            </button>
+          )}
         </div>
       </div>
     </div>

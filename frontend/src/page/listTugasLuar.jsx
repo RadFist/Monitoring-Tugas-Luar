@@ -1,19 +1,25 @@
+import "../style/listTugas.css";
+import ArrowIcon from "@mui/icons-material/ArrowForwardIos";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
-import "../style/listTugas.css";
-import ArrowIcon from "@mui/icons-material/ArrowForwardIos";
+import { jwtDecode } from "jwt-decode";
+import { getToken } from "../utils/tokenManpulation";
 import api from "../services/api";
 
 const ListTugas = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [daftarTugas, setDaftarTugas] = useState([]);
+  const token = getToken();
+  const level = token ? jwtDecode(token).level : "";
+  let routeList = token === "camat" ? "/allTugas/approval" : "/allTugas";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseGetListTugas = (await api.get("/allTugas")).data;
+        let responseGetListTugas = (await api.get(routeList)).data;
         setDaftarTugas(responseGetListTugas.data);
       } catch (error) {
         console.error("Error fetching :", error.message);
@@ -68,15 +74,23 @@ const ListTugas = () => {
               <p>
                 <strong>tanggal:</strong> {item.tanggal_mulai}
               </p>
-              <button
-                className="detail-button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handlerClickDetail(item.id_tugas_luar);
-                }}
-              >
-                Detail <ArrowIcon sx={{ fontSize: 14 }} />
-              </button>
+              <div className="button-cont-listTugas">
+                <button
+                  className="detail-button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handlerClickDetail(item.id_tugas_luar);
+                  }}
+                >
+                  Detail <ArrowIcon sx={{ fontSize: 14 }} />
+                </button>
+                {level === "camat" && (
+                  <button className="approve-button">
+                    Approve
+                    <CheckCircleIcon sx={{ fontSize: 14 }} />
+                  </button>
+                )}
+              </div>
             </div>
           ))
         )}

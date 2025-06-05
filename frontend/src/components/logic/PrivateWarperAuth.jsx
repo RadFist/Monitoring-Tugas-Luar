@@ -13,14 +13,13 @@ import { jwtDecode } from "jwt-decode";
 export const PrivateWraper = ({ children, allowedLevels = [] }) => {
   const [isAuth, setIsAuth] = useState(null);
   const token = getToken();
-  const level = jwtDecode(token).level;
+
+  const level = token ? jwtDecode(token).level : "";
 
   useEffect(() => {
     const checkAuth = async () => {
       if (!isTokenValid(token)) {
         try {
-          console.log(isTokenValid(token));
-
           const data = await authRefreshToken();
           saveToken(data.token);
           //refactor later or delete
@@ -30,9 +29,8 @@ export const PrivateWraper = ({ children, allowedLevels = [] }) => {
           console.log(error);
           throw error;
         }
-      } else {
-        setIsAuth(true);
       }
+      setIsAuth(true);
     };
 
     checkAuth();

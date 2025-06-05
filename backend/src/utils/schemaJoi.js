@@ -38,7 +38,7 @@ export const schemaEdit = Joi.object({
   nama: Joi.string().min(1).max(100),
   nip: Joi.string().pattern(/^\d{8,20}$/),
   level: Joi.string()
-    .valid("admin", "super admin", "user", "verifikator")
+    .valid("kasi", "super admin", "user", "camat")
     .default("user"),
   Jabatan: Joi.string(),
 });

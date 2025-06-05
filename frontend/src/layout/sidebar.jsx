@@ -95,7 +95,11 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
               handlerClickArrow();
             }}
           >
-            <ListAlt /> <span>Tugas Luar</span>
+            <ListAlt />{" "}
+            <span>
+              {" "}
+              {userLevel === "camat" ? "Approval Tugas" : "Tugas Luar"}
+            </span>
           </div>
           <div
             className="menu-item"

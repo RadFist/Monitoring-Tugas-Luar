@@ -364,9 +364,9 @@ const UserManagment = () => {
               onChange={handleChange}
             >
               <option value="">-- Pilih Level --</option>
-              <option value="admin">Admin</option>
+              <option value="kasi">Kasi</option>
               <option value="user">User</option>
-              <option value="verifikator">monitoring</option>
+              <option value="camat">Camat</option>
               <option value="super admin">Super Admin</option>
             </select>
           </div>

@@ -49,9 +49,14 @@ export const inputPenugasan = async (req, res) => {
 };
 
 export const listTugas = async (req, res) => {
+  const userLevel = req.custom?.user?.level;
   try {
-    const tugasListRaw = await getListTugas();
-
+    let tugasListRaw = "";
+    if (userLevel === "camat") {
+      tugasListRaw = await getListTugas("status_approval = 'pending' ");
+    } else {
+      tugasListRaw = await getListTugas();
+    }
     const tugasList = tugasListRaw.map((tugas) => ({
       ...tugas,
       tanggal_mulai: formatDateIso(tugas.tanggal_mulai),

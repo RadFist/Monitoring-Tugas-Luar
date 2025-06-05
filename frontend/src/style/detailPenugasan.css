@@ -73,6 +73,8 @@
 
 .btn-container-detail {
   margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .btn-pdf-detail {
@@ -92,6 +94,24 @@
   background-color: #155ec3;
 }
 
+  .approve-detail-button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap : 3px;
+  }
+  
+  .approve-button:hover {
+   background-color: #28712b;
+  }
+  
 /* Responsive Design */
 @media (max-width: 600px) {
   .container-detail {

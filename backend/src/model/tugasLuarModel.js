@@ -44,10 +44,22 @@ export const postTugas = async (
   }
 };
 
-export const getListTugas = async () => {
+export const getListTugas = async (cond = "1") => {
   try {
     const [rows] = await db.query(
-      "SELECT id_tugas_luar, judul_tugas, lokasi, tanggal_mulai, tanggal_selesai, CASE WHEN CURDATE() >= tanggal_mulai AND status != 'Selesai' THEN 'Diproses'  ELSE status END as status FROM `tb_tugas_luar` ORDER by tanggal_mulai  ASC "
+      `SELECT 
+        id_tugas_luar, 
+        judul_tugas, 
+        lokasi, 
+        tanggal_mulai, 
+        tanggal_selesai, 
+        CASE 
+          WHEN CURDATE() >= tanggal_mulai AND status != 'Selesai' THEN 'Diproses'  
+          ELSE status 
+        END as status 
+      FROM tb_tugas_luar 
+      WHERE ${cond} 
+      ORDER BY tanggal_mulai ASC`
     );
     return rows;
   } catch (error) {

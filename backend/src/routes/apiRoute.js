@@ -49,6 +49,12 @@ router.post(
 //======Tugas Route======
 //get
 router.get("/allTugas", authenticateToken, listTugas);
+router.get(
+  "/allTugas/approval",
+  authenticateToken,
+  authRole("camat"),
+  listTugas
+);
 router.get("/Detail-Penugasan/:id", detailTugas);
 //post
 router.post("/PenugasanTugasLuar", authenticateToken, inputPenugasan);
@@ -56,9 +62,6 @@ router.post("/PenugasanTugasLuar", authenticateToken, inputPenugasan);
 //next route
 
 //testing
-router.get("/dashboard", authenticateToken, (req, res) => {
-  res.status(200).json({ message: `Welcome, ${req.user.username}` });
-});
 
 //testing for home
 router.post("/asalGamink", authenticateToken, (req, res) => {

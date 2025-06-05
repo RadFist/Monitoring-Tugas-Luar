@@ -94,6 +94,11 @@ body {
     color: #222;
   }
   
+  .button-cont-listTugas{
+    display: flex;
+    justify-content: space-between;
+  }
+
   /* Tombol detail */
   .detail-button {
     margin-top: 14px;
@@ -112,5 +117,25 @@ body {
   
   .detail-button:hover {
     background-color: #1259a8;
+  }
+  
+  .approve-button {
+    margin-top: 14px;
+    padding: 10px 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  
+  .approve-button:hover {
+     background-color: #28712b;
   }
   
