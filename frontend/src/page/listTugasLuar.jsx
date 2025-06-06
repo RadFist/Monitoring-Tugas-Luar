@@ -19,7 +19,7 @@ const ListTugas = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let responseGetListTugas = (await api.get(routeList)).data;
+        const responseGetListTugas = (await api.get(routeList)).data;
         setDaftarTugas(responseGetListTugas.data);
       } catch (error) {
         console.error("Error fetching :", error.message);
@@ -46,6 +46,30 @@ const ListTugas = () => {
 
   const handlerClickDetail = (id) => {
     navigate(`Detail-Penugasan/${id}`);
+  };
+
+  const handlerApprove = async (id) => {
+    if (!id) {
+      console.error("ID tugas tidak valid.");
+      return;
+    }
+
+    try {
+      const response = await api.patch(`/PenugasanTugasLuar/Approve`, {
+        id: id,
+      });
+
+      if (response.data && response.data.success) {
+        console.log("Tugas berhasil disetujui.");
+
+        const responseGetListTugas = (await api.get(routeList)).data;
+        setDaftarTugas(responseGetListTugas.data);
+      } else {
+        console.warn(response.data?.message || "Gagal menyetujui tugas.");
+      }
+    } catch (error) {
+      console.error("Terjadi kesalahan saat menyetujui tugas:", error);
+    }
   };
 
   return (
@@ -85,7 +109,10 @@ const ListTugas = () => {
                   Detail <ArrowIcon sx={{ fontSize: 14 }} />
                 </button>
                 {level === "camat" && (
-                  <button className="approve-button">
+                  <button
+                    className="approve-button"
+                    onClick={() => handlerApprove(item.id_tugas_luar)}
+                  >
                     Approve
                     <CheckCircleIcon sx={{ fontSize: 14 }} />
                   </button>

@@ -6,6 +6,7 @@ import {
   inputPenugasan,
   listTugas,
   detailTugas,
+  approveTugas,
 } from "../controllers/tugasLuarController.js";
 
 const router = express.Router();
@@ -58,6 +59,7 @@ router.get(
 router.get("/Detail-Penugasan/:id", detailTugas);
 //post
 router.post("/PenugasanTugasLuar", authenticateToken, inputPenugasan);
+router.patch("/PenugasanTugasLuar/Approve", approveTugas);
 
 //next route
 

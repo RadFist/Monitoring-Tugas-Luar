@@ -46,6 +46,27 @@ const DetailPenugasan = () => {
     });
   };
 
+  const handlerApprove = async (id) => {
+    if (!id) {
+      console.error("ID tugas tidak valid.");
+      return;
+    }
+
+    try {
+      const response = await api.patch(`/PenugasanTugasLuar/Approve`, {
+        id: id,
+      });
+
+      if (response.data && response.data.success) {
+        console.log("Tugas berhasil disetujui.");
+      } else {
+        console.warn(response.data?.message || "Gagal menyetujui tugas.");
+      }
+    } catch (error) {
+      console.error("Terjadi kesalahan saat menyetujui tugas:", error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="content-list-tugas-loading">
@@ -108,7 +129,10 @@ const DetailPenugasan = () => {
             <DownloadIcon />
           </button>
           {level === "camat" && (
-            <button className="approve-detail-button">
+            <button
+              className="approve-detail-button"
+              onClick={() => handlerApprove(tugas.id_tugas_luar)}
+            >
               Approve
               <CheckCircleIcon sx={{ fontSize: 16 }} />
             </button>

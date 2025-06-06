@@ -3,6 +3,7 @@ import {
   postTugas,
   getListTugas,
   getDetailTugas,
+  updateStatusApproveTugas,
 } from "../model/tugasLuarModel.js";
 import { schemaPneguasan } from "../utils/schemaJoi.js";
 import { formatDateIso, parseDateTime } from "../utils/dateFormater.js";
@@ -113,6 +114,33 @@ export const detailTugas = async (req, res) => {
     console.error("Failed to fetch data detail tugas:", error);
     res.status(500).json({
       message: "An error occurred while fetching data detail tugas",
+    });
+  }
+};
+
+export const approveTugas = async (req, res) => {
+  const id = req.body.id;
+  // Validasi input
+  if (!id) {
+    return res
+      .status(400)
+      .json({ success: false, message: "ID tugas tidak boleh kosong." });
+  }
+
+  try {
+    const result = await updateStatusApproveTugas(id);
+
+    if (result.success) {
+      res.status(200).json(result);
+    } else {
+      res.status(404).json(result);
+    }
+  } catch (error) {
+    console.error("Error in approveTugas:", error);
+    res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan pada server.",
+      error,
     });
   }
 };

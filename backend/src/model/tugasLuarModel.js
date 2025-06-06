@@ -93,3 +93,22 @@ WHERE tugas.id_tugas_luar = ? `,
     throw new Error("Error fetch data detail: " + error.message);
   }
 };
+
+export const updateStatusApproveTugas = async (id) => {
+  try {
+    const [result] = await db.query(
+      `UPDATE tb_tugas_luar SET status_approval = ? WHERE id_tugas_luar = ?`,
+      ["approve", id]
+    );
+
+    // Mengecek apakah data berhasil diupdate
+    if (result.affectedRows > 0) {
+      return { success: true, message: "Status updated to approve." };
+    } else {
+      return { success: false, message: "No record found with the given ID." };
+    }
+  } catch (error) {
+    console.error("Error updating status approval:", error);
+    return { success: false, message: "Database error.", error };
+  }
+};
