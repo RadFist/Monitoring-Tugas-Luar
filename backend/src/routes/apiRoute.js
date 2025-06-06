@@ -5,6 +5,7 @@ import { allJabatan } from "../controllers/jabatranController.js";
 import {
   inputPenugasan,
   listTugas,
+  listTugasPegawai,
   detailTugas,
   approveTugas,
 } from "../controllers/tugasLuarController.js";
@@ -50,6 +51,7 @@ router.post(
 //======Tugas Route======
 //get
 router.get("/allTugas", authenticateToken, listTugas);
+router.get("/tugas/:id", listTugasPegawai);
 router.get(
   "/allTugas/approval",
   authenticateToken,

@@ -4,6 +4,7 @@ import {
   getListTugas,
   getDetailTugas,
   updateStatusApproveTugas,
+  getListTugasBYIdUser,
 } from "../model/tugasLuarModel.js";
 import { schemaPneguasan } from "../utils/schemaJoi.js";
 import { formatDateIso, parseDateTime } from "../utils/dateFormater.js";
@@ -58,6 +59,28 @@ export const listTugas = async (req, res) => {
     } else {
       tugasListRaw = await getListTugas();
     }
+    const tugasList = tugasListRaw.map((tugas) => ({
+      ...tugas,
+      tanggal_mulai: formatDateIso(tugas.tanggal_mulai),
+      tanggal_selesai: formatDateIso(tugas.tanggal_selesai),
+    }));
+
+    res.status(200).json({
+      message: "Data tugas retrieved successfully",
+      data: tugasList,
+    });
+  } catch (error) {
+    console.error("Failed to fetch data tugas:", error);
+    res.status(500).json({
+      message: "An error occurred while fetching data tugas",
+    });
+  }
+};
+
+export const listTugasPegawai = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const tugasListRaw = await getListTugasBYIdUser(id);
     const tugasList = tugasListRaw.map((tugas) => ({
       ...tugas,
       tanggal_mulai: formatDateIso(tugas.tanggal_mulai),

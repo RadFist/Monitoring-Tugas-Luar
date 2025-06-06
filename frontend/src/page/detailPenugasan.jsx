@@ -7,10 +7,12 @@ import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import api from "../services/api";
 import { getToken } from "../utils/tokenManpulation";
 import { jwtDecode } from "jwt-decode";
+import { SuccessModal } from "../components/modal";
 
 const DetailPenugasan = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [modalActive, setModalActive] = useState(false);
   const [tugas, setTugas] = useState([]);
   const { idDetail } = useParams();
   const token = getToken();
@@ -45,6 +47,9 @@ const DetailPenugasan = () => {
       },
     });
   };
+  const handlerCloseModal = () => {
+    setModalActive(false);
+  };
 
   const handlerApprove = async (id) => {
     if (!id) {
@@ -58,7 +63,7 @@ const DetailPenugasan = () => {
       });
 
       if (response.data && response.data.success) {
-        console.log("Tugas berhasil disetujui.");
+        setModalActive(true);
       } else {
         console.warn(response.data?.message || "Gagal menyetujui tugas.");
       }
@@ -77,6 +82,10 @@ const DetailPenugasan = () => {
 
   return (
     <div className="container-detail">
+      <SuccessModal
+        displayModal={modalActive ? "active" : ""}
+        onClose={handlerCloseModal}
+      />
       <h2 className="title-detail">Detail Penugasan</h2>
       <div className="card-detail">
         <div className="info-detail">

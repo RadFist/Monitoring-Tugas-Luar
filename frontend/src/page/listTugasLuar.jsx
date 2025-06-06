@@ -6,15 +6,22 @@ import { useNavigate } from "react-router-dom";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import { jwtDecode } from "jwt-decode";
 import { getToken } from "../utils/tokenManpulation";
+import { SuccessModal } from "../components/modal";
 import api from "../services/api";
 
 const ListTugas = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [modalActive, setModalActive] = useState(false);
   const [daftarTugas, setDaftarTugas] = useState([]);
   const token = getToken();
-  const level = token ? jwtDecode(token).level : "";
-  let routeList = token === "camat" ? "/allTugas/approval" : "/allTugas";
+  const payload = token ? jwtDecode(token) : "";
+  const level = payload.level;
+  const roleRoutes = {
+    camat: "/allTugas/approval",
+    user: "/tugas/" + payload.id_user,
+  };
+  let routeList = roleRoutes[level] || "/allTugas";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +40,7 @@ const ListTugas = () => {
   }, []);
 
   // useEffect(() => {
-  //   console.log(daftarTugas);
+  //   console.log(payload);
   // }, [daftarTugas]);
 
   if (loading) {
@@ -47,23 +54,23 @@ const ListTugas = () => {
   const handlerClickDetail = (id) => {
     navigate(`Detail-Penugasan/${id}`);
   };
+  const handlerCloseModal = () => {
+    setModalActive(false);
+  };
 
   const handlerApprove = async (id) => {
     if (!id) {
       console.error("ID tugas tidak valid.");
       return;
     }
-
     try {
       const response = await api.patch(`/PenugasanTugasLuar/Approve`, {
         id: id,
       });
-
       if (response.data && response.data.success) {
-        console.log("Tugas berhasil disetujui.");
-
         const responseGetListTugas = (await api.get(routeList)).data;
         setDaftarTugas(responseGetListTugas.data);
+        setModalActive(true);
       } else {
         console.warn(response.data?.message || "Gagal menyetujui tugas.");
       }
@@ -75,6 +82,10 @@ const ListTugas = () => {
   return (
     <div className="content-list-tugas">
       <div className="list-tugas">
+        <SuccessModal
+          displayModal={modalActive ? "active" : ""}
+          onClose={handlerCloseModal}
+        />
         {daftarTugas.length === 0 ? (
           <p style={{ textAlign: "center" }} className="no-tugas-message">
             Tidak ada tugas baru-baru ini

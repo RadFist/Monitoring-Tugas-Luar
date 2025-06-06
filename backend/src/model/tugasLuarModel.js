@@ -67,6 +67,34 @@ export const getListTugas = async (cond = "1") => {
   }
 };
 
+export const getListTugasBYIdUser = async (id) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT 
+  tl.id_tugas_luar, 
+  tl.judul_tugas, 
+  tl.lokasi, 
+  tl.tanggal_mulai, 
+  tl.tanggal_selesai, 
+  pv.*,  
+  CASE 
+    WHEN CURDATE() >= tl.tanggal_mulai AND tl.status != 'Selesai' THEN 'Diproses'  
+    ELSE tl.status 
+  END AS status 
+FROM tb_tugas_luar AS tl
+JOIN tb_pivot_tugas AS pv 
+  ON pv.id_tugas_luar = tl.id_tugas_luar
+  WHERE pv.id_pegawai = ?
+ORDER BY tl.tanggal_mulai ASC;
+`,
+      [id]
+    );
+    return rows;
+  } catch (error) {
+    throw new Error("Error fetching list tugas: " + error.message);
+  }
+};
+
 export const getDetailTugas = async (id) => {
   try {
     const [rows] = await db.query(

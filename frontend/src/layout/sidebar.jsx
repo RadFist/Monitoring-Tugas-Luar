@@ -101,15 +101,17 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
               {userLevel === "camat" ? "Approval Tugas" : "Tugas Luar"}
             </span>
           </div>
-          <div
-            className="menu-item"
-            onClick={() => {
-              navigate("/Input-Tugas");
-              handlerClickArrow();
-            }}
-          >
-            <AssignmentIcon /> <span>Penugasan</span>
-          </div>
+          {userLevel == "kasi" && (
+            <div
+              className="menu-item"
+              onClick={() => {
+                navigate("/Input-Tugas");
+                handlerClickArrow();
+              }}
+            >
+              <AssignmentIcon /> <span>Penugasan</span>
+            </div>
+          )}
           <div className="menu-item">
             <ArchiveIcon /> <span>Dokumentasi Arsip</span>
           </div>
