@@ -14,6 +14,7 @@ const DetailPenugasan = () => {
   const [loading, setLoading] = useState(true);
   const [modalActive, setModalActive] = useState(false);
   const [tugas, setTugas] = useState([]);
+  const [btnDisabled, setBtnDisabled] = useState("");
   const { idDetail } = useParams();
   const token = getToken();
   const level = token ? jwtDecode(token).level : "";
@@ -25,6 +26,9 @@ const DetailPenugasan = () => {
           await api.get(`/Detail-Penugasan/${idDetail}`)
         ).data;
         setTugas(responseGetTugasById.data);
+        if (responseGetTugasById.data.status_persetujuan === "approve") {
+          setBtnDisabled("btn-disabled");
+        }
       } catch (error) {
         console.error("Error fetching :", error.message);
       } finally {
@@ -36,9 +40,9 @@ const DetailPenugasan = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log(tugas);
-  }, [tugas]);
+  // useEffect(() => {
+  //   console.log(tugas);
+  // }, [tugas]);
 
   const handleDownloadPDF = () => {
     navigate(`/generate/pdf/SPD`, {
@@ -57,16 +61,23 @@ const DetailPenugasan = () => {
       return;
     }
 
-    try {
-      const response = await api.patch(`/PenugasanTugasLuar/Approve`, {
-        id: id,
-      });
+    const konfirmasi = window.confirm(
+      "Apakah Anda yakin ingin menyetujui tugas ini?"
+    );
+    if (!konfirmasi) {
+      return; // Batal approve jika user klik "Batal"
+    }
 
-      if (response.data && response.data.success) {
-        setModalActive(true);
-      } else {
-        console.warn(response.data?.message || "Gagal menyetujui tugas.");
+    try {
+      await api.patch(`/PenugasanTugasLuar/Approve`, { id });
+      try {
+        const refreshed = await api.get(`/Detail-Penugasan/${idDetail}`);
+        setTugas(refreshed.data.data);
+      } catch (refreshError) {
+        console.error("Gagal me-refresh data detail penugasan:", refreshError);
       }
+      setBtnDisabled("btn-disabled");
+      setModalActive(true); // Tampilkan modal sukses
     } catch (error) {
       console.error("Terjadi kesalahan saat menyetujui tugas:", error);
     }
@@ -118,6 +129,16 @@ const DetailPenugasan = () => {
             </span>
           </p>
           <p>
+            <strong>Status Persetujuan:</strong>{" "}
+            <span
+              className={`status ${tugas.status_persetujuan
+                ?.toLowerCase()
+                .replace(" ", "-")}`}
+            >
+              {tugas.status_persetujuan || "Belum Ada"}
+            </span>
+          </p>
+          <p>
             <strong>Deskripsi:</strong> {tugas.deskripsi}
           </p>
         </div>
@@ -139,7 +160,8 @@ const DetailPenugasan = () => {
           </button>
           {level === "camat" && (
             <button
-              className="approve-detail-button"
+              className={`approve-detail-button ${btnDisabled}`}
+              disabled={btnDisabled === "btn-disabled"}
               onClick={() => handlerApprove(tugas.id_tugas_luar)}
             >
               Approve

@@ -112,6 +112,11 @@
    background-color: #28712b;
   }
   
+
+  .btn-disabled{
+    background-color: #636e72;
+  }
+    
 /* Responsive Design */
 @media (max-width: 600px) {
   .container-detail {

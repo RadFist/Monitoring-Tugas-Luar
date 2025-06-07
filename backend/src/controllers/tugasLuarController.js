@@ -116,6 +116,7 @@ export const detailTugas = async (req, res) => {
       perihal: result[0].perihal,
       deskripsi: result[0].deskripsi,
       status: result[0].status,
+      status_persetujuan: result[0].status_approval,
       lokasi: result[0].lokasi,
       tanggal_mulai: waktu.tanggal,
       jam: waktu.jamMenit,

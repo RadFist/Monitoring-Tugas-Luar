@@ -68,12 +68,14 @@ const ListTugas = () => {
         id: id,
       });
       if (response.data && response.data.success) {
-        const responseGetListTugas = (await api.get(routeList)).data;
-        setDaftarTugas(responseGetListTugas.data);
-        setModalActive(true);
+        try {
+          const responseRefreshedGetListTugas = (await api.get(routeList)).data;
+          setDaftarTugas(responseRefreshedGetListTugas.data);
+        } catch (error) {}
       } else {
-        console.warn(response.data?.message || "Gagal menyetujui tugas.");
+        console.error("Gagal memperbarui daftar tugas:", error);
       }
+      setModalActive(true);
     } catch (error) {
       console.error("Terjadi kesalahan saat menyetujui tugas:", error);
     }

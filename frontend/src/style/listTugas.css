@@ -69,16 +69,14 @@ body {
     text-transform: capitalize;
   }
   
-  .status.selesai {
+  .status.selesai, .status.approve {
     background-color: #4caf50;
   }
-  .status.belum-selesai {
+  .status.belum-selesai, .status.belum-mulai {
     background-color: #ff1100;
   }
-  .status.belum-mulai {
-    background-color: #ff0000;
-  }
-  .status.diproses {
+  
+  .status.diproses, .status.pending {
     background-color: #ff9800;
   }
   
