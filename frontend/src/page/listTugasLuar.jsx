@@ -16,7 +16,7 @@ const ListTugas = () => {
   const [loading, setLoading] = useState(false);
   const [modalActive, setModalActive] = useState(false);
   const [daftarTugas, setDaftarTugas] = useState([]);
-  const [filter, setFilter] = useState("none");
+  const [filter, setFilter] = useState({ status: "none" });
   const token = getToken();
   const payload = token ? jwtDecode(token) : "";
   const level = payload.level;
@@ -89,7 +89,12 @@ const ListTugas = () => {
       <HeaderSecond text="List Tugas">
         <FormControl size="small">
           <InputLabel>Fillter</InputLabel>
-          <Select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <Select
+            value={filter.status}
+            onChange={(e) =>
+              setFilter((prev) => ({ ...prev, status: e.target.value }))
+            }
+          >
             {level === "camat" ? (
               <>
                 <MenuItem value="none">NONE</MenuItem>
