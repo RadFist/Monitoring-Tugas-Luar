@@ -119,6 +119,19 @@ body{
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
 }
+.header-cont-second {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  width: 98%;
+  margin: 10px auto;
+  padding: 12px 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  margin-top: 25px;
+}
 
 /* LEFT SECTION */
 .left-side {

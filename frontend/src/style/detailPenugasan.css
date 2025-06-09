@@ -76,6 +76,10 @@
   display: flex;
   justify-content: space-between;
 }
+.btn-cont-next{
+  display: flex;
+  gap: 10px;
+}
 
 .btn-pdf-detail {
   background-color: #1a73e8;
@@ -112,10 +116,28 @@
    background-color: #28712b;
   }
   
+  .laporan-button{  
+  background-color:  #035edd;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap : 3px;
+}
+    
+  .laporan-button:hover {
+   background-color:  #013f97;
+  }
 
   .btn-disabled{
     background-color: #636e72;
   }
+
     
 /* Responsive Design */
 @media (max-width: 600px) {

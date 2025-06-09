@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import "../style/detailPenugasan.css";
 import DownloadIcon from "@mui/icons-material/Download";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import SummarizeIcon from "@mui/icons-material/Summarize";
 import { useEffect, useState } from "react";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import api from "../services/api";
@@ -158,16 +159,31 @@ const DetailPenugasan = () => {
             Download PDF
             <DownloadIcon />
           </button>
-          {level === "camat" && (
-            <button
-              className={`approve-detail-button ${btnDisabled}`}
-              disabled={btnDisabled === "btn-disabled"}
-              onClick={() => handlerApprove(tugas.id_tugas_luar)}
-            >
-              Approve
-              <CheckCircleIcon sx={{ fontSize: 16 }} />
-            </button>
-          )}
+          <div className="btn-cont-next">
+            {level === "camat" && (
+              <button
+                className={`approve-detail-button ${btnDisabled}`}
+                disabled={btnDisabled === "btn-disabled"}
+                onClick={() => handlerApprove(tugas.id_tugas_luar)}
+              >
+                Approve
+                <CheckCircleIcon sx={{ fontSize: 16 }} />
+              </button>
+            )}
+            {tugas.status != "tugas.status" &&
+              tugas.status_persetujuan === "approve" && (
+                <button
+                  className={`laporan-button `}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    alert(tugas.id_tugas_luar);
+                  }}
+                >
+                  Laporan
+                  <SummarizeIcon sx={{ fontSize: 16 }} />
+                </button>
+              )}
+          </div>
         </div>
       </div>
     </div>
