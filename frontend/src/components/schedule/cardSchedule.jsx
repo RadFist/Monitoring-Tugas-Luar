@@ -5,6 +5,7 @@ const cardSchedule = ({
   time = "Time",
   listActivity = ["Activity"],
   listEmployee = ["Employeer"],
+  handlerClick,
 }) => {
   return (
     <>
@@ -19,7 +20,11 @@ const cardSchedule = ({
         </div>
         <ScheduleBodyPart title={"Pegawai"} data={listEmployee} />
         <div className="button-wrapper">
-          <ButtonComp text="detail" className="btn-schedule" />
+          <ButtonComp
+            text="detail"
+            className="btn-schedule"
+            onClick={handlerClick}
+          />
         </div>
       </div>
     </>

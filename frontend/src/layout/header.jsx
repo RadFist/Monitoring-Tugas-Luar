@@ -3,15 +3,15 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { Tooltip, Avatar, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 
-const Header = ({ title, onToggleSidebar }) => {
+const Header = ({ onToggleSidebar }) => {
   const username = "";
 
   // Fungsi waktu berdasarkan jam lokal
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return "Selamat pagi";
-    else if (hour < 18) return "Selamat siang";
-    else return "Selamat malam";
+    if (hour < 12 && hour >= 5) return "Selamat pagi ⛅";
+    else if (hour < 18 && hour >= 12) return "Selamat siang ☀️";
+    else return "Selamat malam 🌙";
   };
 
   return (
@@ -20,7 +20,16 @@ const Header = ({ title, onToggleSidebar }) => {
         <BurgerBtn toggleSidebar={onToggleSidebar} />
         <div>
           <Typography variant="h6" className="header-title">
-            {title}
+            Kecamatan Sukadiri{" "}
+            <img
+              src="/img/logokab.png"
+              alt="img-logo"
+              style={{
+                width: "30px",
+                height: "30px",
+                objectFit: "contain",
+              }}
+            />
           </Typography>
           <Typography variant="body2" color="textSecondary">
             {getGreeting()} 👋

@@ -4,10 +4,15 @@ import {
   getListTugas,
   getDetailTugas,
   updateStatusApproveTugas,
-  getListTugasBYIdUser,
+  getListTugasWithUser,
+  getListTugasGrupTime,
 } from "../model/tugasLuarModel.js";
 import { schemaPneguasan } from "../utils/schemaJoi.js";
-import { formatDateIso, parseDateTime } from "../utils/dateFormater.js";
+import {
+  formatDateIso,
+  formatTanggalIndo,
+  parseDateTime,
+} from "../utils/dateFormater.js";
 
 export const inputPenugasan = async (req, res) => {
   const data = req.body; //ngambil data dari body request
@@ -52,35 +57,84 @@ export const inputPenugasan = async (req, res) => {
 
 export const listTugas = async (req, res) => {
   const userLevel = req.custom?.user?.level;
-  try {
-    let tugasListRaw = "";
-    if (userLevel === "camat") {
-      tugasListRaw = await getListTugas("status_approval = 'pending' ");
-    } else {
-      tugasListRaw = await getListTugas();
-    }
-    const tugasList = tugasListRaw.map((tugas) => ({
-      ...tugas,
-      tanggal_mulai: formatDateIso(tugas.tanggal_mulai),
-      tanggal_selesai: formatDateIso(tugas.tanggal_selesai),
-    }));
+  const grup = req.query.grup || "";
 
-    res.status(200).json({
-      message: "Data tugas retrieved successfully",
-      data: tugasList,
-    });
-  } catch (error) {
-    console.error("Failed to fetch data tugas:", error);
-    res.status(500).json({
-      message: "An error occurred while fetching data tugas",
-    });
+  if (grup === "date") {
+    try {
+      const data = await getListTugasGrupTime();
+      const dataConvert = data.map((tugas) => ({
+        ...tugas,
+        tanggal_nama: formatTanggalIndo(formatDateIso(tugas.tanggal_mulai)),
+        tanggal_mulai: formatDateIso(tugas.tanggal_mulai),
+      }));
+
+      const groupedByTanggal = {};
+
+      dataConvert.forEach((item) => {
+        let tanggal = item.tanggal_nama;
+        let tanggalNumber = item.tanggal_mulai;
+
+        if (!groupedByTanggal[tanggal]) {
+          groupedByTanggal[tanggal] = {
+            tanggal,
+            tanggalNumber,
+            kegiatan: new Set(),
+            pegawai: new Set(),
+            status: new Set(),
+          };
+        }
+
+        groupedByTanggal[tanggal].kegiatan.add(item.judul_tugas);
+        groupedByTanggal[tanggal].pegawai.add(item.nama);
+        groupedByTanggal[tanggal].status.add(item.status);
+      });
+
+      const result = Object.values(groupedByTanggal).map((item) => ({
+        tanggal: item.tanggal,
+        tanggalNumber: item.tanggalNumber,
+        kegiatan: Array.from(item.kegiatan),
+        pegawai: Array.from(item.pegawai),
+        status: Array.from(item.status),
+      }));
+
+      return res.status(200).json({ message: `success`, data: result });
+    } catch (error) {
+      console.error("Failed to fetch data tugas:", error);
+      return res.status(500).json({
+        message: "An error occurred while fetching data tugas",
+      });
+    }
+  } else {
+    try {
+      let tugasListRaw = "";
+      if (userLevel === "camat") {
+        tugasListRaw = await getListTugas("status_approval = 'pending' ");
+      } else {
+        tugasListRaw = await getListTugas();
+      }
+      const tugasList = tugasListRaw.map((tugas) => ({
+        ...tugas,
+        tanggal_mulai: formatDateIso(tugas.tanggal_mulai),
+        tanggal_selesai: formatDateIso(tugas.tanggal_selesai),
+      }));
+
+      res.status(200).json({
+        message: "Data tugas retrieved successfully",
+        data: tugasList,
+      });
+    } catch (error) {
+      console.error("Failed to fetch data tugas:", error);
+      res.status(500).json({
+        message: "An error occurred while fetching data tugas",
+      });
+    }
   }
 };
 
 export const listTugasPegawai = async (req, res) => {
   const id = req.params.id;
   try {
-    const tugasListRaw = await getListTugasBYIdUser(id);
+    const tugasListRaw = await getListTugasWithUser(id);
     const tugasList = tugasListRaw.map((tugas) => ({
       ...tugas,
       tanggal_mulai: formatDateIso(tugas.tanggal_mulai),

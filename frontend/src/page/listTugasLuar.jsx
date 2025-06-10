@@ -1,9 +1,15 @@
 import "../style/listTugas.css";
 import ArrowIcon from "@mui/icons-material/ArrowForwardIos";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import {
+  FormControl,
+  TextField,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import { jwtDecode } from "jwt-decode";
 import { getToken } from "../utils/tokenManpulation";
@@ -13,10 +19,17 @@ import { HeaderSecond } from "../layout/headerSecond";
 
 const ListTugas = () => {
   const navigate = useNavigate();
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
+  const filterDate = query.get("filterDate");
+
   const [loading, setLoading] = useState(false);
   const [modalActive, setModalActive] = useState(false);
   const [daftarTugas, setDaftarTugas] = useState([]);
-  const [filter, setFilter] = useState({ status: "none" });
+  const [filter, setFilter] = useState({
+    date: filterDate || "",
+    status: "none",
+  });
   const token = getToken();
   const payload = token ? jwtDecode(token) : "";
   const level = payload.level;
@@ -48,8 +61,51 @@ const ListTugas = () => {
 
   if (loading) {
     return (
-      <div className="content-list-tugas-loading">
-        <Loading />
+      <div>
+        <HeaderSecond text="List Tugas">
+          <FormControl size="small" style={{ marginRight: "20px" }}>
+            {/* <InputLabel>Fillter Date</InputLabel> */}
+            <TextField
+              size="small"
+              type="date"
+              value={filter.date}
+              onChange={(e) =>
+                setFilter((prev) => ({ ...prev, date: e.target.value }))
+              }
+            />
+          </FormControl>
+          <FormControl size="small">
+            {/* <InputLabel>Fillter Status</InputLabel> */}
+
+            <Select
+              value={filter.status}
+              onChange={(e) =>
+                setFilter((prev) => ({ ...prev, status: e.target.value }))
+              }
+            >
+              {level === "camat" ? (
+                <>
+                  <MenuItem value="none">NONE</MenuItem>
+                  <MenuItem value="approve">Approve</MenuItem>
+                  <MenuItem value="pending">Pending</MenuItem>
+                  <MenuItem value="rejected">Rejected</MenuItem>
+                </>
+              ) : (
+                // Menu untuk user non-camat
+                ["none", "approve", "pending"].map((status) => (
+                  <MenuItem key={status} value={status}>
+                    {status === undefined
+                      ? "NONE"
+                      : status.charAt(0).toUpperCase() + status.slice(1)}
+                  </MenuItem>
+                ))
+              )}
+            </Select>
+          </FormControl>
+        </HeaderSecond>
+        <div className="content-list-tugas">
+          <Loading />
+        </div>
       </div>
     );
   }
@@ -87,8 +143,20 @@ const ListTugas = () => {
   return (
     <div>
       <HeaderSecond text="List Tugas">
+        <FormControl size="small" style={{ marginRight: "20px" }}>
+          {/* <InputLabel>Fillter Date</InputLabel> */}
+          <TextField
+            size="small"
+            type="date"
+            value={filter.date}
+            onChange={(e) =>
+              setFilter((prev) => ({ ...prev, date: e.target.value }))
+            }
+          />
+        </FormControl>
         <FormControl size="small">
-          <InputLabel>Fillter</InputLabel>
+          {/* <InputLabel>Fillter Status</InputLabel> */}
+
           <Select
             value={filter.status}
             onChange={(e) =>

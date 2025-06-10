@@ -67,7 +67,7 @@ export const getListTugas = async (cond = "1") => {
   }
 };
 
-export const getListTugasBYIdUser = async (id) => {
+export const getListTugasWithUser = async (id) => {
   try {
     const [rows] = await db.query(
       `SELECT 
@@ -119,6 +119,42 @@ WHERE tugas.id_tugas_luar = ? `,
     return rows;
   } catch (error) {
     throw new Error("Error fetch data detail: " + error.message);
+  }
+};
+
+export const getListTugasGrupTime = async () => {
+  try {
+    const [hasilTanggal] = await db.query(
+      `SELECT DISTINCT DATE(tanggal_mulai) AS tanggal
+FROM tb_tugas_luar
+WHERE status != 'Selesai' AND tanggal_mulai >= CURDATE()
+ORDER BY tanggal ASC 
+LIMIT 4;`
+    );
+    const tanggalList = hasilTanggal.map((item) => item.tanggal);
+    const placeholders = tanggalList.map(() => "?").join(", ");
+
+    const [data] = await db.query(
+      `SELECT 
+    tl.id_tugas_luar, 
+    tl.judul_tugas, 
+    tl.lokasi, 
+    tl.tanggal_mulai,  
+    ur.nama,
+    CASE 
+      WHEN CURDATE() >= tl.tanggal_mulai AND tl.status != 'Selesai' THEN 'Diproses'  
+      ELSE tl.status 
+    END AS status 
+  FROM tb_tugas_luar AS tl
+  JOIN tb_pivot_tugas AS pv ON pv.id_tugas_luar = tl.id_tugas_luar
+  JOIN tb_user AS ur ON ur.id_user = pv.id_pegawai
+  WHERE DATE(tl.tanggal_mulai) IN (${placeholders})
+  ORDER BY tl.tanggal_mulai ASC`,
+      tanggalList
+    );
+    return data;
+  } catch (error) {
+    throw new Error("Error fetch data list tugas " + error.message);
   }
 };
 

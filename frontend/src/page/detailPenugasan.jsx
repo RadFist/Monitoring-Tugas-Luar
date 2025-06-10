@@ -155,10 +155,12 @@ const DetailPenugasan = () => {
           </ul>
         </div>
         <div className="btn-container-detail">
-          <button className="btn-pdf-detail" onClick={handleDownloadPDF}>
-            Download PDF
-            <DownloadIcon />
-          </button>
+          {tugas.status_persetujuan === "approve" && (
+            <button className="btn-pdf-detail" onClick={handleDownloadPDF}>
+              Download PDF
+              <DownloadIcon />
+            </button>
+          )}
           <div className="btn-cont-next">
             {level === "camat" && (
               <button

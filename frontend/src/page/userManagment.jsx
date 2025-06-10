@@ -8,6 +8,7 @@ import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import FormModal from "../components/modal";
 import { AddUser } from "../services/authServices";
 import api, { plainApi } from "../services/api";
+import { HeaderSecond } from "../layout/headerSecond";
 
 const UserManagment = () => {
   const [getData, setGetData] = useState({ data: [], keys: [] });
@@ -255,7 +256,8 @@ const UserManagment = () => {
   //loading
   if (loading) {
     return (
-      <div style={{ margin: "10px", padding: "10px" }}>
+      <div>
+        <HeaderSecond text="List Tugas"></HeaderSecond>
         <span className="title-table-user">USER TABLE</span>
         <div className="lo-bg-usermanagemnt">
           <Loading />
@@ -265,7 +267,7 @@ const UserManagment = () => {
   }
 
   return (
-    <div style={{ margin: "10px", padding: "10px" }}>
+    <div>
       <FormModal
         displayModal={modalActive ? "active" : ""}
         onSubmit={handlerSubmit}
@@ -376,8 +378,14 @@ const UserManagment = () => {
         </span>
         <button type="submit">Create</button>
       </FormModal>
-      <span className="title-table-user">USER TABLE</span>
-      <Table columns={columns} rows={rows} handlerClickAdd={handlerShowModal} />
+      <HeaderSecond text="User Management"></HeaderSecond>
+      <div className="user-management-container">
+        <Table
+          columns={columns}
+          rows={rows}
+          handlerClickAdd={handlerShowModal}
+        />
+      </div>
     </div>
   );
 };

@@ -124,9 +124,6 @@ const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
           >
             <InfoIcon /> <span>About</span>
           </div>
-          <div className="menu-item" onClick={handleNavigate}>
-            <PictureAsPdfIcon /> <span>Generate PDF</span>
-          </div>
           <div className="menu-item" onClick={handlerLogOut}>
             <LogoutIcon /> <span>Logout</span>
           </div>

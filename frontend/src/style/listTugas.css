@@ -13,6 +13,8 @@ body {
     flex-direction: column;
     width: 99%;
     margin: 5px auto;
+    padding: 20px 8px;
+    box-sizing: border-box;
   }
   
   .content-list-tugas-loading{
@@ -22,7 +24,7 @@ body {
   /* Kotak putih berisi daftar */
   .list-tugas {
     width: 100%;
-    padding: 10px 24px;
+   
     display: flex;
     flex-direction: column;
     gap: 16px;

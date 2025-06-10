@@ -14,7 +14,7 @@ const Layout = () => {
     "/": "Dashboard",
     "/about": "About Us",
     "/contact": "Contact Us",
-    "/User-Managemet": "User Management",
+    "/User-Management": "User Management",
     "/Input-Tugas": "Input Tugas",
     "/Tugas-Luar": "List Tugas",
   };
@@ -42,7 +42,7 @@ const Layout = () => {
         className={sidebarActive ? "blur" : ""}
         onClick={closeSideBar}
       >
-        <Header title={pagelocation} onToggleSidebar={toggleSidebar} />
+        <Header onToggleSidebar={toggleSidebar} />
         <main className="content">
           <Outlet />
         </main>
