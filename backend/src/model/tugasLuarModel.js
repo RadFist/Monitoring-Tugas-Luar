@@ -52,7 +52,8 @@ export const getListTugas = async (cond = "1") => {
         judul_tugas, 
         lokasi, 
         tanggal_mulai, 
-        tanggal_selesai, 
+        tanggal_selesai,
+        status_approval, 
         CASE 
           WHEN CURDATE() >= tanggal_mulai AND status != 'Selesai' THEN 'Diproses'  
           ELSE status 

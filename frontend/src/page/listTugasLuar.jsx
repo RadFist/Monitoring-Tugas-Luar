@@ -22,17 +22,18 @@ const ListTugas = () => {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
   const filterDate = query.get("filterDate");
+  const token = getToken();
+  const payload = token ? jwtDecode(token) : "";
+  const level = payload.level;
 
   const [loading, setLoading] = useState(false);
   const [modalActive, setModalActive] = useState(false);
   const [daftarTugas, setDaftarTugas] = useState([]);
   const [filter, setFilter] = useState({
     date: filterDate || "",
+    status_approval: level === "camat" ? "pending" : "none",
     status: "none",
   });
-  const token = getToken();
-  const payload = token ? jwtDecode(token) : "";
-  const level = payload.level;
   const roleRoutes = {
     camat: "/allTugas/approval",
     user: "/tugas/" + payload.id_user,
@@ -42,7 +43,24 @@ const ListTugas = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseGetListTugas = (await api.get(routeList)).data;
+        let routeFilter = routeList;
+        const queryParams = [];
+
+        if (filter.date) {
+          queryParams.push(`date=${filter.date}`);
+        }
+        if (filter.status_approval && filter.status_approval !== "none") {
+          queryParams.push(`status_approval=${filter.status_approval}`);
+        }
+        if (filter.status && filter.status !== "none") {
+          queryParams.push(`status=${filter.status}`);
+        }
+
+        if (queryParams.length > 0) {
+          routeFilter += "?" + queryParams.join("&");
+        }
+
+        const responseGetListTugas = (await api.get(routeFilter)).data;
         setDaftarTugas(responseGetListTugas.data);
       } catch (error) {
         console.error("Error fetching :", error.message);
@@ -53,62 +71,11 @@ const ListTugas = () => {
     };
 
     fetchData();
-  }, []);
+  }, [filter]);
 
   // useEffect(() => {
-  //   console.log(filter);
+  //   console.log(daftarTugas);
   // }, [filter]);
-
-  if (loading) {
-    return (
-      <div>
-        <HeaderSecond text="List Tugas">
-          <FormControl size="small" style={{ marginRight: "20px" }}>
-            {/* <InputLabel>Fillter Date</InputLabel> */}
-            <TextField
-              size="small"
-              type="date"
-              value={filter.date}
-              onChange={(e) =>
-                setFilter((prev) => ({ ...prev, date: e.target.value }))
-              }
-            />
-          </FormControl>
-          <FormControl size="small">
-            {/* <InputLabel>Fillter Status</InputLabel> */}
-
-            <Select
-              value={filter.status}
-              onChange={(e) =>
-                setFilter((prev) => ({ ...prev, status: e.target.value }))
-              }
-            >
-              {level === "camat" ? (
-                <>
-                  <MenuItem value="none">NONE</MenuItem>
-                  <MenuItem value="approve">Approve</MenuItem>
-                  <MenuItem value="pending">Pending</MenuItem>
-                  <MenuItem value="rejected">Rejected</MenuItem>
-                </>
-              ) : (
-                // Menu untuk user non-camat
-                ["none", "approve", "pending"].map((status) => (
-                  <MenuItem key={status} value={status}>
-                    {status === undefined
-                      ? "NONE"
-                      : status.charAt(0).toUpperCase() + status.slice(1)}
-                  </MenuItem>
-                ))
-              )}
-            </Select>
-          </FormControl>
-        </HeaderSecond>
-        <div className="content-list-tugas">
-          <Loading />
-        </div>
-      </div>
-    );
-  }
 
   const handlerClickDetail = (id) => {
     navigate(`Detail-Penugasan/${id}`);
@@ -127,10 +94,7 @@ const ListTugas = () => {
         id: id,
       });
       if (response.data && response.data.success) {
-        try {
-          const responseRefreshedGetListTugas = (await api.get(routeList)).data;
-          setDaftarTugas(responseRefreshedGetListTugas.data);
-        } catch (error) {}
+        setFilter((prev) => ({ ...prev, status_approval: "approve" }));
       } else {
         console.error("Gagal memperbarui daftar tugas:", error);
       }
@@ -139,6 +103,73 @@ const ListTugas = () => {
       console.error("Terjadi kesalahan saat menyetujui tugas:", error);
     }
   };
+
+  if (loading) {
+    return (
+      <div>
+        <HeaderSecond text="List Tugas">
+          <FormControl size="small" style={{ marginRight: "20px" }}>
+            {/* <InputLabel>Fillter Date</InputLabel> */}
+            <TextField
+              size="small"
+              type="date"
+              value={filter.date}
+              onChange={(e) =>
+                setFilter((prev) => ({ ...prev, date: e.target.value }))
+              }
+            />
+          </FormControl>
+
+          {level === "camat" && (
+            <FormControl size="small" style={{ marginRight: "20px" }}>
+              {/* <InputLabel>Fillter Status</InputLabel> */}
+              <Select
+                value={filter.status_approval}
+                onChange={(e) =>
+                  setFilter((prev) => ({
+                    ...prev,
+                    status_approval: e.target.value,
+                  }))
+                }
+              >
+                {["none", "approve", "pending", "reject"].map((status) => (
+                  <MenuItem key={status} value={status}>
+                    {status === "none"
+                      ? "NONE"
+                      : status.charAt(0).toUpperCase() + status.slice(1)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+
+          <FormControl size="small">
+            <Select
+              value={filter.status}
+              onChange={(e) =>
+                setFilter((prev) => ({
+                  ...prev,
+                  status: e.target.value,
+                }))
+              }
+            >
+              {["none", "selesai", "Diproses", "belum mulai"].map((status) => (
+                <MenuItem key={status} value={status}>
+                  {status === "none"
+                    ? "NONE"
+                    : status.charAt(0).toUpperCase() + status.slice(1)}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </HeaderSecond>
+
+        <div className="content-list-tugas">
+          <Loading />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -154,32 +185,46 @@ const ListTugas = () => {
             }
           />
         </FormControl>
-        <FormControl size="small">
-          {/* <InputLabel>Fillter Status</InputLabel> */}
 
-          <Select
-            value={filter.status}
-            onChange={(e) =>
-              setFilter((prev) => ({ ...prev, status: e.target.value }))
-            }
-          >
-            {level === "camat" ? (
-              <>
-                <MenuItem value="none">NONE</MenuItem>
-                <MenuItem value="approve">Approve</MenuItem>
-                <MenuItem value="pending">Pending</MenuItem>
-                <MenuItem value="rejected">Rejected</MenuItem>
-              </>
-            ) : (
-              // Menu untuk user non-camat
-              ["none", "approve", "pending"].map((status) => (
+        {level === "camat" && (
+          <FormControl size="small" style={{ marginRight: "20px" }}>
+            {/* <InputLabel>Fillter Status</InputLabel> */}
+            <Select
+              value={filter.status_approval}
+              onChange={(e) =>
+                setFilter((prev) => ({
+                  ...prev,
+                  status_approval: e.target.value,
+                }))
+              }
+            >
+              {["none", "approve", "pending", "reject"].map((status) => (
                 <MenuItem key={status} value={status}>
-                  {status === undefined
+                  {status === "none"
                     ? "NONE"
                     : status.charAt(0).toUpperCase() + status.slice(1)}
                 </MenuItem>
-              ))
-            )}
+              ))}
+            </Select>
+          </FormControl>
+        )}
+        <FormControl size="small">
+          <Select
+            value={filter.status}
+            onChange={(e) =>
+              setFilter((prev) => ({
+                ...prev,
+                status: e.target.value,
+              }))
+            }
+          >
+            {["none", "selesai", "Diproses", "belum mulai"].map((status) => (
+              <MenuItem key={status} value={status}>
+                {status === "none"
+                  ? "NONE"
+                  : status.charAt(0).toUpperCase() + status.slice(1)}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </HeaderSecond>
@@ -224,7 +269,10 @@ const ListTugas = () => {
                   </button>
                   {level === "camat" && (
                     <button
-                      className="approve-button"
+                      disabled={item.status_approval === "approve"}
+                      className={`approve-button ${
+                        item.status_approval === "approve" ? "btn-disabled" : ""
+                      }`}
                       onClick={() => handlerApprove(item.id_tugas_luar)}
                     >
                       Approve

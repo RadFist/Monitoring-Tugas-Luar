@@ -136,6 +136,10 @@
 
   .btn-disabled{
     background-color: #636e72;
+    cursor: default;
+  }
+  .btn-disabled:hover{
+    background-color: #636e72;
   }
 
     

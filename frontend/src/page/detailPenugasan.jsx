@@ -172,7 +172,7 @@ const DetailPenugasan = () => {
                 <CheckCircleIcon sx={{ fontSize: 16 }} />
               </button>
             )}
-            {tugas.status != "tugas.status" &&
+            {tugas.status != "belum mulai" &&
               tugas.status_persetujuan === "approve" && (
                 <button
                   className={`laporan-button `}

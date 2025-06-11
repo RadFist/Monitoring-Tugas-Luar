@@ -56,8 +56,10 @@ export const inputPenugasan = async (req, res) => {
 };
 
 export const listTugas = async (req, res) => {
-  const userLevel = req.custom?.user?.level;
   const grup = req.query.grup || "";
+  const dateFilter = req.query.date || "";
+  const statusApprovalFilter = req.query.status_approval || "";
+  const statusFilter = req.query.status || "";
 
   if (grup === "date") {
     try {
@@ -106,12 +108,28 @@ export const listTugas = async (req, res) => {
     }
   } else {
     try {
-      let tugasListRaw = "";
-      if (userLevel === "camat") {
-        tugasListRaw = await getListTugas("status_approval = 'pending' ");
-      } else {
-        tugasListRaw = await getListTugas();
+      let filterConditions = [];
+      let tugasListRaw;
+
+      // Tambahkan filter date jika ada
+      if (dateFilter) {
+        filterConditions.push(`tanggal_mulai = '${dateFilter}'`);
       }
+      // Tambahkan filter status jika ada
+
+      if (statusFilter) {
+        filterConditions.push(`status = '${statusFilter}'`);
+      }
+
+      if (statusApprovalFilter) {
+        filterConditions.push(`status_approval = '${statusApprovalFilter}'`);
+      }
+      // Gabungkan semua filter jadi satu string
+      const whereClause =
+        filterConditions.length > 0 ? filterConditions.join(" AND ") : "";
+
+      tugasListRaw = await getListTugas(whereClause || 1);
+
       const tugasList = tugasListRaw.map((tugas) => ({
         ...tugas,
         tanggal_mulai: formatDateIso(tugas.tanggal_mulai),
