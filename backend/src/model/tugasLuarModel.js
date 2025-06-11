@@ -68,7 +68,7 @@ export const getListTugas = async (cond = "1") => {
   }
 };
 
-export const getListTugasWithUser = async (id) => {
+export const getListTugasWithUser = async (valueParams, query = "") => {
   try {
     const [rows] = await db.query(
       `SELECT 
@@ -77,18 +77,16 @@ export const getListTugasWithUser = async (id) => {
   tl.lokasi, 
   tl.tanggal_mulai, 
   tl.tanggal_selesai, 
-  pv.*,  
-  CASE 
-    WHEN CURDATE() >= tl.tanggal_mulai AND tl.status != 'Selesai' THEN 'Diproses'  
-    ELSE tl.status 
-  END AS status 
+  tl.status AS status, 
+  pv.*
 FROM tb_tugas_luar AS tl
 JOIN tb_pivot_tugas AS pv 
   ON pv.id_tugas_luar = tl.id_tugas_luar
-  WHERE pv.id_pegawai = ?
+  WHERE pv.id_pegawai = ? 
+  ${query}
 ORDER BY tl.tanggal_mulai ASC;
 `,
-      [id]
+      valueParams
     );
     return rows;
   } catch (error) {

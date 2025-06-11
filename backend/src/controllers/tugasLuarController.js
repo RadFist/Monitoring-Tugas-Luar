@@ -150,9 +150,32 @@ export const listTugas = async (req, res) => {
 };
 
 export const listTugasPegawai = async (req, res) => {
-  const id = req.params.id;
+  const dateFilter = req.query.date || "";
+  const statusFilter = req.query.status || "";
+  let filterConditions = [];
+  let arrValue = [];
+  arrValue.push(req.params.id);
+  // Tambahkan filter date jika ada
+  if (dateFilter) {
+    filterConditions.push(`tanggal_mulai = ? `);
+    arrValue.push(dateFilter);
+  }
+  // Tambahkan filter status jika ada
+
+  if (statusFilter) {
+    filterConditions.push(`status = ? `);
+    arrValue.push(statusFilter);
+  }
+
+  // Gabungkan semua filter jadi satu string
+  const whereClause =
+    filterConditions.length > 0 ? `AND ${filterConditions.join(" AND ")}` : "";
+
+  console.log(arrValue);
+  console.log(whereClause);
+
   try {
-    const tugasListRaw = await getListTugasWithUser(id);
+    const tugasListRaw = await getListTugasWithUser(arrValue, whereClause);
     const tugasList = tugasListRaw.map((tugas) => ({
       ...tugas,
       tanggal_mulai: formatDateIso(tugas.tanggal_mulai),

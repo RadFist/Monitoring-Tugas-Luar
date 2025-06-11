@@ -2,10 +2,12 @@ import BurgerBtn from "../components/BurgerBtn";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { Tooltip, Avatar, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
+import { useState } from "react";
+import { InformationModal } from "../components/modal";
 
-const Header = ({ onToggleSidebar }) => {
-  const username = "";
-
+const Header = ({ onToggleSidebar, payload }) => {
+  const [modalActive, setModalActive] = useState(false);
+  const username = payload.username || "";
   // Fungsi waktu berdasarkan jam lokal
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -13,9 +15,17 @@ const Header = ({ onToggleSidebar }) => {
     else if (hour < 18 && hour >= 12) return "Selamat siang ☀️";
     else return "Selamat malam 🌙";
   };
+  const handlerCloseModal = () => {
+    setModalActive(false);
+  };
 
   return (
     <header className="header-cont">
+      <InformationModal
+        displayModal={modalActive ? "active" : ""}
+        onClose={handlerCloseModal}
+        payload={payload}
+      />
       <div className="left-side">
         <BurgerBtn toggleSidebar={onToggleSidebar} />
         <div>
@@ -51,6 +61,9 @@ const Header = ({ onToggleSidebar }) => {
             marginLeft: 2,
             width: 40,
             height: 40,
+          }}
+          onClick={() => {
+            setModalActive("active");
           }}
         >
           {username[0]}

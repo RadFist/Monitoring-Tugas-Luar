@@ -30,4 +30,23 @@ export const SuccessModal = ({ displayModal, onClose }) => {
   );
 };
 
+export const InformationModal = ({ displayModal, onClose, payload }) => {
+  return (
+    <div className={`information-modal ${displayModal}`} onClick={onClose}>
+      <div
+        className="information-modal-cont"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button className="close-btn" onClick={onClose}>
+          <CloseIcon />
+        </button>
+        <h2>{payload.username}</h2>
+        <p>{payload.nama}</p>
+        <p>{payload.email}</p>
+        <p>nip. {payload.nip}</p>
+        <p>{payload.level}</p>
+      </div>
+    </div>
+  );
+};
 export default formModal;

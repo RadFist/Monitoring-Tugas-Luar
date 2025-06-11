@@ -5,42 +5,14 @@ import ListAlt from "@mui/icons-material/ListAlt";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import InfoIcon from "@mui/icons-material/Info";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { jwtDecode } from "jwt-decode";
+
 import { useNavigate } from "react-router-dom";
 import { clearToken, getToken } from "../utils/tokenManpulation";
 import { logoutUser } from "../services/authServices";
-import { useEffect, useState } from "react";
 
-const Sidebar = ({ displaySidebar, handlerClickArrow }) => {
-  const [userLevel, setUserLevel] = useState("");
+const Sidebar = ({ displaySidebar, handlerClickArrow, userLevel }) => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = getToken();
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-
-    try {
-      const decoded = jwtDecode(token);
-      setUserLevel(decoded.level);
-    } catch (error) {
-      console.error("Token tidak valid:", error);
-      navigate("/login");
-    }
-  }, []);
-
-  const handleNavigate = (event) => {
-    event.preventDefault();
-    const data = {
-      title: "Disposisi Surat",
-      content: "Isi surat yang mau dimunculkan di PDF",
-    };
-    navigate("/generate", { state: data });
-  };
 
   const handlerLogOut = async (event) => {
     event.preventDefault();
