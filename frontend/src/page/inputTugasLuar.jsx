@@ -7,6 +7,7 @@ import { listItem as ListPegawai } from "../components/listManagement";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import { HeaderSecond } from "../layout/headerSecond";
 
 const InputTugas = () => {
   const [formData, setFormData] = useState({});
@@ -152,176 +153,179 @@ const InputTugas = () => {
     );
   }
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h2>Input Tugas</h2>
-        <p className="page-subtitle">
-          <InfoOutlined className="info-icon" />
-          Silakan isi data tugas di bawah ini
-        </p>
-      </div>
+    <div>
+      <HeaderSecond text="Penugasan Pegawai"></HeaderSecond>
+      <div className="page-container">
+        <div className="page-header">
+          <h2>Input Tugas</h2>
+          <p className="page-subtitle">
+            <InfoOutlined className="info-icon" />
+            Silakan isi data tugas di bawah ini
+          </p>
+        </div>
 
-      <form className="form-container" onSubmit={handleSubmit}>
-        <label>
-          Tugas
-          <input
-            type="text"
-            name="tugas"
-            placeholder="ex: Rapat kordinasi di abc"
-            value={formData.tugas || ""}
-            onChange={handleInputChange}
-            required
-          />
-        </label>
-
-        <label>
-          Dasar
-          <input
-            type="text"
-            name="dasar"
-            placeholder="ex: Surat dari dinas Abc"
-            value={formData.dasar || ""}
-            onChange={handleInputChange}
-            required
-          />
-        </label>
-
-        <label>
-          Perihal
-          <input
-            type="text"
-            name="perihal"
-            placeholder="ex: undangan rapat abc xyz"
-            value={formData.perihal || ""}
-            onChange={handleInputChange}
-            required
-          />
-        </label>
-
-        <label>
-          lokasi
-          <input
-            type="text"
-            name="lokasi"
-            value={formData.lokasi || ""}
-            placeholder="ex: gedung abc dixyz"
-            onChange={handleInputChange}
-            required
-          />
-        </label>
-
-        <div className="date-row">
+        <form className="form-container" onSubmit={handleSubmit}>
           <label>
-            Tanggal Mulai
+            Tugas
             <input
-              type="date"
-              name="tanggalMulai"
-              value={formData.tanggalMulai || ""}
+              type="text"
+              name="tugas"
+              placeholder="ex: Rapat kordinasi di abc"
+              value={formData.tugas || ""}
               onChange={handleInputChange}
               required
             />
-            <label className="waktu-label-input">
-              waktu Mulai
-              <DatePicker
-                disableDayPicker
-                format="HH:mm"
-                plugins={[<TimePicker />]}
-                value={valueTime}
-                onChange={handleTimeChange}
-                editable={false}
+          </label>
+
+          <label>
+            Dasar
+            <input
+              type="text"
+              name="dasar"
+              placeholder="ex: Surat dari dinas Abc"
+              value={formData.dasar || ""}
+              onChange={handleInputChange}
+              required
+            />
+          </label>
+
+          <label>
+            Perihal
+            <input
+              type="text"
+              name="perihal"
+              placeholder="ex: undangan rapat abc xyz"
+              value={formData.perihal || ""}
+              onChange={handleInputChange}
+              required
+            />
+          </label>
+
+          <label>
+            lokasi
+            <input
+              type="text"
+              name="lokasi"
+              value={formData.lokasi || ""}
+              placeholder="ex: gedung abc dixyz"
+              onChange={handleInputChange}
+              required
+            />
+          </label>
+
+          <div className="date-row">
+            <label>
+              Tanggal Mulai
+              <input
+                type="date"
+                name="tanggalMulai"
+                value={formData.tanggalMulai || ""}
+                onChange={handleInputChange}
+                required
+              />
+              <label className="waktu-label-input">
+                waktu Mulai
+                <DatePicker
+                  disableDayPicker
+                  format="HH:mm"
+                  plugins={[<TimePicker />]}
+                  value={valueTime}
+                  onChange={handleTimeChange}
+                  editable={false}
+                  required
+                />
+              </label>
+            </label>
+
+            <label>
+              Tanggal Selesai
+              <input
+                type="date"
+                name="tanggalSelesai"
+                value={formData.tanggalSelesai || ""}
+                onChange={handleInputChange}
                 required
               />
             </label>
-          </label>
+          </div>
 
-          <label>
-            Tanggal Selesai
-            <input
-              type="date"
-              name="tanggalSelesai"
-              value={formData.tanggalSelesai || ""}
-              onChange={handleInputChange}
-              required
-            />
-          </label>
-        </div>
-
-        <div className="cont-penugasan-pegawai">
-          <div className="pegawai-controls">
-            <div className="pegawai-warp">
-              <label htmlFor="pegawai">Pilih Jabatan Pegawai</label>
-              <select
-                name="Jabatan"
-                id="Jabatan"
-                onChange={handleChangeJabatan}
-                className="select-pegawai"
-              >
-                <option value="">-- Pilih Jabtaan --</option>
-                {jabatanOptions.map((item) => (
-                  <option key={item.id_jabatan} value={item.id_jabatan}>
-                    {item.jabatan}
-                  </option>
-                ))}
-              </select>
+          <div className="cont-penugasan-pegawai">
+            <div className="pegawai-controls">
+              <div className="pegawai-warp">
+                <label htmlFor="pegawai">Pilih Jabatan Pegawai</label>
+                <select
+                  name="Jabatan"
+                  id="Jabatan"
+                  onChange={handleChangeJabatan}
+                  className="select-pegawai"
+                >
+                  <option value="">-- Pilih Jabtaan --</option>
+                  {jabatanOptions.map((item) => (
+                    <option key={item.id_jabatan} value={item.id_jabatan}>
+                      {item.jabatan}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {selectedJabatan && (
+                <>
+                  <div className="pegawai-warp">
+                    <label htmlFor="pegawai">Pilih Pegawai</label>
+                    <select
+                      name="pegawai"
+                      id="pegawai"
+                      onChange={handleInputChange}
+                      className="select-pegawai"
+                    >
+                      <option value="">-- Pilih Pegawai --</option>
+                      {listPegawaiOption.map((item) => (
+                        <option
+                          key={item.id_user}
+                          value={JSON.stringify({
+                            id: item.id_user,
+                            nama: item.nama,
+                            nip: item.nip,
+                          })}
+                        >
+                          {item.nama} {item.nip}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </>
+              )}
             </div>
+
             {selectedJabatan && (
               <>
-                <div className="pegawai-warp">
-                  <label htmlFor="pegawai">Pilih Pegawai</label>
-                  <select
-                    name="pegawai"
-                    id="pegawai"
-                    onChange={handleInputChange}
-                    className="select-pegawai"
-                  >
-                    <option value="">-- Pilih Pegawai --</option>
-                    {listPegawaiOption.map((item) => (
-                      <option
-                        key={item.id_user}
-                        value={JSON.stringify({
-                          id: item.id_user,
-                          nama: item.nama,
-                          nip: item.nip,
-                        })}
-                      >
-                        {item.nama} {item.nip}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <button
+                  type="button"
+                  onClick={handleAddPegawai}
+                  className="add-btn-pegawai"
+                >
+                  Tambahkan ke Daftar
+                </button>
               </>
             )}
           </div>
-
-          {selectedJabatan && (
-            <>
-              <button
-                type="button"
-                onClick={handleAddPegawai}
-                className="add-btn-pegawai"
-              >
-                Tambahkan ke Daftar
-              </button>
-            </>
+          {pegawai.length > 0 && (
+            <ListPegawai list={pegawai} onDelete={handlerDelete} />
           )}
-        </div>
-        {pegawai.length > 0 && (
-          <ListPegawai list={pegawai} onDelete={handlerDelete} />
-        )}
-        <label>
-          Deskripsi
-          <textarea
-            name="deskripsi"
-            rows="4"
-            value={formData.deskripsi || ""}
-            onChange={handleInputChange}
-          ></textarea>
-        </label>
+          <label>
+            Deskripsi
+            <textarea
+              name="deskripsi"
+              rows="4"
+              value={formData.deskripsi || ""}
+              onChange={handleInputChange}
+            ></textarea>
+          </label>
 
-        <button type="submit" className="submit-btn">
-          Simpan Tugas
-        </button>
-      </form>
+          <button type="submit" className="submit-btn">
+            Simpan Tugas
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

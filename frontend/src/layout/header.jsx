@@ -55,19 +55,21 @@ const Header = ({ onToggleSidebar, payload }) => {
           </button>
         </Tooltip>
 
-        <Avatar
-          sx={{
-            bgcolor: deepPurple[500],
-            marginLeft: 2,
-            width: 40,
-            height: 40,
-          }}
-          onClick={() => {
-            setModalActive("active");
-          }}
-        >
-          {username[0]}
-        </Avatar>
+        <Tooltip title="Profile">
+          <Avatar
+            sx={{
+              bgcolor: deepPurple[500],
+              marginLeft: 2,
+              width: 40,
+              height: 40,
+            }}
+            onClick={() => {
+              setModalActive("active");
+            }}
+          >
+            {username[0]}
+          </Avatar>
+        </Tooltip>
       </div>
     </header>
   );
