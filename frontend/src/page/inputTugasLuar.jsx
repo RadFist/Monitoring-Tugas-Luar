@@ -157,7 +157,7 @@ const InputTugas = () => {
       <HeaderSecond text="Penugasan Pegawai"></HeaderSecond>
       <div className="page-container">
         <div className="page-header">
-          <h2>Input Tugas</h2>
+          <h2>Input Tugas </h2>
           <p className="page-subtitle">
             <InfoOutlined className="info-icon" />
             Silakan isi data tugas di bawah ini

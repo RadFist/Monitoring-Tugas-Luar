@@ -57,6 +57,11 @@ export default function Login() {
         </div>
         <div className="CardWraperRight">
           <div className="CardHeader">
+            <img
+              src="/img/logokab.png"
+              className="logoBg-rightCard"
+              alt="Logo kab tangerang"
+            />
             <h1 className="Login-Text">Login</h1>
           </div>
           <div className="CardBody">

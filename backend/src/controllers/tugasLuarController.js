@@ -204,6 +204,7 @@ export const detailTugas = async (req, res) => {
     }
 
     const waktu = parseDateTime(result[0].tanggal_mulai);
+    const waktuPersetujuan = parseDateTime(result[0].date_approval);
     const data = {
       id_tugas_luar: result[0].id_tugas_luar,
       judul_tugas: result[0].judul_tugas,
@@ -212,6 +213,7 @@ export const detailTugas = async (req, res) => {
       deskripsi: result[0].deskripsi,
       status: result[0].status,
       status_persetujuan: result[0].status_approval,
+      tanggal_persetujuan: waktuPersetujuan.tanggal,
       lokasi: result[0].lokasi,
       tanggal_mulai: waktu.tanggal,
       jam: waktu.jamMenit,

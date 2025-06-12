@@ -132,7 +132,7 @@ export const PdfSuratTUgas = () => {
                       alignItems: "center",
                     }}
                   >
-                    <Text>Sukadiri, //tanggal disahkannya blm ada om</Text>
+                    <Text>Sukadiri, {data.tanggal_persetujuan}</Text>
                     <Text>Camat Sukadiri</Text>
                     <Text> </Text>
                     <Text> </Text>

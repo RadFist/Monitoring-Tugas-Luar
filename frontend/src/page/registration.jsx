@@ -69,7 +69,7 @@ export default function Login() {
       <div className="bg-container">
         <img className="LoginBackground" src={bgImage} alt="Login background" />
       </div>
-      <div className="CardContainer">
+      <div className="CardContainerRegist">
         <div className="CardWraperLeft">
           <img src={bgLoginCard} className="LoginBackgroundCard" />
           <img
@@ -84,6 +84,11 @@ export default function Login() {
         </div>
         <div className="CardWraperRight">
           <div className="CardHeader">
+            <img
+              src="/img/logokab.png"
+              className="logoBg-rightCard"
+              alt="Logo kab tangerang"
+            />
             <h1
               style={{ marginBlockStart: "0.20em", marginBlockEnd: "0.20em" }}
               className="Login-Text"
@@ -104,7 +109,7 @@ export default function Login() {
                   handlerInput={handlerInput}
                   optionValue={jabatanOptions}
                 />
-                <p style={{ margin: "0px" }}>
+                <p className="textBottomRegist" style={{ margin: "0px" }}>
                   have an account?{" "}
                   <a
                     onClick={() => {

@@ -1,4 +1,5 @@
 import db from "../config/db_mysql.js";
+import { formatDateIso } from "../utils/dateFormater.js";
 
 export const postTugas = async (
   id,
@@ -158,10 +159,11 @@ LIMIT 4;`
 };
 
 export const updateStatusApproveTugas = async (id) => {
+  const date = formatDateIso(new Date());
   try {
     const [result] = await db.query(
-      `UPDATE tb_tugas_luar SET status_approval = ? WHERE id_tugas_luar = ?`,
-      ["approve", id]
+      `UPDATE tb_tugas_luar SET status_approval = ? , date_approval = ? WHERE id_tugas_luar = ?`,
+      ["approve", date, id]
     );
 
     // Mengecek apakah data berhasil diupdate

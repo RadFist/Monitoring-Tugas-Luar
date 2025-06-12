@@ -58,6 +58,14 @@
   z-index: 1;
 }
 
+.logoBg-rightCard{
+  width: 100px;
+  height: auto;
+  position: relative; /* agar z-index bisa bekerja */
+  z-index: 1;
+  display: none;
+}
+
 .welcome-text {
   z-index: 1;
   position: relative;
@@ -82,6 +90,7 @@
   justify-content: center;
   background-color: #ffffff;
 }
+
 
 .CardHeader {
   text-align: center;
@@ -136,7 +145,7 @@
 .ButtonLogin {
   padding: 10px;
   background-color: black;
-  color: rgb(2, 33, 186);
+  color: rgb(47, 82, 255);
   width: 100%;
   height: 45px;
   border: none;
@@ -174,4 +183,111 @@
 .error-massage {
   color: rgb(255, 90, 90);
   font-size: larger;
+}
+
+/* regist diff */
+.CardContainerRegist {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  height: 90%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 20px 20px 7px rgba(0, 0, 0, 0.2);
+  background-color: white;
+}
+
+.inputRergistWarp{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}
+
+@media screen and (max-width: 700px) {
+  .CardContainer{
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 95%;
+  }
+ .CardWraperLeft{
+    display: none;
+ }
+ .CardWraperRight{
+    width: 100%;
+    padding: 20px 15px;
+ }
+.logoBg-rightCard{
+  
+  display: inline;
+}
+.Login-Text{
+  margin-top: 0px;
+}
+
+
+/* regist diff */
+.CardContainerRegist {
+  height: 95%;
+}
+
+
+}
+
+@media screen and (max-width: 550px),screen and (max-height: 500px)  {
+  .CardWraperLeft{
+    display: none; 
+ }
+  .LoginBackground{
+  display: none; 
+} 
+
+.CardContainer {
+  height: 100%;
+  width: 100%;
+  border-radius: 0%;
+  justify-content: center;
+  box-shadow: none;
+  overflow: auto;
+}
+
+.CardContainerRegist {
+  height: 100%;
+  width: 100%;
+  border-radius: 0%;
+  justify-content: center;  
+  box-shadow: none;
+  overflow: auto;
+}
+
+.textBottomRegist{
+  margin-bottom: 20px !important;
+}
+
+  /* .LoginContainer{
+  overflow: none;
+  background-color: #5375e5;
+  padding: 100px 0px;
+} */
+
+.CardWraperRight{
+justify-content: start;
+}
+
+/* regist diff */
+ /* .CardContainerRegist{
+  height: max-content;
+  }
+  */
+
+  .inputRergistWarp{
+  flex-direction: column;
+} 
+}
+
+@media screen and (max-height: 560px)  {
+  .CardContainer{
+    align-items: start;
+  }
 }

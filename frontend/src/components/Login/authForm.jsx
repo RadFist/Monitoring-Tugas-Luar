@@ -53,14 +53,7 @@ export const RegistForm = ({
 }) => {
   return (
     <form onSubmit={submit}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "2px",
-        }}
-      >
+      <div className="inputRergistWarp">
         <div className="InputLogin">
           <InputComp
             type="text"
@@ -86,14 +79,7 @@ export const RegistForm = ({
           />
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "2px",
-        }}
-      >
+      <div className="inputRergistWarp">
         <div className="InputLogin">
           <InputComp
             type="Text"

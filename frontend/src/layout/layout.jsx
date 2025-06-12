@@ -41,8 +41,6 @@ const Layout = () => {
   }, []);
 
   const closeSideBar = () => {
-    console.log(payload);
-
     setSidebarActive(false);
   };
 
