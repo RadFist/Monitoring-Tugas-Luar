@@ -1,0 +1,39 @@
+.laporan-container {
+  padding: 30px;
+  max-width: 700px;
+  margin: 30px auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.laporan-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.laporan-detail p {
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.laporan-actions {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.laporan-actions button {
+  padding: 10px 18px;
+  background-color: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.laporan-actions button:hover {
+  background-color: #125a9c;
+}

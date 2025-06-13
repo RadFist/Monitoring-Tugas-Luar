@@ -4,9 +4,10 @@ import "dotenv/config";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
 import apiRoute from "./routes/apiRoute.js";
-const app = express();
+import http from "http";
+import initSocket from "./socket.js"; // import file soket io for realtime
 
-//
+const app = express();
 const allowedOrigins = ["http://localhost:5050", "http://localhost:5173"];
 
 // Middleware
@@ -41,7 +42,20 @@ app.use(cookieParser());
 app.use(authRoutes);
 app.use(apiRoute);
 
+// ==========================
+// SOCKET.IO SETUP
+// ==========================
+
+const server = http.createServer(app);
+
+initSocket(server, allowedOrigins);
+
 // Server
-app.listen(PORT, () => {
-  console.log(`Server running on  http://localhost:${PORT}`);
+// app.listen(PORT, () => {
+//   console.log(`Server running on  http://localhost:${PORT}`);
+// });
+
+//server sooket
+server.listen(PORT, () => {
+  console.log(`Server soket.io running on  http://localhost:${PORT}`);
 });

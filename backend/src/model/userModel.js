@@ -92,3 +92,19 @@ export const getAllUsersWhereJabatan = async (selectedJabatan) => {
     throw new Error("Error fetching users: " + error.message);
   }
 };
+
+export const getAllUsersBYIdTugas = async (idTugas) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT u.id_user FROM tb_tugas_luar AS tl
+      JOIN tb_pivot_tugas AS pt ON pt.id_tugas_luar = tl.id_tugas_luar
+      JOIN tb_user AS u ON u.id_user = pt.id_pegawai
+      WHERE tl.id_tugas_luar = ?`,
+      [idTugas] // << perbaikan: bungkus dengan array
+    );
+    return rows; // << penting: agar hasilnya bisa digunakan
+  } catch (error) {
+    console.error("Error saat mengambil user dari tugas:", error);
+    throw error; // << opsional: lempar lagi jika ingin ditangani di controller
+  }
+};

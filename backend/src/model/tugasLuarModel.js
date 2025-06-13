@@ -158,12 +158,12 @@ LIMIT 4;`
   }
 };
 
-export const updateStatusApproveTugas = async (id) => {
+export const updateStatusApproveTugas = async (idTugas) => {
   const date = formatDateIso(new Date());
   try {
     const [result] = await db.query(
       `UPDATE tb_tugas_luar SET status_approval = ? , date_approval = ? WHERE id_tugas_luar = ?`,
-      ["approve", date, id]
+      ["approve", date, idTugas]
     );
 
     // Mengecek apakah data berhasil diupdate

@@ -12,6 +12,7 @@ import ListTugasLuar from "./page/listTugasLuar.jsx";
 import Detail from "./page/detailPenugasan.jsx";
 import InputTugasLuar from "./page/inputTugasLuar.jsx";
 import { PrivateWraper as PrivateRoute } from "./components/logic/PrivateWarperAuth.jsx";
+import LaporanDetail from "./page/laporanDetail.jsx";
 function App() {
   return (
     <Router>
@@ -74,6 +75,10 @@ function App() {
           element={<Detail />}
         />
         <Route path="/Detail-Penugasan/:idDetail" element={<Detail />} />
+        <Route
+          path="/Laporan-Penugasan/:idDetail"
+          element={<LaporanDetail />}
+        />
         <Route path="/SignIn" element={<Regist />} />
         <Route path="/generate" element={<Pdf />} />
         <Route path="/generate/pdf/SPD" element={<PdfSuratTugas />} />

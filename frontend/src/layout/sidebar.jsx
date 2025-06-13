@@ -10,6 +10,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import { clearToken, getToken } from "../utils/tokenManpulation";
 import { logoutUser } from "../services/authServices";
+import socket from "../services/socket";
 
 const Sidebar = ({ displaySidebar, handlerClickArrow, userLevel }) => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Sidebar = ({ displaySidebar, handlerClickArrow, userLevel }) => {
   const handlerLogOut = async (event) => {
     event.preventDefault();
     try {
+      socket.emit("manual-logout");
       await logoutUser();
     } catch (error) {
       clearToken();

@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import "../style/detailPenugasan.css";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import DownloadIcon from "@mui/icons-material/Download";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SummarizeIcon from "@mui/icons-material/Summarize";
@@ -52,6 +53,11 @@ const DetailPenugasan = () => {
       },
     });
   };
+
+  const handlerLaporan = (id) => {
+    navigate(`/Laporan-Penugasan/${id}`);
+  };
+
   const handlerCloseModal = () => {
     setModalActive(false);
   };
@@ -98,7 +104,12 @@ const DetailPenugasan = () => {
         displayModal={modalActive ? "active" : ""}
         onClose={handlerCloseModal}
       />
-      <h2 className="title-detail">Detail Penugasan</h2>
+      <div className="header-detail">
+        <button className="btn-kembali" onClick={() => navigate(-1)}>
+          <ChevronLeftIcon /> Kembali
+        </button>
+        <h2 className="title-detail">Detail Penugasan</h2>
+      </div>
       <div className="card-detail">
         <div className="info-detail">
           <p>
@@ -178,7 +189,7 @@ const DetailPenugasan = () => {
                   className={`laporan-button `}
                   onClick={(e) => {
                     e.preventDefault();
-                    alert(tugas.id_tugas_luar);
+                    handlerLaporan(tugas.id_tugas_luar);
                   }}
                 >
                   Laporan

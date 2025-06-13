@@ -9,6 +9,7 @@ import {
   detailTugas,
   approveTugas,
 } from "../controllers/tugasLuarController.js";
+import { getNotifIdUser } from "../controllers/notifControler.js";
 
 const router = express.Router();
 
@@ -62,9 +63,17 @@ router.get("/tugas/:id", listTugasPegawai);
 router.get("/Detail-Penugasan/:id", detailTugas);
 //post
 router.post("/PenugasanTugasLuar", authenticateToken, inputPenugasan);
-router.patch("/PenugasanTugasLuar/Approve", approveTugas);
+router.patch(
+  "/PenugasanTugasLuar/Approve",
+  authenticateToken,
+  authRole("camat"),
+  approveTugas
+);
 
 //next route
+
+//======Notif Route======
+router.get("/notification/:id", getNotifIdUser);
 
 //======not found route======
 router.all("*", (req, res) => {

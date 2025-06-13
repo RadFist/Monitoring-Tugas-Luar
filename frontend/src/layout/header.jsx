@@ -4,8 +4,9 @@ import { Tooltip, Avatar, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import { useState } from "react";
 import { InformationModal } from "../components/modal";
+import notifSound from "../assets/sound/notifSound.mp3";
 
-const Header = ({ onToggleSidebar, payload }) => {
+const Header = ({ onToggleSidebar, payload, notif }) => {
   const [modalActive, setModalActive] = useState(false);
   const username = payload.username || "";
   // Fungsi waktu berdasarkan jam lokal
@@ -48,12 +49,16 @@ const Header = ({ onToggleSidebar, payload }) => {
       </div>
 
       <div className="right-side">
-        <Tooltip title="Notifikasi">
-          <button className="icon-btn" aria-label="notifications">
-            <NotificationsNoneIcon sx={{ fontSize: 28 }} />
-            <span className="icon-badge">5</span>
-          </button>
-        </Tooltip>
+        {payload.level != "super admin" && (
+          <Tooltip title="Notifikasi">
+            <button className="icon-btn" aria-label="notifications">
+              <NotificationsNoneIcon sx={{ fontSize: 28 }} />
+              {notif.manny > 0 && (
+                <span className="icon-badge">{notif.manny}</span>
+              )}
+            </button>
+          </Tooltip>
+        )}
 
         <Tooltip title="Profile">
           <Avatar

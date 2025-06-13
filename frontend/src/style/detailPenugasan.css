@@ -8,14 +8,38 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
+.header-detail {
+  position: relative;
+  margin-bottom: 25px;
+  padding: 10px 0;
+  border-bottom: 2px solid #dcdcdc;
+  text-align: center;
+}
+
+.btn-kembali {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 8px 14px;
+  background-color: inherit;
+  color: #1a73e8;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.btn-kembali:hover {
+  color: #073776;
+}
+
 .title-detail {
   font-size: 30px;
   font-weight: bold;
-  margin-bottom: 25px;
   color: #2c3e50;
-  text-align: center;
-  border-bottom: 2px solid #dcdcdc;
-  padding-bottom: 10px;
+  margin: 0;
 }
 
 .card-detail {

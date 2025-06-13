@@ -13,6 +13,9 @@ import {
   formatTanggalIndo,
   parseDateTime,
 } from "../utils/dateFormater.js";
+import { getAllUsersBYIdTugas } from "../model/userModel.js";
+import { saveNotif } from "../model/notifModel.js";
+import { connectedUsers, io } from "../socket.js";
 
 export const inputPenugasan = async (req, res) => {
   const data = req.body; //ngambil data dari body request
@@ -240,22 +243,43 @@ export const detailTugas = async (req, res) => {
 };
 
 export const approveTugas = async (req, res) => {
-  const id = req.body.id;
+  const idTugas = req.body.id;
   // Validasi input
-  if (!id) {
+  if (!idTugas) {
     return res
       .status(400)
       .json({ success: false, message: "ID tugas tidak boleh kosong." });
   }
 
   try {
-    const result = await updateStatusApproveTugas(id);
+    const result = await updateStatusApproveTugas(idTugas);
 
-    if (result.success) {
-      res.status(200).json(result);
-    } else {
-      res.status(404).json(result);
+    if (!result.success) {
+      return res.status(404).json(result);
     }
+
+    // === Ambil pegawai yang ditugaskan ===
+    const pegawaiList = await getAllUsersBYIdTugas(idTugas);
+
+    for (const pegawai of pegawaiList) {
+      const userId = pegawai.id_user;
+      const notifMessage = "Tugas dinas luar kamu telah disetujui.";
+      console.log(userId);
+
+      // 1. Simpan ke DB
+      await saveNotif(userId, notifMessage);
+
+      // 2. Kirim notifikasi realtime via socket (jika online)
+      const socketId = connectedUsers.get(userId);
+      if (socketId) {
+        io.to(socketId).emit("notification", {
+          message: notifMessage,
+          link: `/tugas/${idTugas}`,
+        });
+      }
+    }
+
+    res.status(200).json(result);
   } catch (error) {
     console.error("Error in approveTugas:", error);
     res.status(500).json({
