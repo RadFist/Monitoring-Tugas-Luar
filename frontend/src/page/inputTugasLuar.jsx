@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import "../style/inputTugas.css";
 import { useState } from "react";
 import api, { plainApi } from "../services/api";
-import { listItem as ListPegawai } from "../components/listManagement";
+import { ListItem as ListPegawai } from "../components/listManagement";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";

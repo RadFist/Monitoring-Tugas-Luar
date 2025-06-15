@@ -35,8 +35,8 @@ const ListTugas = () => {
     status: "none",
   });
   const roleRoutes = {
-    camat: "/allTugas/approval",
-    user: "/tugas/" + payload.id_user,
+    camat: "/tugas/approval",
+    user: "user/tugas/" + payload.id_user,
   };
   let routeList = roleRoutes[level] || "/allTugas";
 
@@ -109,7 +109,6 @@ const ListTugas = () => {
       <div>
         <HeaderSecond text="List Tugas">
           <FormControl size="small" style={{ marginRight: "20px" }}>
-            {/* <InputLabel>Fillter Date</InputLabel> */}
             <TextField
               size="small"
               type="date"

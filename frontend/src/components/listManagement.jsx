@@ -1,7 +1,7 @@
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
-import { Item } from "./itemCompt";
+import { Item, RincianDana } from "./itemCompt";
 // import { useState } from "react";
 
 export const DataTable = ({ rows, columns, handlerClickAdd }) => {
@@ -47,7 +47,7 @@ export const DataTable = ({ rows, columns, handlerClickAdd }) => {
   );
 };
 
-export const listItem = ({ list, onDelete }) => {
+export const ListItem = ({ list, onDelete }) => {
   return (
     <div className="list-pegawai-container">
       <h4>Daftar Pegawai yang Ditambahkan:</h4>
@@ -55,6 +55,20 @@ export const listItem = ({ list, onDelete }) => {
         {list.map((item) => (
           <li key={item.id} className="pegawai-item">
             <Item item={item} onDelete={onDelete} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export const ListRincianDana = ({ list, onChange, onDelete }) => {
+  return (
+    <div className="list-pegawai-container">
+      <ul className="pegawai-list">
+        {list.map((item) => (
+          <li key={item.id} className="rincian-item">
+            <RincianDana item={item} onChange={onChange} onDelete={onDelete} />
           </li>
         ))}
       </ul>

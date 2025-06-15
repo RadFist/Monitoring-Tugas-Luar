@@ -25,7 +25,7 @@ const DetailPenugasan = () => {
     const fetchData = async () => {
       try {
         const responseGetTugasById = (
-          await api.get(`/Detail-Penugasan/${idDetail}`)
+          await api.get(`/tugas/detail/${idDetail}`)
         ).data;
         setTugas(responseGetTugasById.data);
         if (responseGetTugasById.data.status_persetujuan === "approve") {
@@ -78,7 +78,7 @@ const DetailPenugasan = () => {
     try {
       await api.patch(`/PenugasanTugasLuar/Approve`, { id });
       try {
-        const refreshed = await api.get(`/Detail-Penugasan/${idDetail}`);
+        const refreshed = await api.get(`/tugas/detail/idDetail}`);
         setTugas(refreshed.data.data);
       } catch (refreshError) {
         console.error("Gagal me-refresh data detail penugasan:", refreshError);

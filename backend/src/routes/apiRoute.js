@@ -12,32 +12,18 @@ import {
 import { getNotifIdUser } from "../controllers/notifControler.js";
 
 const router = express.Router();
-
+const authCamat = [authenticateToken, authRole("camat")];
+const authSuperAdmin = [authenticateToken, authRole("super admin")];
 //======User Route======
 //get
 router.get("/users", authenticateToken, userControler.allUser);
 router.get("/user/:id", authenticateToken, userControler.userId);
 //post
-router.post(
-  "/user/add",
-  authenticateToken,
-  authRole("super admin"),
-  userControler.addUser
-);
+router.post("/user/add", authSuperAdmin, userControler.addUser);
 //patch
-router.patch(
-  "/user/edit/:id",
-  authenticateToken,
-  authRole("super admin"),
-  userControler.userEdit
-);
+router.patch("/user/edit/:id", authSuperAdmin, userControler.userEdit);
 //delete
-router.delete(
-  "/user/delete/:id",
-  authenticateToken,
-  authRole("super admin"),
-  userControler.userDelete
-);
+router.delete("/user/delete/:id", authSuperAdmin, userControler.userDelete);
 
 // ======jabatan Route======
 // get
@@ -52,25 +38,15 @@ router.post(
 //======Tugas Route======
 //get
 router.get("/allTugas", authenticateToken, listTugas);
+router.get("/tugas/approval", authCamat, listTugas);
+router.get("/user/tugas/:id", listTugasPegawai);
+router.get("/tugas/detail/:id", detailTugas);
 
-router.get(
-  "/allTugas/approval",
-  authenticateToken,
-  authRole("camat"),
-  listTugas
-);
-router.get("/tugas/:id", listTugasPegawai);
-router.get("/Detail-Penugasan/:id", detailTugas);
 //post
 router.post("/PenugasanTugasLuar", authenticateToken, inputPenugasan);
-router.patch(
-  "/PenugasanTugasLuar/Approve",
-  authenticateToken,
-  authRole("camat"),
-  approveTugas
-);
 
-//next route
+//patch
+router.patch("/PenugasanTugasLuar/Approve", authCamat, approveTugas);
 
 //======Notif Route======
 router.get("/notification/:id", getNotifIdUser);
@@ -81,4 +57,5 @@ router.all("*", (req, res) => {
     message: `Route ${req.originalUrl} with method ${req.method} not found.`,
   });
 });
+
 export default router;

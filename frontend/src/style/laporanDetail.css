@@ -5,35 +5,189 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .laporan-container h2 {
   text-align: center;
-  color: #333;
-  margin-bottom: 20px;
+  color: #2c3e50;
+  margin-bottom: 25px;
 }
 
 .laporan-detail p {
   margin: 10px 0;
   line-height: 1.6;
+  color: #333;
+}
+
+/* Form styling */
+.laporan-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+textarea,
+input[type="file"] {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+  background-color: #fff;
+  font-family: inherit;
+}
+
+textarea:focus,
+input[type="file"]:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
 }
 
 .laporan-actions {
   margin-top: 30px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
 .laporan-actions button {
-  padding: 10px 18px;
+  padding: 10px 20px;
   background-color: #1976d2;
   color: #fff;
+  font-weight: 500;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .laporan-actions button:hover {
   background-color: #125a9c;
+}
+
+/* Optional: File name preview */
+
+.file-name {
+  font-size: 14px;
+  margin-top: 8px;
+  color: #555;
+}
+
+.rincian-item {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.rincian-dana-items{ 
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.rincian-dana-items input[type="text"],
+.rincian-dana-items input[type="number"] {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  width: 100px;
+}
+
+.rincian-dana-items input[type="text"]:focus,
+.rincian-dana-items input[type="number"]:focus {
+  border-color: #1976d2;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+}
+
+.rincian-dana-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex: 1;
+}
+.cont-btn-action-rinci{
+  display: flex;
+  gap: 10px;
+}
+
+.cont-btn-action-rinci button {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  color: #1976d2;
+  transition: all 0.2s ease;
+}
+
+.cont-btn-action-rinci button:hover {
+  background-color: #1976d2;
+  color: #fff;
+}
+
+.cont-btn-rinci{
+  display: flex;
+  justify-content: center;
+}
+
+.btn-delete-rinci{
+   color: #d21919 !important;
+}
+.btn-delete-rinci:hover{
+   background-color: #d21919 !important;
+  color: #fff !important;   
+}
+
+.btn-rinci-dana {
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  color: #1976d2;
+  background-color: white;
+  border-radius: 50%;
+  border: 2px solid #1976d2;
+  transition: all 0.2s ease;
+}
+
+.btn-rinci-dana:hover {
+  background-color: #1976d2;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .laporan-container {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .laporan-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .laporan-actions button {
+    width: 100%;
+  }
 }

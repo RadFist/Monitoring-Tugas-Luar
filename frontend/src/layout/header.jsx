@@ -4,7 +4,6 @@ import { Tooltip, Avatar, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import { useState } from "react";
 import { InformationModal } from "../components/modal";
-import notifSound from "../assets/sound/notifSound.mp3";
 
 const Header = ({ onToggleSidebar, payload, notif }) => {
   const [modalActive, setModalActive] = useState(false);
