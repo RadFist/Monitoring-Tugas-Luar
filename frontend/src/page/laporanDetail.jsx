@@ -6,6 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { ListRincianDana } from "../components/listManagement";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
+import axios from "axios";
 
 export default function LaporanDetail() {
   const navigate = useNavigate();
@@ -16,14 +17,15 @@ export default function LaporanDetail() {
     text: "",
     dana: "",
   });
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState("");
+  const { idDetail } = useParams();
   const [rincianDana, setRincianDana] = useState([
     { id: 12, text: "learn HTML", dana: 10000 },
     { id: 1122, text: "learn JS", dana: 10000 },
     { id: 323, text: "learn CSS", dana: 10000 },
     { id: 1121, text: "learn REACT", dana: 10000 },
   ]);
-  const [file, setFile] = useState(null);
-  const { idDetail } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,8 +40,23 @@ export default function LaporanDetail() {
   //   console.log(dataTugas);
   // }, [dataTugas]);
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+  const handleFileChange = async (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    setPreview(URL.createObjectURL(selectedFile));
+
+    const formData = new FormData();
+    formData.append("foto", selectedFile);
+
+    try {
+      const res = await axios.post("http://localhost:8080/upload", formData, {
+        withCredentials: true, // jika perlu kirim cookie
+      });
+      alert("Berhasil upload! Path: " + res.data.filePath);
+    } catch (err) {
+      console.log(err);
+      alert("Gagal upload");
+    }
   };
 
   const handleSubmit = (e) => {
@@ -141,7 +158,7 @@ export default function LaporanDetail() {
           ></input>
         </div>
         <div className="form-group">
-          <label>Dari:</label>
+          <label>Bagian Dari:</label>
           <input
             value={deskripsi}
             onChange={(e) => setDeskripsi(e.target.value)}

@@ -5,7 +5,17 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
 import apiRoute from "./routes/apiRoute.js";
 import http from "http";
+
+//import untuk upload
+import multer from "multer";
+import path from "path";
+import { fileURLToPath } from "url";
+
 import initSocket from "./socket.js"; // import file soket io for realtime
+
+//path for upload
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const allowedOrigins = ["http://localhost:5050", "http://localhost:5173"];
@@ -38,10 +48,40 @@ app.use((req, res, next) => {
 // cookies midleware
 app.use(cookieParser());
 
+//upload kedalam fd img
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "../src/upload/img")); // simpan di /src/uploads
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+const upload = multer({ storage });
+
 // Routes
+
+// route upload
+app.post("/upload", upload.single("foto"), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "Tidak ada file yang diupload." });
+    }
+    const fileUrl = `http://localhost:${PORT}/uploads/${req.file.filename}`;
+    res.status(200).json({
+      message: "Upload berhasil",
+      filePath: fileUrl,
+    });
+  } catch (error) {
+    console.error("Upload error:", error);
+    res.status(500).json({
+      message: "Gagal upload file",
+    });
+  }
+});
+
 app.use(authRoutes);
 app.use(apiRoute);
-
 // ==========================
 // SOCKET.IO SETUP
 // ==========================

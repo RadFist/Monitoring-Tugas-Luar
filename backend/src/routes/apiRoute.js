@@ -51,6 +51,8 @@ router.patch("/PenugasanTugasLuar/Approve", authCamat, approveTugas);
 //======Notif Route======
 router.get("/notification/:id", getNotifIdUser);
 
+//upload route
+
 //======not found route======
 router.all("*", (req, res) => {
   return res.status(404).json({
