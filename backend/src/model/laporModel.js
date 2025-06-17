@@ -25,3 +25,19 @@ export const postRincianDana = async (id, desk, jml) => {
     throw new Error("Terjadi kesalahan saat menyimpan data");
   }
 };
+
+export const deleteRincianDana = async (idTugas, idRincian) => {
+  try {
+    const [data] = await db.query(
+      `DELETE FROM tb_rincian_dana WHERE id_tugas_luar = ? AND id_rincian_dana = ?`,
+      [idTugas, idRincian]
+    );
+    if (data.affectedRows === 0) {
+      throw new Error(`User with ID not found or already deleted.`);
+    }
+    return `Successfully deleted foto`;
+  } catch (error) {
+    console.error("Gagal menyimpan data:", error);
+    throw new Error("Terjadi kesalahan saat menyimpan data");
+  }
+};

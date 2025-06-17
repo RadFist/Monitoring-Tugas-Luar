@@ -4,6 +4,7 @@ import "../style/laporanDetail.css";
 import api from "../services/api";
 import AddIcon from "@mui/icons-material/Add";
 import { ListRincianDana } from "../components/listManagement";
+import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
@@ -12,15 +13,15 @@ export default function LaporanDetail() {
   const navigate = useNavigate();
   const [dataTugas, setDataTugas] = useState({});
   const [deskripsi, setDeskripsi] = useState("");
+  const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
+  const [imageUrl, setImageUrl] = useState([]);
+  const [rincianDana, setRincianDana] = useState([]);
   const [inputRincian, setInputRincian] = useState({
     deskripsi: "",
     jumlah: "",
   });
-  const [file, setFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState([]);
   const { idDetail } = useParams();
-  const [rincianDana, setRincianDana] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,17 +31,13 @@ export default function LaporanDetail() {
       setImageUrl(foto.data.data);
       setDataTugas(data.data.data);
       setRincianDana(dana.data.data);
+      setLoading(false);
     };
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   console.log(imageUrl);
-  // }, [imageUrl]);
-
   const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
-    setFile(selectedFile);
 
     const formData = new FormData();
     formData.append("foto", selectedFile);
@@ -62,25 +59,6 @@ export default function LaporanDetail() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Simulasi pengiriman data
-    const formData = new FormData();
-    formData.append("deskripsi", deskripsi);
-    formData.append("rincian_dana", rincianDana);
-    formData.append("file", file);
-
-    console.log("Form submitted:", {
-      deskripsi,
-      rincianDana,
-      file,
-    });
-
-    alert("Laporan berhasil dikirim!");
-
-    // Reset form
-    setDeskripsi("");
-    setRincianDana("");
-    setFile(null);
   };
 
   const addingSubmit = async () => {
@@ -106,13 +84,25 @@ export default function LaporanDetail() {
     setIsAdding(false);
   };
 
-  const handlerDeleteRincian = (id) => {
-    setRincianDana((prevRincian) => {
-      const updated = prevRincian.filter((item) => item.id_rincian_dana !== id);
-      return updated;
-    });
+  const handlerDeleteRincian = async (id) => {
+    try {
+      await api.delete("/laporan/rincian", {
+        data: {
+          idTugas: idDetail,
+          idRincian: id,
+        },
+      });
+      setRincianDana((prevRincian) => {
+        const updated = prevRincian.filter(
+          (item) => item.id_rincian_dana !== id
+        );
+        return updated;
+      });
+    } catch (error) {
+      console.error("Gagal menghapus rincian:", error);
+      alert("Terjadi kesalahan saat menghapus rincian.");
+    }
   };
-
   const handlerDeleteFoto = (path) => {
     const pathname = path.file_url;
     api.delete("/documentation", {
@@ -186,24 +176,26 @@ export default function LaporanDetail() {
             onChange={handleFileChange}
           />
         </div>
-
-        {imageUrl && (
-          <div className="image-preview-container">
-            {imageUrl.map((value, index) => (
-              <div key={index} className="warp-img-prev">
-                <img src={value.file_url} alt="Gambar hasil upload" />
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handlerDeleteFoto(value);
-                  }}
-                >
-                  x
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
+        <div className="image-preview-container">
+          {loading && <Loading></Loading>}
+          {imageUrl && (
+            <>
+              {imageUrl.map((value, index) => (
+                <div key={index} className="warp-img-prev">
+                  <img src={value.file_url} alt="Gambar hasil upload" />
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlerDeleteFoto(value);
+                    }}
+                  >
+                    x
+                  </button>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
         <div className="form-group">
           <label>Laporan:</label>
           <textarea
@@ -216,13 +208,15 @@ export default function LaporanDetail() {
 
         <div className="form-group">
           <label>Rincian Dana :</label>
-          <ListRincianDana
-            list={rincianDana}
-            onChange={handlerChangeRincianDana}
-            onDelete={handlerDeleteRincian}
-          />
+          {(loading && <Loading></Loading>) || (
+            <ListRincianDana
+              list={rincianDana}
+              onChange={handlerChangeRincianDana}
+              onDelete={handlerDeleteRincian}
+            />
+          )}
         </div>
-        {isAdding && (
+        {isAdding && !loading && (
           <AddingRincian
             inputRincian={inputRincian}
             onChange={handleInputChange}
@@ -236,7 +230,7 @@ export default function LaporanDetail() {
             }}
           />
         )}
-        {!isAdding && (
+        {!isAdding && !loading && (
           <div className="cont-btn-rinci">
             <button
               className="btn-rinci-dana"

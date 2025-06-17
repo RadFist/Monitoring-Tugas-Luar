@@ -23,7 +23,7 @@ export const register = async (
 export const getLogin = async (username) => {
   try {
     const [rows] = await db.query(
-      "SELECT id_user, username, nama, nip, email ,password ,level FROM tb_user WHERE (username = ? OR email = ?)",
+      "SELECT u.id_user, u.username, u.nama, u.nip, u.email ,u.password ,u.level , j.jabatan  FROM tb_user as u JOIN tb_jabatan as j ON j.id_jabatan = u.jabatan WHERE (username = ? OR email = ?)",
       [username, username]
     );
 

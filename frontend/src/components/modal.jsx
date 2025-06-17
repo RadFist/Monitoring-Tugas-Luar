@@ -44,6 +44,7 @@ export const InformationModal = ({ displayModal, onClose, payload }) => {
         <p>{payload.nama}</p>
         <p>{payload.email}</p>
         <p>nip. {payload.nip}</p>
+        <p>{payload.jabatan}</p>
         <p>{payload.level}</p>
       </div>
     </div>

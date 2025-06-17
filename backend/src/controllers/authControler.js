@@ -96,6 +96,7 @@ export const login = async (req, res) => {
       nip: data.nip,
       email: data.email,
       level: data.level,
+      jabatan: data.jabatan,
     };
     const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
@@ -134,6 +135,7 @@ export const refereshTokenAuth = (req, res) => {
         nip: decoded.nip,
         email: decoded.email,
         level: decoded.level,
+        jabatan: decoded.jabatan,
       };
       const token = generateAccessToken(payload);
       return res.status(200).json({ message: "Refreshed", token: token });

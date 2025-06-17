@@ -17,6 +17,7 @@ import {
   uploadFoto,
 } from "../controllers/fileControler.js";
 import {
+  deleteRincianDana,
   getRincianDana,
   postRincianDana,
 } from "../controllers/laporanControler.js";
@@ -64,6 +65,8 @@ router.get("/notification/:id", getNotifIdUser);
 //======Laporan Route======
 router.get("/laporan/rincian/:id", getRincianDana);
 router.post("/laporan/rincian", postRincianDana);
+router.delete("/laporan/rincian", deleteRincianDana);
+
 //======upload Route======
 const upload = uploadMiddleware();
 router.get("/documentation/:id", getFoto);
