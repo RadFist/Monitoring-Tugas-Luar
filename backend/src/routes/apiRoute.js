@@ -1,5 +1,6 @@
 import express from "express";
 import authenticateToken, { authRole } from "../middleware/authMiddleware.js";
+import { uploadMiddleware } from "../middleware/uploadMiddleware.js";
 import * as userControler from "../controllers/userControler.js";
 import { allJabatan } from "../controllers/jabatranController.js";
 import {
@@ -10,6 +11,15 @@ import {
   approveTugas,
 } from "../controllers/tugasLuarController.js";
 import { getNotifIdUser } from "../controllers/notifControler.js";
+import {
+  deleteFoto,
+  getFoto,
+  uploadFoto,
+} from "../controllers/fileControler.js";
+import {
+  getRincianDana,
+  postRincianDana,
+} from "../controllers/laporanControler.js";
 
 const router = express.Router();
 const authCamat = [authenticateToken, authRole("camat")];
@@ -51,7 +61,14 @@ router.patch("/PenugasanTugasLuar/Approve", authCamat, approveTugas);
 //======Notif Route======
 router.get("/notification/:id", getNotifIdUser);
 
-//upload route
+//======Laporan Route======
+router.get("/laporan/rincian/:id", getRincianDana);
+router.post("/laporan/rincian", postRincianDana);
+//======upload Route======
+const upload = uploadMiddleware();
+router.get("/documentation/:id", getFoto);
+router.post("/documentation", upload.single("foto"), uploadFoto);
+router.delete("/documentation", deleteFoto);
 
 //======not found route======
 router.all("*", (req, res) => {

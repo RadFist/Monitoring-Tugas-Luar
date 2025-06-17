@@ -40,7 +40,54 @@
   color: #444;
 }
 
-textarea,
+.image-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  position: static;
+
+}
+.warp-img-prev{
+  position: relative;
+}
+
+.image-preview-container img {
+  width: 200px;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.image-preview-container button {
+position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: rgba(255, 0, 0, 1);
+  border: none;
+  border-radius: 10%;
+  padding: 7px 10px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.image-preview-container img:hover {
+  transform: scale(1.05);
+}
+
+.image-preview-container button:hover {
+   background-color: rgb(192, 2, 2); 
+   color: rgb(211, 209, 209);
+}
+
+textarea, 
 input[type="file"] {
   padding: 10px;
   font-size: 14px;
@@ -160,13 +207,15 @@ input[type="file"]:focus {
 }
 
 .btn-rinci-dana {
-  width: 40px;
-  height: 40px;
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
   color: #1976d2;
-  background-color: white;
+  font-size: 18px;
   border-radius: 50%;
   border: 2px solid #1976d2;
+  background-color: white;
   transition: all 0.2s ease;
 }
 

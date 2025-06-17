@@ -67,7 +67,7 @@ export const ListRincianDana = ({ list, onChange, onDelete }) => {
     <div className="list-pegawai-container">
       <ul className="pegawai-list">
         {list.map((item) => (
-          <li key={item.id} className="rincian-item">
+          <li key={item.id_rincian_dana} className="rincian-item">
             <RincianDana item={item} onChange={onChange} onDelete={onDelete} />
           </li>
         ))}

@@ -14,48 +14,49 @@ export default function LaporanDetail() {
   const [deskripsi, setDeskripsi] = useState("");
   const [isAdding, setIsAdding] = useState(false);
   const [inputRincian, setInputRincian] = useState({
-    text: "",
-    dana: "",
+    deskripsi: "",
+    jumlah: "",
   });
   const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState("");
+  const [imageUrl, setImageUrl] = useState([]);
   const { idDetail } = useParams();
-  const [rincianDana, setRincianDana] = useState([
-    { id: 12, text: "learn HTML", dana: 10000 },
-    { id: 1122, text: "learn JS", dana: 10000 },
-    { id: 323, text: "learn CSS", dana: 10000 },
-    { id: 1121, text: "learn REACT", dana: 10000 },
-  ]);
+  const [rincianDana, setRincianDana] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await api.get(`/tugas/detail/${idDetail}`);
-
+      const foto = await api.get(`/documentation/${idDetail}`);
+      const dana = await api.get(`/laporan/rincian/${idDetail}`);
+      setImageUrl(foto.data.data);
       setDataTugas(data.data.data);
+      setRincianDana(dana.data.data);
     };
     fetchData();
   }, []);
 
   // useEffect(() => {
-  //   console.log(dataTugas);
-  // }, [dataTugas]);
+  //   console.log(imageUrl);
+  // }, [imageUrl]);
 
   const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
-    setPreview(URL.createObjectURL(selectedFile));
 
     const formData = new FormData();
     formData.append("foto", selectedFile);
-
+    formData.append("id", idDetail);
     try {
-      const res = await axios.post("http://localhost:8080/upload", formData, {
-        withCredentials: true, // jika perlu kirim cookie
-      });
-      alert("Berhasil upload! Path: " + res.data.filePath);
+      const res = await axios.post(
+        "http://localhost:8080/documentation",
+        formData,
+        {
+          withCredentials: true, // jika perlu kirim cookie
+        }
+      );
+      const newImagePath = res.data.filePath;
+      setImageUrl((prev) => [...prev, { file_url: newImagePath }]);
     } catch (err) {
       console.log(err);
-      alert("Gagal upload");
     }
   };
 
@@ -82,35 +83,46 @@ export default function LaporanDetail() {
     setFile(null);
   };
 
-  // const laporan = {
-  //   nama_pegawai: "Budi Santoso",
-  //   nip: "19801212 200112 1 001",
-  //   jabatan: "Staff Pelayanan Umum",
-  //   tanggal: "2025-06-13",
-  //   tujuan: "Kantor Bupati Tangerang",
-  //   status: "Disetujui",
-  // };
+  const addingSubmit = async () => {
+    await api.post("/laporan/rincian", {
+      idTugas: idDetail,
+      deskripsi: inputRincian.deskripsi,
+      jumlah: inputRincian.jumlah,
+    });
 
-  const addingSubmit = () => {
     setRincianDana((prev) => [
       ...prev,
       {
         id: 12222,
-        text: inputRincian.text,
-        dana: inputRincian.dana,
+        deskripsi: inputRincian.deskripsi,
+        jumlah: inputRincian.jumlah,
       },
     ]);
 
     setInputRincian({
       text: "",
-      dana: "",
+      jumlah: "",
     });
     setIsAdding(false);
   };
 
   const handlerDeleteRincian = (id) => {
     setRincianDana((prevRincian) => {
-      const updated = prevRincian.filter((item) => item.id !== id);
+      const updated = prevRincian.filter((item) => item.id_rincian_dana !== id);
+      return updated;
+    });
+  };
+
+  const handlerDeleteFoto = (path) => {
+    const pathname = path.file_url;
+    api.delete("/documentation", {
+      data: {
+        idTugas: idDetail,
+        pathName: pathname,
+      },
+    });
+    setImageUrl((prev) => {
+      const updated = prev.filter((item) => item.file_url != pathname);
       return updated;
     });
   };
@@ -173,8 +185,25 @@ export default function LaporanDetail() {
             accept="image/*,.pdf"
             onChange={handleFileChange}
           />
-          {file && <p>File: {file.name}</p>}
         </div>
+
+        {imageUrl && (
+          <div className="image-preview-container">
+            {imageUrl.map((value, index) => (
+              <div key={index} className="warp-img-prev">
+                <img src={value.file_url} alt="Gambar hasil upload" />
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handlerDeleteFoto(value);
+                  }}
+                >
+                  x
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="form-group">
           <label>Laporan:</label>
           <textarea
@@ -201,7 +230,7 @@ export default function LaporanDetail() {
             setFalse={() => {
               setInputRincian({
                 text: "",
-                dana: "",
+                jumlah: "",
               });
               setIsAdding(false);
             }}
@@ -238,36 +267,42 @@ const AddingRincian = ({ inputRincian, onChange, addingSubmit, setFalse }) => {
       <div className="list-pegawai-container">
         <ul className="pegawai-list">
           <div className="rincian-dana-items">
-            <input
-              type="text"
-              name="text"
-              value={inputRincian.text}
-              onChange={onChange}
-            />
+            <label>
+              Deskripsi
+              <input
+                type="text"
+                name="deskripsi"
+                value={inputRincian.deskripsi}
+                onChange={onChange}
+              />
+            </label>
             :
-            <input
-              type="number"
-              name="dana"
-              value={inputRincian.dana}
-              onChange={onChange}
-              min={1}
-              onKeyDown={(e) => {
-                // izinkan navigasi, backspace, delete, tab, dll.
-                const allowedKeys = [
-                  "Backspace",
-                  "ArrowLeft",
-                  "ArrowRight",
-                  "Tab",
-                  "Delete",
-                ];
-                if (
-                  !/^\d$/.test(e.key) && // jika bukan angka 0-9
-                  !allowedKeys.includes(e.key)
-                ) {
-                  e.preventDefault(); // blok karakter selain angka
-                }
-              }}
-            />
+            <label>
+              Harga
+              <input
+                type="number"
+                name="jumlah"
+                value={inputRincian.jumlah}
+                onChange={onChange}
+                min={1}
+                onKeyDown={(e) => {
+                  // izinkan navigasi, backspace, delete, tab, dll.
+                  const allowedKeys = [
+                    "Backspace",
+                    "ArrowLeft",
+                    "ArrowRight",
+                    "Tab",
+                    "Delete",
+                  ];
+                  if (
+                    !/^\d$/.test(e.key) && // jika bukan angka 0-9
+                    !allowedKeys.includes(e.key)
+                  ) {
+                    e.preventDefault(); // blok karakter selain angka
+                  }
+                }}
+              />
+            </label>
             <div className="cont-btn-action-rinci">
               <button
                 onClick={(e) => {

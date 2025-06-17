@@ -9,6 +9,7 @@ lerna-debug.log*
 
 **/node_modules/
 backend/.env
+backend/public/uploads
 frontend/.env
 catatan.txt
 .env

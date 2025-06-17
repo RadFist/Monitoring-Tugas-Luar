@@ -39,15 +39,15 @@ export const RincianDana = ({ item, onChange, onDelete }) => {
       <div>
         <input
           type="text"
-          name="text"
-          value={item.text}
+          name="deskripsi"
+          value={item.deskripsi}
           onChange={handlerChangeText}
         />{" "}
         :{" "}
         <input
           type="number"
-          name="dana"
-          value={item.dana}
+          name="jumlah"
+          value={item.jumlah}
           onChange={handlerChangeText}
           min={1}
           onKeyDown={(e) => {
@@ -82,7 +82,7 @@ export const RincianDana = ({ item, onChange, onDelete }) => {
   } else {
     component = (
       <div className="rincian-dana-wrap">
-        <p>{item.text}</p> : <p>{item.dana}</p>
+        <p>{item.deskripsi}</p> : <p>{item.jumlah}</p>
       </div>
     );
     btn = (
@@ -106,7 +106,7 @@ export const RincianDana = ({ item, onChange, onDelete }) => {
           className="btn-delete-rinci"
           onClick={(e) => {
             e.preventDefault();
-            onDelete(item.id);
+            onDelete(item.id_rincian_dana);
           }}
         >
           <DeleteIcon />
