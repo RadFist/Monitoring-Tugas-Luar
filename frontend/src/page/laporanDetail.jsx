@@ -5,17 +5,24 @@ import api from "../services/api";
 import AddIcon from "@mui/icons-material/Add";
 import { ListRincianDana } from "../components/listManagement";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
+
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
-import axios from "axios";
+import { SuccessModal } from "../components/modal";
 
 export default function LaporanDetail() {
   const navigate = useNavigate();
   const [dataTugas, setDataTugas] = useState({});
-  const [deskripsi, setDeskripsi] = useState("");
+  const [laporan, setLaporan] = useState({
+    materi: "",
+    bagian: "",
+    laporan: "",
+  });
   const [loading, setLoading] = useState(true);
+  const [btnDisable, setBtnDisabled] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
-  const [imageUrl, setImageUrl] = useState([]);
+  const [modalActive, setModalActive] = useState(false);
   const [rincianDana, setRincianDana] = useState([]);
   const [inputRincian, setInputRincian] = useState({
     deskripsi: "",
@@ -25,40 +32,38 @@ export default function LaporanDetail() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await api.get(`/tugas/detail/${idDetail}`);
-      const foto = await api.get(`/documentation/${idDetail}`);
+      const data = await api.get(`/laporan/${idDetail}`);
       const dana = await api.get(`/laporan/rincian/${idDetail}`);
-      setImageUrl(foto.data.data);
-      setDataTugas(data.data.data);
+
+      const dataResult = data.data.data;
+
+      setDataTugas(dataResult.dataTugas[0]);
+      if (dataResult.dataLaporan.length > 0) {
+        setLaporan(dataResult.dataLaporan[0]);
+        setBtnDisabled(false);
+      }
       setRincianDana(dana.data.data);
       setLoading(false);
     };
     fetchData();
   }, []);
 
-  const handleFileChange = async (e) => {
-    const selectedFile = e.target.files[0];
-
-    const formData = new FormData();
-    formData.append("foto", selectedFile);
-    formData.append("id", idDetail);
-    try {
-      const res = await axios.post(
-        "http://localhost:8080/documentation",
-        formData,
-        {
-          withCredentials: true, // jika perlu kirim cookie
-        }
-      );
-      const newImagePath = res.data.filePath;
-      setImageUrl((prev) => [...prev, { file_url: newImagePath }]);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const data = {
+      idTugas: idDetail,
+      bagian: laporan.bagian,
+      materi: laporan.materi,
+      laporan: laporan.laporan,
+      judul_tugas: dataTugas.judul_tugas,
+    };
+    try {
+      await api.post(`/laporan/rincian/${idDetail}`, data);
+      setBtnDisabled(false);
+      setModalActive(true);
+    } catch (error) {
+      alert("error try again latter");
+    }
   };
 
   const addingSubmit = async () => {
@@ -68,17 +73,12 @@ export default function LaporanDetail() {
       jumlah: inputRincian.jumlah,
     });
 
-    setRincianDana((prev) => [
-      ...prev,
-      {
-        id: 12222,
-        deskripsi: inputRincian.deskripsi,
-        jumlah: inputRincian.jumlah,
-      },
-    ]);
+    const dana = await api.get(`/laporan/rincian/${idDetail}`);
+
+    setRincianDana(dana.data.data);
 
     setInputRincian({
-      text: "",
+      deskripsi: "",
       jumlah: "",
     });
     setIsAdding(false);
@@ -103,19 +103,6 @@ export default function LaporanDetail() {
       alert("Terjadi kesalahan saat menghapus rincian.");
     }
   };
-  const handlerDeleteFoto = (path) => {
-    const pathname = path.file_url;
-    api.delete("/documentation", {
-      data: {
-        idTugas: idDetail,
-        pathName: pathname,
-      },
-    });
-    setImageUrl((prev) => {
-      const updated = prev.filter((item) => item.file_url != pathname);
-      return updated;
-    });
-  };
 
   const handlerChangeRincianDana = (newText, key) => {
     setRincianDana((prevRincian) => {
@@ -130,15 +117,33 @@ export default function LaporanDetail() {
       });
     });
   };
+  const handlerCloseModal = () => {
+    setModalActive(false);
+  };
 
-  const handleInputChange = (e) => {
+  const handleInputChangeRincian = (e) => {
     const { name, value } = e.target;
     setInputRincian((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleInputChangeLaporan = (e) => {
+    const { name, value } = e.target;
+
+    setLaporan((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
     <div className="laporan-container">
-      <h2>Form Pelaporan Tugas Luar</h2>
+      <SuccessModal
+        displayModal={modalActive ? "active" : ""}
+        onClose={handlerCloseModal}
+      />
+      <div className="header-laporan">
+        <button onClick={() => navigate(-1)}>
+          <ChevronLeftIcon /> Kembali
+        </button>
+        <h2 className="title-detail">Form Pelaporan Tugas Luar</h2>
+      </div>
       <div className="laporan-detail">
         <p>
           <strong>Tugas:</strong> {dataTugas.judul_tugas}
@@ -153,8 +158,9 @@ export default function LaporanDetail() {
         <div className="form-group">
           <label>Materi:</label>
           <input
-            value={deskripsi}
-            onChange={(e) => setDeskripsi(e.target.value)}
+            value={laporan.materi}
+            name="materi"
+            onChange={handleInputChangeLaporan}
             placeholder="materi tentang apa"
             required
           ></input>
@@ -162,45 +168,20 @@ export default function LaporanDetail() {
         <div className="form-group">
           <label>Bagian Dari:</label>
           <input
-            value={deskripsi}
-            onChange={(e) => setDeskripsi(e.target.value)}
-            placeholder="e.x: Seksi pelayanan"
+            value={laporan.bagian}
+            name="bagian"
+            onChange={handleInputChangeLaporan}
+            placeholder="e.x: Seksi pelayanan, seksi pemerintahan"
             required
           ></input>
         </div>
-        <div className="form-group">
-          <label>Upload Foto / Dokumen </label>
-          <input
-            type="file"
-            accept="image/*,.pdf"
-            onChange={handleFileChange}
-          />
-        </div>
-        <div className="image-preview-container">
-          {loading && <Loading></Loading>}
-          {imageUrl && (
-            <>
-              {imageUrl.map((value, index) => (
-                <div key={index} className="warp-img-prev">
-                  <img src={value.file_url} alt="Gambar hasil upload" />
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlerDeleteFoto(value);
-                    }}
-                  >
-                    x
-                  </button>
-                </div>
-              ))}
-            </>
-          )}
-        </div>
+
         <div className="form-group">
           <label>Laporan:</label>
           <textarea
-            value={deskripsi}
-            onChange={(e) => setDeskripsi(e.target.value)}
+            value={laporan.laporan}
+            name="laporan"
+            onChange={handleInputChangeLaporan}
             required
             rows={4}
           ></textarea>
@@ -219,7 +200,7 @@ export default function LaporanDetail() {
         {isAdding && !loading && (
           <AddingRincian
             inputRincian={inputRincian}
-            onChange={handleInputChange}
+            onChange={handleInputChangeRincian}
             addingSubmit={addingSubmit}
             setFalse={() => {
               setInputRincian({
@@ -245,10 +226,23 @@ export default function LaporanDetail() {
         )}
 
         <div className="laporan-actions">
-          <button type="button" onClick={() => navigate(-1)}>
-            Kembali
+          <button
+            className={btnDisable ? "btn-disabled" : ""}
+            disabled={btnDisable}
+            onClick={(e) => {
+              e.preventDefault();
+              alert(idDetail);
+            }}
+          >
+            PDF Laporan
           </button>
-          <button type="submit">Kirim Laporan</button>
+          <button
+            className={!btnDisable ? "btn-disabled" : ""}
+            disabled={!btnDisable}
+            type="submit"
+          >
+            Kirim Laporan
+          </button>
         </div>
       </form>
     </div>

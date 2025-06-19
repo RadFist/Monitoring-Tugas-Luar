@@ -18,7 +18,9 @@ import {
 } from "../controllers/fileControler.js";
 import {
   deleteRincianDana,
+  getLaporan,
   getRincianDana,
+  postLaporan,
   postRincianDana,
 } from "../controllers/laporanControler.js";
 
@@ -63,8 +65,10 @@ router.patch("/PenugasanTugasLuar/Approve", authCamat, approveTugas);
 router.get("/notification/:id", getNotifIdUser);
 
 //======Laporan Route======
-router.get("/laporan/rincian/:id", getRincianDana);
+router.get("/laporan/:id", getLaporan);
 router.post("/laporan/rincian", postRincianDana);
+router.get("/laporan/rincian/:id", getRincianDana);
+router.post("/laporan/rincian/:id", postLaporan);
 router.delete("/laporan/rincian", deleteRincianDana);
 
 //======upload Route======

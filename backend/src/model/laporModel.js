@@ -1,5 +1,36 @@
 import db from "../config/db_mysql.js";
 
+export const getLaporan = async (id) => {
+  try {
+    const [data] = await db.query(
+      `SELECT materi, bagian, laporan FROM tb_laporan WHERE id_tugas_luar = ?`,
+      [id]
+    );
+    return data;
+  } catch (error) {
+    console.error("Gagal menyimpan data:", error);
+    throw new Error("Terjadi kesalahan saat menyimpan data");
+  }
+};
+
+export const postLaporan = async (idTugas, laporan, bagian, materi) => {
+  try {
+    await db.query(
+      `INSERT INTO tb_laporan(id_tugas_luar, materi, bagian, laporan) VALUES (?,?,?,?)`,
+      [idTugas, materi, bagian, laporan]
+    );
+    await db.query(
+      `UPDATE tb_tugas_luar SET status = ? WHERE id_tugas_luar = ?`,
+      ["selesai", idTugas]
+    );
+
+    return { success: true, message: "data berhasil disimpan" };
+  } catch (error) {
+    console.error("Gagal menyimpan data:", error);
+    throw new Error("Terjadi kesalahan saat menyimpan data");
+  }
+};
+
 export const getRincianDana = async (id) => {
   try {
     const [data] = await db.query(

@@ -78,7 +78,7 @@ body {
     background-color: #ff1100;
   }
   
-  .status.diproses, .status.pending {
+  .status.diproses, .status.pending, .dikerjakan {
     background-color: #ff9800;
   }
   

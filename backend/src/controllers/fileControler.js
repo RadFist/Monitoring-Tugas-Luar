@@ -4,6 +4,7 @@ import {
   getFoto as foto,
   deleteFoto as delFot,
 } from "../model/uploadModel.js";
+import { io } from "../socket.js";
 
 const PORT = process.env.PORT || 5000;
 
@@ -23,6 +24,7 @@ export const getFoto = async (req, res) => {
       .json({ message: " Internal Server Error, please try again later." });
   }
 };
+
 export const uploadFoto = async (req, res) => {
   try {
     if (!req.file) {
@@ -32,6 +34,11 @@ export const uploadFoto = async (req, res) => {
     const fileName = req.file.filename;
     await postFoto(idTugas, fileName);
     const fileUrl = `http://localhost:${PORT}/public/uploads/img/${fileName}`;
+
+    io.emit("foto", {
+      message: "foto updated",
+    });
+
     res.status(200).json({
       message: "Upload berhasil",
       filePath: fileUrl,
@@ -51,6 +58,11 @@ export const deleteFoto = async (req, res) => {
   try {
     await delFot(idTugas, fileName);
     deleteMiddlewre(fileName);
+
+    io.emit("foto", {
+      message: "foto deleted",
+    });
+
     res.status(200).json({ massage: "success" });
   } catch (error) {
     console.log(error.message);

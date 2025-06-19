@@ -8,13 +8,14 @@ import { getToken } from "../utils/tokenManpulation";
 import { jwtDecode } from "jwt-decode";
 import socket from "../services/socket";
 import api from "../services/api";
-import notifSound from "../assets/sound/notifSound.mp3";
 
 const Layout = () => {
   const [sidebarActive, setSidebarActive] = useState(false);
   const [payload, setPayload] = useState({});
+  const [displayModal, setDisplayModal] = useState(false);
+  const [message, setMessage] = useState("");
   const [notification, setNotification] = useState({
-    data: {},
+    data: [],
     manny: "",
   });
   const location = useLocation();
@@ -64,12 +65,9 @@ const Layout = () => {
 
         socket.on("notification", (data) => {
           // alert(`🔔 ${data.message}`);
+          setMessage(data.message);
+          setDisplayModal(true);
           fetchData(decoded.id_user);
-          //refactor g bisa play karan browser tidak mengijinkan suara auto play tanpa interaksi user
-          const audio = new Audio(notifSound);
-          audio.play().catch((err) => {
-            console.error("Gagal memutar suara:", err);
-          });
         });
 
         return () => {
@@ -86,6 +84,9 @@ const Layout = () => {
     setSidebarActive(false);
   };
 
+  const handlerClose = () => {
+    setDisplayModal(false);
+  };
   const toggleSidebar = () => {
     setSidebarActive(!sidebarActive);
   };
@@ -107,7 +108,11 @@ const Layout = () => {
         <Header
           onToggleSidebar={toggleSidebar}
           payload={payload}
-          notif={notification}
+          displayModal={displayModal}
+          notifData={notification.data || []}
+          notifManny={notification.manny}
+          message={message}
+          onClose={handlerClose}
         />
         <main className="content">
           <Outlet />

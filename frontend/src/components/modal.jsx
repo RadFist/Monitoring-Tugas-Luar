@@ -45,7 +45,19 @@ export const InformationModal = ({ displayModal, onClose, payload }) => {
         <p>{payload.email}</p>
         <p>nip. {payload.nip}</p>
         <p>{payload.jabatan}</p>
-        <p>{payload.level}</p>
+        <p>level : {payload.level}</p>
+      </div>
+    </div>
+  );
+};
+export const NotifModal = ({ displayModal, onClose, children }) => {
+  return (
+    <div className={`notif-modal ${displayModal}`} onClick={onClose}>
+      <div className="notif-modal-cont" onClick={(e) => e.stopPropagation()}>
+        {children}
+        <button className="close-btn" onClick={onClose}>
+          <CloseIcon />
+        </button>
       </div>
     </div>
   );

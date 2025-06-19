@@ -10,41 +10,82 @@ import api from "../services/api";
 import { getToken } from "../utils/tokenManpulation";
 import { jwtDecode } from "jwt-decode";
 import { SuccessModal } from "../components/modal";
+import axios from "axios";
+import socket from "../services/socket";
 
 const DetailPenugasan = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [modalActive, setModalActive] = useState(false);
   const [tugas, setTugas] = useState([]);
-  const [btnDisabled, setBtnDisabled] = useState("");
+  const [btnDisabled, setBtnDisabled] = useState(false);
   const { idDetail } = useParams();
+  const [imageUrl, setImageUrl] = useState([]);
   const token = getToken();
   const level = token ? jwtDecode(token).level : "";
+  const nip = token ? jwtDecode(token).nip : "";
+  const [assigned, setAssigned] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseGetTugasById = (
-          await api.get(`/tugas/detail/${idDetail}`)
-        ).data;
-        setTugas(responseGetTugasById.data);
-        if (responseGetTugasById.data.status_persetujuan === "approve") {
-          setBtnDisabled("btn-disabled");
+        const response = await api.get(`/tugas/detail/${idDetail}`);
+        const tugasData = response.data.data;
+        setTugas(tugasData);
+        setAssigned(tugasData.pegawai.some((p) => p.nip === nip));
+
+        if (tugasData.status_persetujuan === "approve") {
+          setBtnDisabled(true);
         }
       } catch (error) {
-        console.error("Error fetching :", error.message);
+        console.error("Error fetching tugas:", error.message);
       } finally {
         setLoading(false);
-        //kalo error dia kosong anjir
+      }
+    };
+
+    const fetchFoto = async () => {
+      try {
+        const response = await api.get(`/documentation/${idDetail}`);
+        setImageUrl(response.data.data);
+      } catch (error) {
+        console.error("Error fetching foto:", error.message);
       }
     };
 
     fetchData();
+    fetchFoto();
+
+    const handleFotoUpdate = () => {
+      fetchFoto();
+    };
+
+    socket.on("foto", handleFotoUpdate);
+
+    return () => {
+      socket.off("foto", handleFotoUpdate);
+    };
   }, []);
 
-  // useEffect(() => {
-  //   console.log(tugas);
-  // }, [tugas]);
+  useEffect(() => {
+    if (tugas.status === "selesai") {
+    } else {
+      setTugas((prev) => {
+        let newStatus = "belum mulai";
+
+        if (imageUrl.length > 0) {
+          newStatus = "dikerjakan";
+        } else if (
+          prev.status_persetujuan === "approve" ||
+          prev.status === "Diproses"
+        ) {
+          newStatus = "Diproses";
+        }
+
+        return { ...prev, status: newStatus };
+      });
+    }
+  }, [imageUrl]);
 
   const handleDownloadPDF = () => {
     navigate(`/generate/pdf/SPD`, {
@@ -54,8 +95,56 @@ const DetailPenugasan = () => {
     });
   };
 
+  const handleFileChange = async (e) => {
+    const selectedFile = e.target.files[0];
+    if (!selectedFile.type.startsWith("image/")) {
+      alert("File yang dipilih bukan gambar!");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("foto", selectedFile);
+    formData.append("id", idDetail);
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/documentation",
+        formData,
+        {
+          withCredentials: true, // jika perlu kirim cookie
+        }
+      );
+      const newImagePath = res.data.filePath;
+      setImageUrl((prev) => [...prev, { file_url: newImagePath }]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handlerDeleteFoto = (path) => {
+    const pathname = path.file_url;
+    api.delete("/documentation", {
+      data: {
+        idTugas: idDetail,
+        pathName: pathname,
+      },
+    });
+    setImageUrl((prev) => {
+      const updated = prev.filter((item) => item.file_url != pathname);
+      return updated;
+    });
+  };
+
   const handlerLaporan = (id) => {
-    navigate(`/Laporan-Penugasan/${id}`);
+    if (imageUrl.length < 1) {
+      return alert("dokumentasi kosong");
+    }
+    if (assigned) {
+      navigate(`/Laporan-Penugasan/${id}`);
+    } else {
+      if (tugas.status != "selesai") {
+        return alert("yang ditugaskan belum mengisi laporan");
+      }
+      alert(id + " " + tugas.status);
+    }
   };
 
   const handlerCloseModal = () => {
@@ -83,7 +172,7 @@ const DetailPenugasan = () => {
       } catch (refreshError) {
         console.error("Gagal me-refresh data detail penugasan:", refreshError);
       }
-      setBtnDisabled("btn-disabled");
+      setBtnDisabled(true);
       setModalActive(true); // Tampilkan modal sukses
     } catch (error) {
       console.error("Terjadi kesalahan saat menyetujui tugas:", error);
@@ -154,6 +243,42 @@ const DetailPenugasan = () => {
             <strong>Deskripsi:</strong> {tugas.deskripsi}
           </p>
         </div>
+
+        <div className="form-group" style={{ marginBottom: "15px" }}>
+          <label style={{ color: "#1a73e8", fontWeight: "700" }}>
+            {assigned ? "Upload" : ""} Dokumentasi
+          </label>
+          {assigned && tugas.status_persetujuan == "approve" && (
+            <input
+              type="file"
+              accept="image/*,.pdf"
+              onChange={handleFileChange}
+            />
+          )}
+        </div>
+        <div className="image-preview-container">
+          {loading && <Loading></Loading>}
+          {imageUrl && (
+            <>
+              {imageUrl.map((value, index) => (
+                <div key={index} className="warp-img-prev">
+                  <img src={value.file_url} alt="Gambar hasil upload" />
+                  {assigned && (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlerDeleteFoto(value);
+                      }}
+                    >
+                      x
+                    </button>
+                  )}
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+
         <div className="pegawai-list-detail">
           <h3>Daftar Pegawai Ditugaskan</h3>
           <ul>
@@ -165,7 +290,7 @@ const DetailPenugasan = () => {
             ))}
           </ul>
         </div>
-        <div className="btn-container-detail">
+        <div className={`btn-container-detail ${assigned ? "" : "level"}`}>
           {tugas.status_persetujuan === "approve" && (
             <button className="btn-pdf-detail" onClick={handleDownloadPDF}>
               Download PDF
@@ -173,10 +298,12 @@ const DetailPenugasan = () => {
             </button>
           )}
           <div className="btn-cont-next">
-            {level === "camat" && (
+            {level === "camat" && !btnDisabled && (
               <button
-                className={`approve-detail-button ${btnDisabled}`}
-                disabled={btnDisabled === "btn-disabled"}
+                className={`approve-detail-button ${
+                  btnDisabled ? "btn-disabled" : ""
+                }`}
+                disabled={btnDisabled}
                 onClick={() => handlerApprove(tugas.id_tugas_luar)}
               >
                 Approve
@@ -186,14 +313,21 @@ const DetailPenugasan = () => {
             {tugas.status != "belum mulai" &&
               tugas.status_persetujuan === "approve" && (
                 <button
-                  className={`laporan-button `}
+                  className={`laporan-button ${
+                    imageUrl.length < 1 ? "btn-disabled" : ""
+                  }`}
+                  disabled={!btnDisabled}
                   onClick={(e) => {
                     e.preventDefault();
                     handlerLaporan(tugas.id_tugas_luar);
                   }}
                 >
-                  Laporan
-                  <SummarizeIcon sx={{ fontSize: 16 }} />
+                  {(!assigned && <>Laporan PDF</>) || (
+                    <>
+                      Laporan
+                      <SummarizeIcon sx={{ fontSize: 16 }} />
+                    </>
+                  )}
                 </button>
               )}
           </div>

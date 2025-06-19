@@ -3,10 +3,19 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { Tooltip, Avatar, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import { useState } from "react";
-import { InformationModal } from "../components/modal";
+import { InformationModal, NotifModal } from "../components/modal";
 
-const Header = ({ onToggleSidebar, payload, notif }) => {
+const Header = ({
+  onToggleSidebar,
+  payload,
+  notifData,
+  notifManny,
+  message,
+  displayModal,
+  onClose,
+}) => {
   const [modalActive, setModalActive] = useState(false);
+  const [modalNotifActive, setModalNotifActive] = useState(false);
   const username = payload.username || "";
   // Fungsi waktu berdasarkan jam lokal
   const getGreeting = () => {
@@ -18,9 +27,26 @@ const Header = ({ onToggleSidebar, payload, notif }) => {
   const handlerCloseModal = () => {
     setModalActive(false);
   };
+  const handlerCloseNotifModal = () => {
+    setModalNotifActive(false);
+  };
 
   return (
     <header className="header-cont">
+      <NotifModal displayModal={displayModal ? "active" : ""} onClose={onClose}>
+        <p>🔔{message}</p>
+      </NotifModal>
+      <NotifModal
+        displayModal={modalNotifActive ? "active" : ""}
+        onClose={handlerCloseNotifModal}
+      >
+        {notifData?.map((value, index) => (
+          <div key={index}>
+            <p>{value.message}</p>
+            <p>{value.created_at}</p>
+          </div>
+        ))}
+      </NotifModal>
       <InformationModal
         displayModal={modalActive ? "active" : ""}
         onClose={handlerCloseModal}
@@ -50,10 +76,17 @@ const Header = ({ onToggleSidebar, payload, notif }) => {
       <div className="right-side">
         {payload.level != "super admin" && (
           <Tooltip title="Notifikasi">
-            <button className="icon-btn" aria-label="notifications">
+            <button
+              className="icon-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                setModalNotifActive(true);
+              }}
+              aria-label="notifications"
+            >
               <NotificationsNoneIcon sx={{ fontSize: 28 }} />
-              {notif.manny > 0 && (
-                <span className="icon-badge">{notif.manny}</span>
+              {notifManny > 0 && (
+                <span className="icon-badge">{notifManny}</span>
               )}
             </button>
           </Tooltip>

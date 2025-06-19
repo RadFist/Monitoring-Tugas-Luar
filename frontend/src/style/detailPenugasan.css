@@ -99,7 +99,15 @@
   margin-top: 40px;
   display: flex;
   justify-content: space-between;
+  
 }
+.btn-container-detail.level {
+  justify-content: start;
+  gap: 20px;
+}
+
+
+
 .btn-cont-next{
   display: flex;
   gap: 10px;
@@ -159,12 +167,61 @@
   }
 
   .btn-disabled{
-    background-color: #636e72;
+    background-color: #636e72 !important;
     cursor: default;
   }
   .btn-disabled:hover{
     background-color: #636e72;
   }
+
+/* img */
+
+.image-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  position: static;
+
+}
+.warp-img-prev{
+  position: relative;
+}
+
+.image-preview-container img {
+  width: 200px;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.image-preview-container button {
+position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: rgba(255, 0, 0, 1);
+  border: none;
+  border-radius: 10%;
+  padding: 7px 10px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.image-preview-container img:hover {
+  transform: scale(1.05);
+}
+
+.image-preview-container button:hover {
+   background-color: rgb(192, 2, 2); 
+   color: rgb(211, 209, 209);
+}
 
     
 /* Responsive Design */
