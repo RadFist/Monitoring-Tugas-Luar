@@ -242,6 +242,7 @@
 .notif-modal-cont {
   background-color: #fff;
   padding: 2rem;
+  padding-top: 4rem;
   border-radius: 16px;
   text-align: center;
   position: relative;

@@ -47,7 +47,7 @@ export const postLaporan = async (req, res) => {
     ).id_user;
 
     const message = `laporan ${judul_tugas} sudah dikirim`;
-    await saveNotif(camatId, massage);
+    await saveNotif(camatId, message);
     const socketId = connectedUsers.get(camatId);
     console.log(socketId);
 

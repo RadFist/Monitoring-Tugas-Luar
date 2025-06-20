@@ -15,7 +15,7 @@ export const saveNotif = async (id, notifMessage) => {
 export const getNotifById = async (id) => {
   try {
     const [rows] = await db.query(
-      `SELECT message, created_at FROM tb_notifikasi WHERE user_id = ?`,
+      `SELECT message, created_at FROM tb_notifikasi WHERE user_id = ? ORDER BY created_at DESC`,
       [id]
     );
     return rows; // ← jangan lupa ini

@@ -12,6 +12,7 @@ const Header = ({
   notifManny,
   message,
   displayModal,
+  onMannyReset,
   onClose,
 }) => {
   const [modalActive, setModalActive] = useState(false);
@@ -24,11 +25,16 @@ const Header = ({
     else if (hour < 18 && hour >= 12) return "Selamat siang ☀️";
     else return "Selamat malam 🌙";
   };
+
   const handlerCloseModal = () => {
     setModalActive(false);
   };
   const handlerCloseNotifModal = () => {
     setModalNotifActive(false);
+    if (notifManny > 0) {
+      onMannyReset();
+      // fetch untuk reset notif
+    }
   };
 
   return (
@@ -40,12 +46,15 @@ const Header = ({
         displayModal={modalNotifActive ? "active" : ""}
         onClose={handlerCloseNotifModal}
       >
-        {notifData?.map((value, index) => (
-          <div key={index}>
-            <p>{value.message}</p>
-            <p>{value.created_at}</p>
-          </div>
-        ))}
+        <div style={{ overflow: "auto", maxHeight: "470px" }}>
+          {(!notifData || notifData.length < 1) && <p>Tidak ada notifikasi</p>}
+          {notifData?.map((value, index) => (
+            <div key={index}>
+              <p>{value.message}</p>
+              <p>{value.created_at}</p>
+            </div>
+          ))}
+        </div>
       </NotifModal>
       <InformationModal
         displayModal={modalActive ? "active" : ""}

@@ -87,8 +87,13 @@ const Layout = () => {
   const handlerClose = () => {
     setDisplayModal(false);
   };
+
   const toggleSidebar = () => {
     setSidebarActive(!sidebarActive);
+  };
+
+  const resetNotif = () => {
+    setNotification((prev) => ({ ...prev, data: [], manny: "" }));
   };
 
   document.title = pagelocation || "My Website";
@@ -111,6 +116,7 @@ const Layout = () => {
           displayModal={displayModal}
           notifData={notification.data || []}
           notifManny={notification.manny}
+          onMannyReset={resetNotif}
           message={message}
           onClose={handlerClose}
         />
