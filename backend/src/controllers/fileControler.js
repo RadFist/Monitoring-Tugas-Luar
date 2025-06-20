@@ -7,13 +7,14 @@ import {
 import { io } from "../socket.js";
 
 const PORT = process.env.PORT || 5000;
+const DOMAIN = process.env.DOMAIN;
 
 export const getFoto = async (req, res) => {
   const id = req.params.id;
   try {
     const result = await foto(id);
     result.map((data) => {
-      data.file_url = `http://localhost:${PORT}/public/uploads/img/${data.file_url}`;
+      data.file_url = `http://${DOMAIN}:${PORT}/public/uploads/img/${data.file_url}`;
     });
 
     res.status(200).json({ massage: "success", data: result });
@@ -33,7 +34,7 @@ export const uploadFoto = async (req, res) => {
     const idTugas = req.body.id;
     const fileName = req.file.filename;
     await postFoto(idTugas, fileName);
-    const fileUrl = `http://localhost:${PORT}/public/uploads/img/${fileName}`;
+    const fileUrl = `http://${DOMAIN}:${PORT}/public/uploads/img/${fileName}`;
 
     io.emit("foto", {
       message: "foto updated",

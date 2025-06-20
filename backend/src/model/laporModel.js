@@ -3,7 +3,7 @@ import db from "../config/db_mysql.js";
 export const getLaporan = async (id) => {
   try {
     const [data] = await db.query(
-      `SELECT materi, bagian, laporan FROM tb_laporan WHERE id_tugas_luar = ?`,
+      `SELECT materi, bagian, laporan, created_at as Tanggal_dibuat FROM tb_laporan WHERE id_tugas_luar = ?`,
       [id]
     );
     return data;
@@ -54,6 +54,19 @@ export const postRincianDana = async (id, desk, jml) => {
   } catch (error) {
     console.error("Gagal menyimpan data:", error);
     throw new Error("Terjadi kesalahan saat menyimpan data");
+  }
+};
+
+export const patchRincianDana = async (id, desk, jml) => {
+  try {
+    await db.query(
+      `UPDATE tb_rincian_dana SET deskripsi = ? , jumlah = ? WHERE  id_rincian_dana = ?;`,
+      [desk, jml, id]
+    );
+    return { success: true, message: "data berhasil diubah" };
+  } catch (error) {
+    console.error("Gagal mengubah data:", error);
+    throw new Error("Terjadi kesalahan saat mengubah data");
   }
 };
 

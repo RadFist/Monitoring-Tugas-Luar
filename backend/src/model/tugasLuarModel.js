@@ -177,3 +177,15 @@ export const updateStatusApproveTugas = async (idTugas) => {
     return { success: false, message: "Database error.", error };
   }
 };
+
+export const getTugasByid = async (params, id) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT ${params} FROM tb_tugas_luar WHERE id_tugas_luar = ? `,
+      [id]
+    );
+    return rows;
+  } catch (error) {
+    throw new Error("Error fetch data detail: " + error.message);
+  }
+};

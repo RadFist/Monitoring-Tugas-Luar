@@ -31,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //declaration
 const PORT = process.env.PORT || 5000;
+const domain = process.env.DOMAIN || "localhost?";
 
 //loging request don't forget to delete
 app.use((req, res, next) => {
@@ -63,5 +64,5 @@ initSocket(server, allowedOrigins);
 
 //server sooket
 server.listen(PORT, () => {
-  console.log(`Server soket.io running on  http://localhost:${PORT}`);
+  console.log(`Server soket.io running on  http://${domain}:${PORT}`);
 });

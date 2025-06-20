@@ -96,7 +96,7 @@ export const getAllUsersWhereJabatan = async (selectedJabatan) => {
 export const getAllUsersBYIdTugas = async (idTugas) => {
   try {
     const [rows] = await db.query(
-      `SELECT u.id_user FROM tb_tugas_luar AS tl
+      `SELECT u.id_user,u.nama FROM tb_tugas_luar AS tl
       JOIN tb_pivot_tugas AS pt ON pt.id_tugas_luar = tl.id_tugas_luar
       JOIN tb_user AS u ON u.id_user = pt.id_pegawai
       WHERE tl.id_tugas_luar = ?`,

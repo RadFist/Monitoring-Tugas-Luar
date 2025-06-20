@@ -62,13 +62,25 @@ export const ListItem = ({ list, onDelete }) => {
   );
 };
 
-export const ListRincianDana = ({ list, onChange, onDelete }) => {
+export const ListRincianDana = ({
+  list = [],
+  onChange,
+  onDelete,
+  onSubmit,
+  enabled,
+}) => {
   return (
     <div className="list-pegawai-container">
       <ul className="pegawai-list">
         {list.map((item) => (
           <li key={item.id_rincian_dana} className="rincian-item">
-            <RincianDana item={item} onChange={onChange} onDelete={onDelete} />
+            <RincianDana
+              item={item}
+              onChange={onChange}
+              onDelete={onDelete}
+              onSubmit={onSubmit}
+              enabled={enabled}
+            />
           </li>
         ))}
       </ul>

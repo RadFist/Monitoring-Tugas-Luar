@@ -20,7 +20,7 @@ export default function LaporanDetail() {
     laporan: "",
   });
   const [loading, setLoading] = useState(true);
-  const [btnDisable, setBtnDisabled] = useState(true);
+  const [btnDisable, setBtnDisabled] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [modalActive, setModalActive] = useState(false);
   const [rincianDana, setRincianDana] = useState([]);
@@ -40,7 +40,7 @@ export default function LaporanDetail() {
       setDataTugas(dataResult.dataTugas[0]);
       if (dataResult.dataLaporan.length > 0) {
         setLaporan(dataResult.dataLaporan[0]);
-        setBtnDisabled(false);
+        setBtnDisabled(true);
       }
       setRincianDana(dana.data.data);
       setLoading(false);
@@ -59,7 +59,7 @@ export default function LaporanDetail() {
     };
     try {
       await api.post(`/laporan/rincian/${idDetail}`, data);
-      setBtnDisabled(false);
+      setBtnDisabled(true);
       setModalActive(true);
     } catch (error) {
       alert("error try again latter");
@@ -84,7 +84,7 @@ export default function LaporanDetail() {
     setIsAdding(false);
   };
 
-  const handlerDeleteRincian = async (id) => {
+  const handlerDeleteRincian = async (id, e) => {
     try {
       await api.delete("/laporan/rincian", {
         data: {
@@ -104,18 +104,24 @@ export default function LaporanDetail() {
     }
   };
 
-  const handlerChangeRincianDana = (newText, key) => {
-    setRincianDana((prevRincian) => {
-      return prevRincian.map((item) => {
-        if (item.id === newText.id) {
-          return {
-            ...item,
-            [key]: newText[key], // contoh perubahan
-          };
-        }
-        return item;
-      });
-    });
+  const handlerChangeRincianDana = (e, id) => {
+    const { value, name } = e.target;
+
+    setRincianDana((prevRincian) =>
+      prevRincian.map((item) =>
+        item.id_rincian_dana == id ? { ...item, [name]: value } : item
+      )
+    );
+  };
+
+  const handlerSubmitEditRincian = async (item) => {
+    console.log();
+
+    try {
+      await api.patch(`/laporan/rincian`, item);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handlerCloseModal = () => {
@@ -195,6 +201,8 @@ export default function LaporanDetail() {
               list={rincianDana}
               onChange={handlerChangeRincianDana}
               onDelete={handlerDeleteRincian}
+              onSubmit={handlerSubmitEditRincian}
+              enabled={btnDisable}
             />
           )}
         </div>
@@ -212,7 +220,7 @@ export default function LaporanDetail() {
             }}
           />
         )}
-        {!isAdding && !loading && (
+        {!isAdding && !loading && !btnDisable && (
           <div className="cont-btn-rinci">
             <button
               className="btn-rinci-dana"
@@ -228,8 +236,8 @@ export default function LaporanDetail() {
 
         <div className="laporan-actions">
           <button
-            className={btnDisable ? "btn-disabled" : ""}
-            disabled={btnDisable}
+            className={!btnDisable ? "btn-disabled" : ""}
+            disabled={!btnDisable}
             onClick={(e) => {
               e.preventDefault();
               navigate(`/generate/pdf/laporan/${idDetail}`);
@@ -238,8 +246,8 @@ export default function LaporanDetail() {
             PDF Laporan
           </button>
           <button
-            className={!btnDisable ? "btn-disabled" : ""}
-            disabled={!btnDisable}
+            className={btnDisable ? "btn-disabled" : ""}
+            disabled={btnDisable}
             type="submit"
           >
             Kirim Laporan

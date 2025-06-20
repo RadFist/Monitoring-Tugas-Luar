@@ -23,16 +23,16 @@ export const Item = ({ item, onDelete }) => {
   );
 };
 
-export const RincianDana = ({ item, onChange, onDelete }) => {
+export const RincianDana = ({
+  item,
+  onChange,
+  onDelete,
+  onSubmit,
+  enabled,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   let component;
   let btn;
-
-  function handlerChangeText(e) {
-    const { name, value } = e.target;
-    const newtext = { ...item, [name]: value };
-    onChange(newtext, name);
-  }
 
   if (isEditing) {
     component = (
@@ -41,14 +41,18 @@ export const RincianDana = ({ item, onChange, onDelete }) => {
           type="text"
           name="deskripsi"
           value={item.deskripsi}
-          onChange={handlerChangeText}
+          onChange={(e) => {
+            onChange(e, item.id_rincian_dana);
+          }}
         />{" "}
         :{" "}
         <input
           type="number"
           name="jumlah"
           value={item.jumlah}
-          onChange={handlerChangeText}
+          onChange={(e) => {
+            onChange(e, item.id_rincian_dana);
+          }}
           min={1}
           onKeyDown={(e) => {
             // izinkan navigasi, backspace, delete, tab, dll.
@@ -73,6 +77,7 @@ export const RincianDana = ({ item, onChange, onDelete }) => {
       <button
         onClick={(e) => {
           e.preventDefault();
+          onSubmit(item);
           setIsEditing(false);
         }}
       >
@@ -85,16 +90,23 @@ export const RincianDana = ({ item, onChange, onDelete }) => {
         <p>{item.deskripsi}</p> : <p>{item.jumlah}</p>
       </div>
     );
-    btn = (
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          setIsEditing(true);
-        }}
-      >
-        <EditIcon />
-      </button>
-    );
+
+    {
+      !enabled ? (
+        (btn = (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setIsEditing(true);
+            }}
+          >
+            <EditIcon />
+          </button>
+        ))
+      ) : (
+        <></>
+      );
+    }
   }
 
   return (
@@ -102,15 +114,17 @@ export const RincianDana = ({ item, onChange, onDelete }) => {
       {component}
       <div className="cont-btn-action-rinci">
         {btn}
-        <button
-          className="btn-delete-rinci"
-          onClick={(e) => {
-            e.preventDefault();
-            onDelete(item.id_rincian_dana);
-          }}
-        >
-          <DeleteIcon />
-        </button>
+        {!enabled && (
+          <button
+            className="btn-delete-rinci"
+            onClick={(e) => {
+              e.preventDefault();
+              onDelete(item.id_rincian_dana);
+            }}
+          >
+            <DeleteIcon />
+          </button>
+        )}
       </div>
     </div>
   );

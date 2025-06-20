@@ -20,6 +20,8 @@ import {
   deleteRincianDana,
   getLaporan,
   getRincianDana,
+  laporPdf,
+  patcRincianDana,
   postLaporan,
   postRincianDana,
 } from "../controllers/laporanControler.js";
@@ -69,7 +71,10 @@ router.get("/laporan/:id", getLaporan);
 router.post("/laporan/rincian", postRincianDana);
 router.get("/laporan/rincian/:id", getRincianDana);
 router.post("/laporan/rincian/:id", postLaporan);
+router.patch("/laporan/rincian", patcRincianDana);
 router.delete("/laporan/rincian", deleteRincianDana);
+
+router.get("/laporan/generate/:id", laporPdf);
 
 //======upload Route======
 const upload = uploadMiddleware();

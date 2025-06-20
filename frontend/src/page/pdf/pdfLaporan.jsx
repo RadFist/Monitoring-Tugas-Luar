@@ -9,30 +9,23 @@ import api from "../../services/api";
 // Buat style untuk PDF
 export default function pdf() {
   const { id } = useParams();
-  const [data, SetData] = useState({
-    bagian: "seksi pelayanan",
-    Tanggal: "12-21-2025",
-    Dasar: "awikwok",
-    hariTanggal: "kamis 27 februari 2025",
-    materi: "awikwok",
-    lokasi: "gedung wakwak",
-    laporan:
-      "dhashjdhasjhdjash jhsadjashjd \nhasjdhasjdhajshdjah \njasdhasdhjshjk",
-    pegawai: [
-      { nama: "udin sarudin" },
-      { nama: "udin sarudin" },
-      { nama: "udin sarudin" },
-      { nama: "udin sarudin" },
-    ],
-  });
+  const [dataRincianDana, SetDataRincianDana] = useState([]);
+  const [dataUser, SetDataUser] = useState([]);
+  const [dataTugas, SetDataTugas] = useState({});
+  const [dataLaporan, SetDataLaporan] = useState({});
   const [images, setImages] = useState([]);
+  let total = 0;
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const res = await api.get(`/documentation/${id}`);
-        const files = res.data.data;
-        setImages(files);
+        const result = await api.get(`/laporan/generate/${id}`);
+        const data = result.data.data;
+        SetDataLaporan(data.laporan[0]);
+        SetDataTugas(data.tugas[0]);
+        SetDataUser(data.users);
+        SetDataRincianDana(data.rincianDana);
+        setImages(data.foto);
       } catch (error) {
         console.error("Error fetching image data:", error);
       }
@@ -73,56 +66,65 @@ export default function pdf() {
                 </View>
                 <View style={{ flexDirection: "row", marginBottom: 5 }}>
                   <Text style={{ width: 80 }}>Dari</Text>
-                  <Text>: {data.bagian}</Text>
+                  <Text>: {dataLaporan.bagian}</Text>
                 </View>
                 <View style={{ flexDirection: "row", marginBottom: 5 }}>
                   <Text style={{ width: 80 }}>Tanggal</Text>
                   <Text>
-                    : {data.Tanggal} //tanggal laporan disubmit benerin
+                    : {dataLaporan.Tanggal_dibuat}
+                    benerin
                   </Text>
                 </View>
                 <View style={{ flexDirection: "row", marginBottom: 5 }}>
                   <Text style={{ width: 80 }}>Dasar</Text>
-                  <Text>: {data.Dasar}</Text>
+                  <Text>: {dataTugas.dasar}</Text>
                 </View>
               </View>
               <View style={{ marginBottom: "15px" }}>
                 <Text style={{ marginBottom: 5 }}>A. Pelaksanaan</Text>
                 <View style={{ flexDirection: "row", marginBottom: 5 }}>
                   <Text style={{ width: 80 }}>Hari, Tanggal</Text>
-                  <Text>: {data.Dasar}</Text>
+                  <Text>: {dataTugas.tanggal_mulai}</Text>
                 </View>
                 <View style={{ flexDirection: "row", marginBottom: 5 }}>
                   <Text style={{ width: 80 }}>Materi</Text>
-                  <Text>: {data.Dasar}</Text>
+                  <Text>: {dataLaporan.materi}</Text>
                 </View>
                 <View style={{ flexDirection: "row", marginBottom: 5 }}>
                   <Text style={{ width: 80 }}>Tempat</Text>
-                  <Text>: {data.Dasar}</Text>
+                  <Text>: {dataTugas.lokasi}</Text>
                 </View>
               </View>
               <View style={{ marginBottom: 35 }}>
                 <Text style={{ marginBottom: 5 }}>B. Laporan</Text>
-                <View style={{ marginLeft: 12 }}>
+                <View style={{ marginLeft: 12, minHeight: "40px" }}>
                   <Text
                     style={{ lineHeight: "20px" }}
-                  >{`${data.laporan}`}</Text>
+                  >{`${dataLaporan.laporan}`}</Text>
                 </View>
               </View>
+            </Page>
+
+            {/* next page  */}
+            <Page size="A4" style={styles.page}>
               <View>
-                <Text style={{ marginBottom: 5 }}>Yang melaksanakan tugas</Text>
-                <View style={{ marginLeft: 20 }}>
-                  {data.pegawai.map((value, index) => (
+                <Text style={{ marginBottom: 10 }}>
+                  Yang melaksanakan tugas
+                </Text>
+                <View style={{ marginLeft: 20, marginBottom: 20 }}>
+                  {dataUser.map((value, index) => (
                     <View
                       key={index}
                       style={{
                         flexDirection: "row",
                         marginBottom: 10,
-                        alignItems: "center",
+                        alignItems: "flex-start",
                       }}
                     >
                       <Text style={{ marginRight: 5 }}>{index + 1}.</Text>
-                      <Text style={{ width: 100 }}>{value.nama}</Text>
+                      <Text style={{ width: 150, lineHeight: "15px" }}>
+                        {value.nama}
+                      </Text>
                       <View
                         style={{
                           width: 150,
@@ -136,6 +138,39 @@ export default function pdf() {
                       </View>
                     </View>
                   ))}
+                </View>
+
+                <View>
+                  <Text style={{ marginBottom: 10 }}>Rincian Dana</Text>
+                  <View style={{ marginLeft: 20 }}>
+                    {dataRincianDana.map((value, index) => {
+                      total = total + value.jumlah;
+                      return (
+                        <View
+                          key={index}
+                          style={{
+                            flexDirection: "row",
+                            marginBottom: 10,
+                            alignItems: "flex-start",
+                          }}
+                        >
+                          <Text style={{ marginRight: 5 }}>{index + 1}.</Text>
+                          <Text style={{ width: 150, lineHeight: "15px" }}>
+                            {value.deskripsi}
+                          </Text>
+                          <View
+                            style={{
+                              marginLeft: 10,
+                              marginRight: 10,
+                            }}
+                          >
+                            <Text>: Rp.{value.jumlah} </Text>
+                          </View>
+                        </View>
+                      );
+                    })}
+                    <Text>Total : Rp {total}</Text>
+                  </View>
                 </View>
               </View>
             </Page>
