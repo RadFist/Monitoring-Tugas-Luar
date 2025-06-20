@@ -3,6 +3,7 @@ import Layout from "./layout/layout.jsx";
 import Home from "./page/home.jsx";
 import Pdf from "./page/pdf/pdfDisposisi.jsx";
 import PdfSuratTugas from "./page/pdf/pdfSuratTugas.jsx";
+import PdfLaporan from "./page/pdf/pdfLaporan.jsx";
 import Login from "./page/login.jsx";
 import Regist from "./page/registration.jsx";
 import About from "./page/about.jsx";
@@ -13,7 +14,12 @@ import Detail from "./page/detailPenugasan.jsx";
 import InputTugasLuar from "./page/inputTugasLuar.jsx";
 import { PrivateWraper as PrivateRoute } from "./components/logic/PrivateWarperAuth.jsx";
 import LaporanDetail from "./page/laporanDetail.jsx";
+import { Buffer } from "buffer";
+
 function App() {
+  if (typeof window !== "undefined") {
+    window.Buffer = Buffer;
+  }
   return (
     <Router>
       <Routes>
@@ -82,6 +88,7 @@ function App() {
         <Route path="/SignIn" element={<Regist />} />
         <Route path="/generate" element={<Pdf />} />
         <Route path="/generate/pdf/SPD" element={<PdfSuratTugas />} />
+        <Route path="/generate/pdf/laporan/:id" element={<PdfLaporan />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </Router>

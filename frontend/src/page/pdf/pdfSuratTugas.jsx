@@ -7,6 +7,7 @@ import { TableComponentST } from "../../components/pdf/tablePdf";
 // Buat style untuk PDF
 export const PdfSuratTUgas = () => {
   const location = useLocation();
+  const camat = "AHMAD HAPID, A.P,M.Si";
   const { data } = location.state || {};
 
   if (data == undefined) {
@@ -41,7 +42,7 @@ export const PdfSuratTUgas = () => {
                   <View>
                     <View style={{ flexDirection: "row", marginBottom: 5 }}>
                       <Text style={{ width: 80 }}>Nama</Text>
-                      <Text>: AHMAD HAPID, A.P,M.Si</Text>
+                      <Text>: {camat}</Text>
                     </View>
                     <View style={{ flexDirection: "row", marginBottom: 5 }}>
                       <Text style={{ width: 80 }}>Nip</Text>
@@ -147,9 +148,7 @@ export const PdfSuratTUgas = () => {
                         marginBottom: "10px",
                       }}
                     >
-                      <Text style={{ fontWeight: "bold" }}>
-                        AHMAD HAPID, A.P,M.Si
-                      </Text>
+                      <Text style={{ fontWeight: "bold" }}>{camat}</Text>
                     </View>
                     <Text>197312191994031003</Text>
                   </View>

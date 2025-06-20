@@ -117,6 +117,7 @@ export default function LaporanDetail() {
       });
     });
   };
+
   const handlerCloseModal = () => {
     setModalActive(false);
   };
@@ -231,7 +232,7 @@ export default function LaporanDetail() {
             disabled={btnDisable}
             onClick={(e) => {
               e.preventDefault();
-              alert(idDetail);
+              navigate(`/generate/pdf/laporan/${idDetail}`);
             }}
           >
             PDF Laporan

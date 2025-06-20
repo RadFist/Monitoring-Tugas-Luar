@@ -12,7 +12,7 @@ import { clearToken, getToken } from "../utils/tokenManpulation";
 import { logoutUser } from "../services/authServices";
 import socket from "../services/socket";
 
-const Sidebar = ({ displaySidebar, handlerClickArrow, userLevel }) => {
+const Sidebar = ({ displaySidebar = false, handlerClickArrow, userLevel }) => {
   const navigate = useNavigate();
 
   const handlerLogOut = async (event) => {
@@ -28,7 +28,7 @@ const Sidebar = ({ displaySidebar, handlerClickArrow, userLevel }) => {
   };
 
   return (
-    <aside className={`sidebar-cont ${displaySidebar}`}>
+    <aside className={`sidebar-cont ${displaySidebar ? "active" : ""}`}>
       <div className="sidebar-content">
         <div className="side-header">
           <span>Menu</span>

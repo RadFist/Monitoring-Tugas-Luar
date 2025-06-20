@@ -15,6 +15,7 @@ const allowedOrigins = ["http://localhost:5050", "http://localhost:5173"];
 app.use(
   cors({
     origin: function (origin, callback) {
+      // console.log("CORS request from:", origin);
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -24,6 +25,7 @@ app.use(
     credentials: true, // supaya cookie bisa dikirim
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
