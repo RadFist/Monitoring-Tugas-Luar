@@ -2,7 +2,6 @@ import { Server } from "socket.io"; // import soket io for realtime
 
 export const connectedUsers = new Map();
 export let io;
-
 const initSocket = (server, allowedOrigins) => {
   io = new Server(server, {
     cors: {

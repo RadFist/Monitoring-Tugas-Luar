@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./layout/layout.jsx";
 import Home from "./page/home.jsx";
 import Pdf from "./page/pdf/pdfDisposisi.jsx";
+import PdfArsipDokumen from "./page/pdf/pdfArsipDokumen.jsx";
 import PdfSuratTugas from "./page/pdf/pdfSuratTugas.jsx";
 import PdfLaporan from "./page/pdf/pdfLaporan.jsx";
 import Login from "./page/login.jsx";
@@ -14,6 +15,7 @@ import Detail from "./page/detailPenugasan.jsx";
 import InputTugasLuar from "./page/inputTugasLuar.jsx";
 import { PrivateWraper as PrivateRoute } from "./components/logic/PrivateWarperAuth.jsx";
 import LaporanDetail from "./page/laporanDetail.jsx";
+import ArsipDokumen from "./page/arsipDokumen.jsx";
 import { Buffer } from "buffer";
 
 function App() {
@@ -65,6 +67,14 @@ function App() {
             }
           />
           <Route
+            path="arsip"
+            element={
+              <PrivateRoute>
+                <ArsipDokumen title="Arsip Dukomen" />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="about"
             element={
               <PrivateRoute>
@@ -75,6 +85,7 @@ function App() {
         </Route>
 
         <Route path="/Login" element={<Login />} />
+
         {/* refactor later */}
         <Route
           path="/Tugas-Luar/Detail-Penugasan/:idDetail"
@@ -85,6 +96,7 @@ function App() {
           path="/Laporan-Penugasan/:idDetail"
           element={<LaporanDetail />}
         />
+        <Route path="/arsip/dokumen/:id" element={<PdfArsipDokumen />} />
         <Route path="/SignIn" element={<Regist />} />
         <Route path="/generate" element={<Pdf />} />
         <Route path="/generate/pdf/SPD" element={<PdfSuratTugas />} />

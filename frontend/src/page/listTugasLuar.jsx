@@ -1,13 +1,8 @@
 import "../style/listTugas.css";
 import ArrowIcon from "@mui/icons-material/ArrowForwardIos";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import {
-  FormControl,
-  TextField,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import RejectIcon from "@mui/icons-material/DoNotDisturbOn";
+import { FormControl, TextField, Select, MenuItem } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loadingCompSpin as Loading } from "../components/LoadingComp";
@@ -18,32 +13,40 @@ import api from "../services/api";
 import { HeaderSecond } from "../layout/headerSecond";
 
 const ListTugas = () => {
-  const navigate = useNavigate();
-  const { search } = useLocation();
-  const query = new URLSearchParams(search);
-  const filterDate = query.get("filterDate");
   const token = getToken();
   const payload = token ? jwtDecode(token) : "";
   const level = payload.level;
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
+
+  const filterDate = query.get("filterDate") || "";
+  const FilterStatusApproval =
+    query.get("status_approval") || (level === "camat" && !filterDate)
+      ? "pending"
+      : "none";
+  const filterStatus = query.get("status");
 
   const [loading, setLoading] = useState(false);
   const [modalActive, setModalActive] = useState(false);
   const [daftarTugas, setDaftarTugas] = useState([]);
   const [filter, setFilter] = useState({
-    date: filterDate || "",
-    status_approval: level === "camat" ? "pending" : "none",
-    status: "none",
+    date: filterDate,
+    status_approval: FilterStatusApproval,
+    status: filterStatus || "none",
   });
+
   const roleRoutes = {
     camat: "/tugas/approval",
     user: "user/tugas/" + payload.id_user,
   };
+
   let routeList = roleRoutes[level] || "/allTugas";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let routeFilter = routeList;
+        let routeFilter = "";
         const queryParams = [];
 
         if (filter.date) {
@@ -59,8 +62,9 @@ const ListTugas = () => {
         if (queryParams.length > 0) {
           routeFilter += "?" + queryParams.join("&");
         }
-
-        const responseGetListTugas = (await api.get(routeFilter)).data;
+        navigate(routeFilter);
+        const responseGetListTugas = (await api.get(routeList + routeFilter))
+          .data;
         setDaftarTugas(responseGetListTugas.data);
       } catch (error) {
         console.error("Error fetching :", error.message);
@@ -131,7 +135,7 @@ const ListTugas = () => {
                   }))
                 }
               >
-                {["none", "approve", "pending", "reject"].map((status) => (
+                {["none", "approve", "pending"].map((status) => (
                   <MenuItem key={status} value={status}>
                     {status === "none"
                       ? "NONE"
@@ -197,7 +201,7 @@ const ListTugas = () => {
                 }))
               }
             >
-              {["none", "approve", "pending", "reject"].map((status) => (
+              {["none", "approve", "pending"].map((status) => (
                 <MenuItem key={status} value={status}>
                   {status === "none"
                     ? "NONE"
@@ -267,16 +271,31 @@ const ListTugas = () => {
                     Detail <ArrowIcon sx={{ fontSize: 14 }} />
                   </button>
                   {level === "camat" && (
-                    <button
-                      disabled={item.status_approval === "approve"}
-                      className={`approve-button ${
-                        item.status_approval === "approve" ? "btn-disabled" : ""
-                      }`}
-                      onClick={() => handlerApprove(item.id_tugas_luar)}
-                    >
-                      Approve
-                      <CheckCircleIcon sx={{ fontSize: 14 }} />
-                    </button>
+                    <div style={{ display: "flex", gap: "10px" }}>
+                      <button
+                        className={`reject-button ${
+                          item.status_approval === "approve" ? "invisible" : ""
+                        }`}
+                        onClick={(e) => {
+                          alert(item.id_tugas_luar);
+                        }}
+                      >
+                        Reject
+                        <RejectIcon sx={{ fontSize: 14 }} />
+                      </button>
+                      <button
+                        disabled={item.status_approval === "approve"}
+                        className={`approve-button ${
+                          item.status_approval === "approve"
+                            ? "btn-disabled"
+                            : ""
+                        }`}
+                        onClick={() => handlerApprove(item.id_tugas_luar)}
+                      >
+                        Approve
+                        <CheckCircleIcon sx={{ fontSize: 14 }} />
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>

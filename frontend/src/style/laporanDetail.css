@@ -186,6 +186,7 @@ input[type="file"]:focus {
   color: #fff !important;   
 }
 
+
 .btn-rinci-dana {
   display: flex;
   align-items: center;
@@ -204,6 +205,14 @@ input[type="file"]:focus {
   color: white;
 }
 
+.cencel-btn{
+  background-color: #eb130c !important ;
+}
+.cencel-btn:hover {   
+  background-color: #ae0c06 !important; 
+}
+
+
 /* Responsive */
 @media (max-width: 600px) {
   .laporan-container {
@@ -220,3 +229,5 @@ input[type="file"]:focus {
     width: 100%;
   }
 }
+
+

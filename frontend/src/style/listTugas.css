@@ -81,6 +81,9 @@ body {
   .status.diproses, .status.pending, .dikerjakan {
     background-color: #ff9800;
   }
+  .archived{
+    background-color: #5a5a5a;
+  }
   
   /* Text dalam item */
   .tugas-item p {
@@ -134,8 +137,30 @@ body {
     align-items: center;
     gap: 2px;
   }
+  .reject-button {
+    margin-top: 14px;
+    padding: 10px 16px;
+    background-color: #eb130c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
   
   .approve-button:hover {
      background-color: #28712b;
+  }
+  
+  .reject-button:hover {  background-color: #ae0c06;
+  }
+
+  .invisible{
+    display: none;
   }
   

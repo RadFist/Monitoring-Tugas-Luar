@@ -86,8 +86,14 @@ const Sidebar = ({ displaySidebar = false, handlerClickArrow, userLevel }) => {
               <AssignmentIcon /> <span>Penugasan</span>
             </div>
           )}
-          <div className="menu-item">
-            <ArchiveIcon /> <span>Dokumentasi Arsip</span>
+          <div
+            className="menu-item"
+            onClick={() => {
+              navigate("/arsip");
+              handlerClickArrow();
+            }}
+          >
+            <ArchiveIcon /> <span>Arsip</span>
           </div>
           <div
             className="menu-item"

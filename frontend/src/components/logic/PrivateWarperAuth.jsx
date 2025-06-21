@@ -22,7 +22,6 @@ export const PrivateWraper = ({ children, allowedLevels = [] }) => {
         try {
           const data = await authRefreshToken();
           saveToken(data.token);
-          //refactor later or delete
         } catch (error) {
           clearToken();
           setIsAuth(false);

@@ -64,6 +64,7 @@ export const listTugas = async (req, res) => {
   const statusApprovalFilter = req.query.status_approval || "";
   const statusFilter = req.query.status || "";
 
+  //refactor untuk dashboar archived
   if (grup === "date") {
     try {
       const data = await getListTugasGrupTime();
@@ -128,10 +129,15 @@ export const listTugas = async (req, res) => {
         filterConditions.push(`status_approval = '${statusApprovalFilter}'`);
       }
       // Gabungkan semua filter jadi satu string
-      const whereClause =
-        filterConditions.length > 0 ? filterConditions.join(" AND ") : "";
 
-      tugasListRaw = await getListTugas(whereClause || 1);
+      filterConditions.length > 0 ? filterConditions.join(" AND ") : "";
+
+      let whereClause =
+        filterConditions.length > 0
+          ? `AND ${filterConditions.join(" AND ")}`
+          : "";
+
+      tugasListRaw = await getListTugas(whereClause);
 
       const tugasList = tugasListRaw.map((tugas) => ({
         ...tugas,
@@ -173,9 +179,6 @@ export const listTugasPegawai = async (req, res) => {
   // Gabungkan semua filter jadi satu string
   const whereClause =
     filterConditions.length > 0 ? `AND ${filterConditions.join(" AND ")}` : "";
-
-  console.log(arrValue);
-  console.log(whereClause);
 
   try {
     const tugasListRaw = await getListTugasWithUser(arrValue, whereClause);
@@ -278,10 +281,38 @@ export const approveTugas = async (req, res) => {
         });
       }
     }
+    io.emit("verification", {
+      message: "status tugas berubah",
+    });
 
     res.status(200).json(result);
   } catch (error) {
     console.error("Error in approveTugas:", error);
+    res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan pada server.",
+      error,
+    });
+  }
+};
+
+export const getArsip = async (req, res) => {
+  try {
+    let cond = "";
+    const dateFilter = req.query.date;
+
+    if (dateFilter) {
+      cond = `AND tanggal_mulai = '${dateFilter}'`;
+    }
+    console.log(dateFilter);
+    const data = await getListTugas(cond, true);
+    const dataFormated = data.map((value) => ({
+      ...value,
+      tanggal_mulai: formatDateIso(value.tanggal_mulai),
+    }));
+    res.status(200).json({ message: "success", data: dataFormated });
+  } catch (error) {
+    console.error("Error in get data:", error);
     res.status(500).json({
       success: false,
       message: "Terjadi kesalahan pada server.",

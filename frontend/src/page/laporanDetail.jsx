@@ -15,13 +15,15 @@ export default function LaporanDetail() {
   const navigate = useNavigate();
   const [dataTugas, setDataTugas] = useState({});
   const [laporan, setLaporan] = useState({
+    id_laporan: "",
     materi: "",
     bagian: "",
     laporan: "",
   });
   const [loading, setLoading] = useState(true);
-  const [btnDisable, setBtnDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+  const [hasValue, setHasValue] = useState(false);
   const [modalActive, setModalActive] = useState(false);
   const [rincianDana, setRincianDana] = useState([]);
   const [inputRincian, setInputRincian] = useState({
@@ -40,7 +42,8 @@ export default function LaporanDetail() {
       setDataTugas(dataResult.dataTugas[0]);
       if (dataResult.dataLaporan.length > 0) {
         setLaporan(dataResult.dataLaporan[0]);
-        setBtnDisabled(true);
+        setDisabled(true);
+        setHasValue(true);
       }
       setRincianDana(dana.data.data);
       setLoading(false);
@@ -50,19 +53,40 @@ export default function LaporanDetail() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const button = e.nativeEvent.submitter;
+
+    if (button.name == "edit") {
+      return setDisabled(false);
+    }
+
     const data = {
+      id_laporan: laporan.id_laporan || "",
       idTugas: idDetail,
       bagian: laporan.bagian,
       materi: laporan.materi,
       laporan: laporan.laporan,
       judul_tugas: dataTugas.judul_tugas,
     };
-    try {
-      await api.post(`/laporan/rincian/${idDetail}`, data);
-      setBtnDisabled(true);
-      setModalActive(true);
-    } catch (error) {
-      alert("error try again latter");
+
+    if (hasValue) {
+      try {
+        await api.patch(`/laporan/${idDetail}`, data);
+        setDisabled(true);
+        setModalActive(true);
+      } catch (error) {
+        alert("error try again latter");
+      }
+    } else {
+      try {
+        await api.post(`/laporan/${idDetail}`, data);
+        setDisabled(true);
+        setModalActive(true);
+        const result = await api.get(`/laporan/${idDetail}`);
+        const dataResult = result.data.data;
+        setLaporan(dataResult.dataLaporan[0]);
+      } catch (error) {
+        alert(error);
+      }
     }
   };
 
@@ -135,7 +159,6 @@ export default function LaporanDetail() {
 
   const handleInputChangeLaporan = (e) => {
     const { name, value } = e.target;
-
     setLaporan((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -167,6 +190,7 @@ export default function LaporanDetail() {
           <input
             value={laporan.materi}
             name="materi"
+            disabled={disabled}
             onChange={handleInputChangeLaporan}
             placeholder="materi tentang apa"
             required
@@ -177,6 +201,7 @@ export default function LaporanDetail() {
           <input
             value={laporan.bagian}
             name="bagian"
+            disabled={disabled}
             onChange={handleInputChangeLaporan}
             placeholder="e.x: Seksi pelayanan, seksi pemerintahan"
             required
@@ -190,6 +215,7 @@ export default function LaporanDetail() {
             name="laporan"
             onChange={handleInputChangeLaporan}
             required
+            disabled={disabled}
             rows={4}
           ></textarea>
         </div>
@@ -202,7 +228,7 @@ export default function LaporanDetail() {
               onChange={handlerChangeRincianDana}
               onDelete={handlerDeleteRincian}
               onSubmit={handlerSubmitEditRincian}
-              enabled={btnDisable}
+              enabled={disabled}
             />
           )}
         </div>
@@ -220,7 +246,7 @@ export default function LaporanDetail() {
             }}
           />
         )}
-        {!isAdding && !loading && !btnDisable && (
+        {!isAdding && !loading && !disabled && (
           <div className="cont-btn-rinci">
             <button
               className="btn-rinci-dana"
@@ -236,8 +262,8 @@ export default function LaporanDetail() {
 
         <div className="laporan-actions">
           <button
-            className={!btnDisable ? "btn-disabled" : ""}
-            disabled={!btnDisable}
+            className={!hasValue ? "btn-disabled" : ""}
+            disabled={!hasValue}
             onClick={(e) => {
               e.preventDefault();
               navigate(`/generate/pdf/laporan/${idDetail}`);
@@ -245,12 +271,19 @@ export default function LaporanDetail() {
           >
             PDF Laporan
           </button>
-          <button
-            className={btnDisable ? "btn-disabled" : ""}
-            disabled={btnDisable}
-            type="submit"
-          >
-            Kirim Laporan
+          {hasValue && !disabled && (
+            <button
+              className="cencel-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                setDisabled(true);
+              }}
+            >
+              Cencel
+            </button>
+          )}
+          <button name={disabled ? "edit" : ""} type="submit">
+            {disabled ? "Edit" : "Kirim Laporan"}
           </button>
         </div>
       </form>

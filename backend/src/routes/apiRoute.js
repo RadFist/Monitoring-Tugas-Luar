@@ -9,6 +9,7 @@ import {
   listTugasPegawai,
   detailTugas,
   approveTugas,
+  getArsip,
 } from "../controllers/tugasLuarController.js";
 import { getNotifIdUser } from "../controllers/notifControler.js";
 import {
@@ -17,10 +18,12 @@ import {
   uploadFoto,
 } from "../controllers/fileControler.js";
 import {
+  approveLaporan,
   deleteRincianDana,
   getLaporan,
   getRincianDana,
   laporPdf,
+  patchLaporan,
   patcRincianDana,
   postLaporan,
   postRincianDana,
@@ -67,20 +70,26 @@ router.patch("/PenugasanTugasLuar/Approve", authCamat, approveTugas);
 router.get("/notification/:id", getNotifIdUser);
 
 //======Laporan Route======
-router.get("/laporan/:id", getLaporan);
+router.get("/laporan/rincian/:id", authenticateToken, getRincianDana);
 router.post("/laporan/rincian", postRincianDana);
-router.get("/laporan/rincian/:id", getRincianDana);
-router.post("/laporan/rincian/:id", postLaporan);
 router.patch("/laporan/rincian", patcRincianDana);
 router.delete("/laporan/rincian", deleteRincianDana);
 
+router.post("/laporan/approve/:id", authCamat, approveLaporan);
 router.get("/laporan/generate/:id", laporPdf);
+
+router.get("/laporan/:id", authenticateToken, getLaporan);
+router.post("/laporan/:id", authenticateToken, postLaporan);
+router.patch("/laporan/:id", authenticateToken, patchLaporan);
 
 //======upload Route======
 const upload = uploadMiddleware();
 router.get("/documentation/:id", getFoto);
 router.post("/documentation", upload.single("foto"), uploadFoto);
 router.delete("/documentation", deleteFoto);
+
+//======Arsip Route======
+router.get("/arsip", getArsip);
 
 //======not found route======
 router.all("*", (req, res) => {

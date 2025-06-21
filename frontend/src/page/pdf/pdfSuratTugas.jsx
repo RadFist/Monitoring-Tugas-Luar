@@ -14,6 +14,7 @@ export const PdfSuratTUgas = () => {
     window.location.href = "/Tugas-Luar";
     return null;
   }
+  console.log(data);
 
   return (
     <div>

@@ -25,50 +25,56 @@ const DetailPenugasan = () => {
   const level = token ? jwtDecode(token).level : "";
   const nip = token ? jwtDecode(token).nip : "";
   const [assigned, setAssigned] = useState(false);
+  const [modalChildren, setModalChildren] = useState(null);
+
+  const fetchData = async () => {
+    try {
+      const response = await api.get(`/tugas/detail/${idDetail}`);
+      const tugasData = response.data.data;
+      setTugas(tugasData);
+      setAssigned(tugasData.pegawai.some((p) => p.nip === nip));
+
+      if (tugasData.status_persetujuan === "approve") {
+        setBtnDisabled(true);
+      }
+    } catch (error) {
+      console.error("Error fetching tugas:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchFoto = async () => {
+    try {
+      const response = await api.get(`/documentation/${idDetail}`);
+      setImageUrl(response.data.data);
+    } catch (error) {
+      console.error("Error fetching foto:", error.message);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get(`/tugas/detail/${idDetail}`);
-        const tugasData = response.data.data;
-        setTugas(tugasData);
-        setAssigned(tugasData.pegawai.some((p) => p.nip === nip));
-
-        if (tugasData.status_persetujuan === "approve") {
-          setBtnDisabled(true);
-        }
-      } catch (error) {
-        console.error("Error fetching tugas:", error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchFoto = async () => {
-      try {
-        const response = await api.get(`/documentation/${idDetail}`);
-        setImageUrl(response.data.data);
-      } catch (error) {
-        console.error("Error fetching foto:", error.message);
-      }
-    };
-
     fetchData();
     fetchFoto();
 
     const handleFotoUpdate = () => {
       fetchFoto();
     };
+    const handleDataUpdate = () => {
+      fetchData();
+    };
 
     socket.on("foto", handleFotoUpdate);
+    socket.on("verification", handleDataUpdate);
 
     return () => {
       socket.off("foto", handleFotoUpdate);
+      socket.off("verification", handleDataUpdate);
     };
   }, []);
 
   useEffect(() => {
-    if (tugas.status === "selesai") {
+    if (tugas.status === "selesai" || tugas.status === "archived") {
     } else {
       setTugas((prev) => {
         let newStatus = "belum mulai";
@@ -137,18 +143,22 @@ const DetailPenugasan = () => {
     if (imageUrl.length < 1) {
       return alert("dokumentasi kosong");
     }
-    if (assigned) {
+    if (assigned && level != "camat") {
       navigate(`/Laporan-Penugasan/${id}`);
     } else {
       if (tugas.status != "selesai") {
         return alert("yang ditugaskan belum mengisi laporan");
       }
-      alert(id + " " + tugas.status);
+      navigate(`/generate/pdf/laporan/${id}`);
     }
   };
 
   const handlerCloseModal = () => {
-    setModalActive(false);
+    if (modalChildren) {
+      navigate(-1);
+    } else {
+      setModalActive(false);
+    }
   };
 
   const handlerApprove = async (id) => {
@@ -179,6 +189,22 @@ const DetailPenugasan = () => {
     }
   };
 
+  const handlerApproveLaporan = async () => {
+    setModalChildren(
+      <>
+        <h2>Success!</h2>
+        <p>Laporan berhasil diarsipkan</p>
+      </>
+    );
+
+    try {
+      await api.post(`laporan/approve/${idDetail}`);
+      setModalActive(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="content-list-tugas-loading">
@@ -192,7 +218,9 @@ const DetailPenugasan = () => {
       <SuccessModal
         displayModal={modalActive ? "active" : ""}
         onClose={handlerCloseModal}
-      />
+      >
+        {modalChildren}
+      </SuccessModal>
       <div className="header-detail">
         <button className="btn-kembali" onClick={() => navigate(-1)}>
           <ChevronLeftIcon /> Kembali
@@ -230,7 +258,7 @@ const DetailPenugasan = () => {
             </span>
           </p>
           <p>
-            <strong>Status Persetujuan:</strong>{" "}
+            <strong>Status Tugas:</strong>{" "}
             <span
               className={`status ${tugas.status_persetujuan
                 ?.toLowerCase()
@@ -322,7 +350,7 @@ const DetailPenugasan = () => {
                     handlerLaporan(tugas.id_tugas_luar);
                   }}
                 >
-                  {(!assigned && <>Laporan PDF</>) || (
+                  {((!assigned || level == "camat") && <>Laporan PDF</>) || (
                     <>
                       Laporan
                       <SummarizeIcon sx={{ fontSize: 16 }} />
@@ -330,6 +358,17 @@ const DetailPenugasan = () => {
                   )}
                 </button>
               )}
+            {tugas.status == "selesai" && level === "camat" && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handlerApproveLaporan();
+                }}
+                className="acc-laporan-button"
+              >
+                Approve Laporan <CheckCircleIcon sx={{ fontSize: 14 }} />
+              </button>
+            )}
           </div>
         </div>
       </div>

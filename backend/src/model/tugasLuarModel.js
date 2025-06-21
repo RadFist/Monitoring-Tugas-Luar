@@ -45,7 +45,11 @@ export const postTugas = async (
   }
 };
 
-export const getListTugas = async (cond = "1") => {
+export const getListTugas = async (cond, Arsiped = false) => {
+  let symbol = "!=";
+  if (Arsiped == true) {
+    symbol = "=";
+  }
   try {
     const [rows] = await db.query(
       `SELECT 
@@ -60,7 +64,7 @@ export const getListTugas = async (cond = "1") => {
           ELSE status 
         END as status 
       FROM tb_tugas_luar 
-      WHERE ${cond} 
+      WHERE status_approval ${symbol} "archived" ${cond} 
       ORDER BY tanggal_mulai ASC`
     );
     return rows;
@@ -83,7 +87,7 @@ export const getListTugasWithUser = async (valueParams, query = "") => {
 FROM tb_tugas_luar AS tl
 JOIN tb_pivot_tugas AS pv 
   ON pv.id_tugas_luar = tl.id_tugas_luar
-  WHERE pv.id_pegawai = ? 
+  WHERE pv.id_pegawai = ? AND status_approval != "archived"
   ${query}
 ORDER BY tl.tanggal_mulai ASC;
 `,

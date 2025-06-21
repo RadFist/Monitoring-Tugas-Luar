@@ -4,6 +4,7 @@ import {
   patchRincianDana as patchDana,
   deleteRincianDana as deleteDana,
   postLaporan as postLapor,
+  patchLaporan as patchLapor,
   getLaporan as getLapor,
 } from "../model/laporModel.js";
 import { customQuery } from "../model/model.js";
@@ -65,9 +66,33 @@ export const postLaporan = async (req, res) => {
         message: message,
       });
     }
-
+    io.emit("verification", {
+      message: "status tugas berubah",
+    });
     // Kirim respon sukses
     res.status(200).json({ message: "Data laporan berhasil ditambahkan." });
+  } catch (error) {
+    console.error("Gagal menambahkan laporan :", error.message);
+    res.status(500).json({
+      message: "Terjadi kesalahan pada server. Silakan coba lagi nanti.",
+    });
+  }
+};
+
+export const patchLaporan = async (req, res) => {
+  try {
+    const { id_laporan, materi, laporan, bagian } = req.body;
+
+    if (!id_laporan) {
+      return res.status(400).json({
+        message: "Data tidak lengkap. Harap isi semua field yang dibutuhkan.",
+      });
+    }
+
+    await patchLapor(id_laporan, laporan, bagian, materi);
+
+    // Kirim respon sukses
+    res.status(200).json({ message: "Data laporan berhasil diubah." });
   } catch (error) {
     console.error("Gagal menambahkan laporan :", error.message);
     res.status(500).json({
@@ -99,6 +124,7 @@ export const postRincianDana = async (req, res) => {
         message: "Data tidak lengkap. Harap isi semua field yang dibutuhkan.",
       });
     }
+    console.log("asssssss+++++++=====");
 
     // Panggil fungsi penyimpanan
     await postDana(idTugas, deskripsi, jumlah);
@@ -200,6 +226,28 @@ export const laporPdf = async (req, res) => {
     console.error(" Error in laporPdf:", error);
     return res.status(500).json({
       message: "Terjadi kesalahan saat mengambil data laporan.",
+      error: error.message,
+    });
+  }
+};
+
+export const approveLaporan = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await customQuery(
+      "UPDATE `tb_tugas_luar` SET `status_approval` = 'archived' WHERE `id_tugas_luar` = ?;",
+      [id] // Gunakan array jika pakai query prepared statement
+    );
+
+    res.status(200).json({
+      message: "Laporan berhasil di-approve dan diarsipkan",
+      id: id,
+    });
+  } catch (error) {
+    console.error("Error saat meng-approve laporan:", error.message);
+    res.status(500).json({
+      message: "Terjadi kesalahan saat meng-approve laporan",
       error: error.message,
     });
   }
