@@ -2,7 +2,11 @@ import express from "express";
 import authenticateToken, { authRole } from "../middleware/authMiddleware.js";
 import { uploadMiddleware } from "../middleware/uploadMiddleware.js";
 import * as userControler from "../controllers/userControler.js";
-import { allJabatan } from "../controllers/jabatranController.js";
+import {
+  allJabatan,
+  deleteJjabatan,
+  updateJabatan,
+} from "../controllers/jabatranController.js";
 import {
   inputPenugasan,
   listTugas,
@@ -28,6 +32,7 @@ import {
   postLaporan,
   postRincianDana,
 } from "../controllers/laporanControler.js";
+import { addJabatan } from "../controllers/jabatranController.js";
 
 const router = express.Router();
 const authCamat = [authenticateToken, authRole("camat")];
@@ -47,11 +52,16 @@ router.delete("/user/delete/:id", authSuperAdmin, userControler.userDelete);
 // get
 router.get("/Jabatan", allJabatan);
 //post
+
+router.post("/jabatan", authenticateToken, addJabatan);
 router.post(
   "/users/jabatan",
   authenticateToken,
   userControler.userWhereJabatan
 );
+
+router.patch(`/jabatan/:id`, authenticateToken, updateJabatan);
+router.delete(`/jabatan/:id`, authenticateToken, deleteJjabatan);
 
 //======Tugas Route======
 //get

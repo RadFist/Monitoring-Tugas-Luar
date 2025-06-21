@@ -10,6 +10,7 @@ import Regist from "./page/registration.jsx";
 import About from "./page/about.jsx";
 import NotFound from "./page/notFound.jsx";
 import UserManagement from "./page/userManagment";
+import ManagJabat from "./page/ManagementJabatan.jsx";
 import ListTugasLuar from "./page/listTugasLuar.jsx";
 import Detail from "./page/detailPenugasan.jsx";
 import InputTugasLuar from "./page/inputTugasLuar.jsx";
@@ -48,6 +49,14 @@ function App() {
               <PrivateRoute allowedLevels={["super admin"]}>
                 <UserManagement />
               </PrivateRoute>
+            }
+          />
+          <Route
+            path="Jabatan-Management"
+            element={
+              <ManagJabat allowedLevels={["super admin"]}>
+                <UserManagement />
+              </ManagJabat>
             }
           />
           <Route
