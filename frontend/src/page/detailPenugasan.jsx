@@ -12,6 +12,7 @@ import { jwtDecode } from "jwt-decode";
 import { SuccessModal } from "../components/modal";
 import axios from "axios";
 import socket from "../services/socket";
+import { formatDateOnly } from "../utils/formatedTime";
 
 const DetailPenugasan = () => {
   const navigate = useNavigate();
@@ -22,10 +23,12 @@ const DetailPenugasan = () => {
   const { idDetail } = useParams();
   const [imageUrl, setImageUrl] = useState([]);
   const token = getToken();
+
   const level = token ? jwtDecode(token).level : "";
   const nip = token ? jwtDecode(token).nip : "";
   const [assigned, setAssigned] = useState(false);
   const [modalChildren, setModalChildren] = useState(null);
+  const [today, setToday] = useState(formatDateOnly(new Date()));
 
   const fetchData = async () => {
     try {
@@ -78,27 +81,22 @@ const DetailPenugasan = () => {
     } else {
       setTugas((prev) => {
         let newStatus = "belum mulai";
-
-        if (imageUrl.length > 0) {
+        if (imageUrl.length > 0 && today >= tugas.tanggal_mulai) {
           newStatus = "dikerjakan";
         } else if (
-          prev.status_persetujuan === "approve" ||
-          prev.status === "Diproses"
+          (prev.status_persetujuan === "approve" ||
+            prev.status === "Diproses") &&
+          today >= tugas.tanggal_mulai
         ) {
           newStatus = "Diproses";
         }
-
         return { ...prev, status: newStatus };
       });
     }
   }, [imageUrl]);
 
   const handleDownloadPDF = () => {
-    navigate(`/generate/pdf/SPD`, {
-      state: {
-        data: tugas,
-      },
-    });
+    navigate(`/generate/pdf/SPD/${idDetail}`);
   };
 
   const handleFileChange = async (e) => {
@@ -161,7 +159,7 @@ const DetailPenugasan = () => {
     }
   };
 
-  const handlerApprove = async (id) => {
+  const handlerApprove = async (id, tanggal) => {
     if (!id) {
       console.error("ID tugas tidak valid.");
       return;
@@ -175,9 +173,9 @@ const DetailPenugasan = () => {
     }
 
     try {
-      await api.patch(`/PenugasanTugasLuar/Approve`, { id });
+      await api.patch(`/PenugasanTugasLuar/Approve`, { id, tanggal });
       try {
-        const refreshed = await api.get(`/tugas/detail/idDetail}`);
+        const refreshed = await api.get(`/tugas/detail/${idDetail}`);
         setTugas(refreshed.data.data);
       } catch (refreshError) {
         console.error("Gagal me-refresh data detail penugasan:", refreshError);
@@ -276,13 +274,15 @@ const DetailPenugasan = () => {
           <label style={{ color: "#1a73e8", fontWeight: "700" }}>
             {assigned ? "Upload" : ""} Dokumentasi
           </label>
-          {assigned && tugas.status_persetujuan == "approve" && (
-            <input
-              type="file"
-              accept="image/*,.pdf"
-              onChange={handleFileChange}
-            />
-          )}
+          {assigned &&
+            tugas.status_persetujuan == "approve" &&
+            tugas.status != "selesai" && (
+              <input
+                type="file"
+                accept="image/*,.pdf"
+                onChange={handleFileChange}
+              />
+            )}
         </div>
         <div className="image-preview-container">
           {loading && <Loading></Loading>}
@@ -291,7 +291,7 @@ const DetailPenugasan = () => {
               {imageUrl.map((value, index) => (
                 <div key={index} className="warp-img-prev">
                   <img src={value.file_url} alt="Gambar hasil upload" />
-                  {assigned && (
+                  {assigned && tugas.status != "selesai" && (
                     <button
                       onClick={(e) => {
                         e.preventDefault();
@@ -321,7 +321,7 @@ const DetailPenugasan = () => {
         <div className={`btn-container-detail ${assigned ? "" : "level"}`}>
           {tugas.status_persetujuan === "approve" && (
             <button className="btn-pdf-detail" onClick={handleDownloadPDF}>
-              Download PDF
+              Surat Tugas
               <DownloadIcon />
             </button>
           )}
@@ -332,7 +332,9 @@ const DetailPenugasan = () => {
                   btnDisabled ? "btn-disabled" : ""
                 }`}
                 disabled={btnDisabled}
-                onClick={() => handlerApprove(tugas.id_tugas_luar)}
+                onClick={() =>
+                  handlerApprove(tugas.id_tugas_luar, tugas.tanggal_mulai)
+                }
               >
                 Approve
                 <CheckCircleIcon sx={{ fontSize: 16 }} />

@@ -164,3 +164,8 @@ body {
     display: none;
   }
   
+.filterLabel{
+  margin: 0;
+  margin-bottom: 1px;
+  font-style: italic;
+}

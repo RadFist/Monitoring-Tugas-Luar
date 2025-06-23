@@ -10,6 +10,7 @@ import {
 import { schemaPneguasan } from "../utils/schemaJoi.js";
 import {
   formatDateIso,
+  formatDateOnly,
   formatTanggalIndo,
   parseDateTime,
 } from "../utils/dateFormater.js";
@@ -247,15 +248,22 @@ export const detailTugas = async (req, res) => {
 
 export const approveTugas = async (req, res) => {
   const idTugas = req.body.id;
+  const tanggal = req.body.tanggal;
+  let statusChange;
   // Validasi input
   if (!idTugas) {
     return res
       .status(400)
       .json({ success: false, message: "ID tugas tidak boleh kosong." });
   }
+  const date = new Date();
+  const format = formatDateOnly(date);
 
+  if (tanggal <= format) {
+    statusChange = `, status = 'DIproses' `;
+  }
   try {
-    const result = await updateStatusApproveTugas(idTugas);
+    const result = await updateStatusApproveTugas(idTugas, statusChange);
 
     if (!result.success) {
       return res.status(404).json(result);

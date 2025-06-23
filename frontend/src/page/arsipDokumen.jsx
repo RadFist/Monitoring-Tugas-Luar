@@ -9,16 +9,18 @@ import api from "../services/api";
 
 export const ArsipDokumen = () => {
   const [daftarDokumen, setDaftarDokume] = useState([]);
-  const [filter, setFilter] = useState({ date: "" });
   const navigate = useNavigate();
   const { search } = useLocation();
   const query = new URLSearchParams(search);
   const filterDate = query.get("dateFilter");
+  const [filter, setFilter] = useState({ date: filterDate });
 
   useEffect(() => {
     let queryFilter = "";
+    let date = "";
     if (filter.date) {
       queryFilter = `?date=${filter.date}`;
+      date = "?dateFilter=" + filter.date;
     }
     const fetchData = async () => {
       try {
@@ -27,13 +29,6 @@ export const ArsipDokumen = () => {
       } catch (error) {}
     };
     fetchData();
-  }, [filter]);
-
-  useEffect(() => {
-    let date = "";
-    if (filter.date) {
-      date = "?dateFilter=" + filter.date;
-    }
     navigate(date);
   }, [filter]);
 
@@ -44,6 +39,7 @@ export const ArsipDokumen = () => {
     <div>
       <HeaderSecond text="Arsip Dokumen">
         <FormControl size="small" style={{ marginRight: "20px" }}>
+          <p className="filterLabel">Tanggal:</p>
           <TextField
             size="small"
             type="date"

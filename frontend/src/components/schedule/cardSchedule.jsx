@@ -1,4 +1,5 @@
 import "../../style/schedule.css";
+import { formatTanggalIndo } from "../../utils/formatedTime";
 import ButtonComp from "../ButtonComp";
 import ScheduleBodyPart from "./scheduleBodyPart";
 const cardSchedule = ({
@@ -6,11 +7,18 @@ const cardSchedule = ({
   listActivity = ["Activity"],
   listEmployee = ["Employeer"],
   handlerClick,
+  children,
 }) => {
+  const date = formatTanggalIndo(Date());
   return (
     <>
       <div className="schedule-card-container flex-column">
-        <span className="title-card-schedule">{time}</span>
+        <span className="title-card-schedule">
+          {time} {date == time && <div className="labelCard">hari ini</div>}
+        </span>
+
+        {children}
+
         <div className="border-bottom flex-column"></div>
         <div
           className="border-bottom"

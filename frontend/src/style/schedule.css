@@ -15,7 +15,25 @@
 .title-card-schedule{
     font-weight: 700;
     font-size: larger;
-    padding: 10px;
+    padding: 10px 0px;
+    text-align: center;
+    width: 100%;
+    position: relative;
+}
+
+.labelCard{
+    width: fit-content;
+    position: absolute;
+    font-size: 15px;
+    top: 1px;
+    right: 1px;
+    font-style: italic;
+    border-radius: 4px;
+    margin-right: 2px;
+    margin-top: 1px;
+    padding: 2px;
+    background-color: #e11d1d;
+    
 }
 
 .flex-column{

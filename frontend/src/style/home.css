@@ -1,9 +1,73 @@
 .home-container {
-  padding: 20px;
+  padding: 5px 10px;
   background-color: #f4f6f8;
   min-height: 100vh;
   box-sizing: border-box;
 }
+
+.dataWrapCard {
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  width: 98%;
+  padding: 30px 24px;
+  margin: 25px auto 10px auto;
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  border-radius: 12px;
+ 
+}
+
+.cardIndicator {
+  padding: 12px 20px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-around;
+  min-width: 190px;
+  gap: 20px;
+  align-items: center;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ,background-position 0.5s ease-in-out;
+}
+
+.cardIndicator .title-indicator{
+  margin-bottom: 8px;
+}
+.cardIndicator img{
+  font-size: 20px;
+}
+.cardIndicator .value-indicator{
+   font-size: 2rem;
+  font-weight: bold;
+  
+}
+.cardIndicator:hover {
+  transform: translateY(-5px);
+}
+.dataWrapCard .cardIndicator:nth-child(1) {
+  background: linear-gradient(90deg,  #6072d7, #8a96d7, #5067e9);
+  background-size: 200% 200%;
+  background-position: left;
+}
+
+.dataWrapCard .cardIndicator:nth-child(n):hover {
+  background-position: right;
+}
+
+.dataWrapCard .cardIndicator:nth-child(2) {
+  background: linear-gradient(90deg, #4caf50, #6ac76d, #33cd3b);
+  background-size: 200% 200%;
+   background-position: left;
+}
+
+.dataWrapCard .cardIndicator:nth-child(3) {
+  background: linear-gradient(90deg, #f44336, #ff8d8d, #e85656);
+    background-size: 200% 200%;
+    background-position: left;
+}
+
 
 /* Jadwal Section */
 .schedule-section {

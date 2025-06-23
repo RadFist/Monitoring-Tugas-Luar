@@ -83,6 +83,7 @@ export const getListTugasWithUser = async (valueParams, query = "") => {
   tl.tanggal_mulai, 
   tl.tanggal_selesai, 
   tl.status AS status, 
+  tl.status_approval, 
   pv.*
 FROM tb_tugas_luar AS tl
 JOIN tb_pivot_tugas AS pv 
@@ -162,11 +163,11 @@ LIMIT 4;`
   }
 };
 
-export const updateStatusApproveTugas = async (idTugas) => {
+export const updateStatusApproveTugas = async (idTugas, status = "") => {
   const date = formatDateIso(new Date());
   try {
     const [result] = await db.query(
-      `UPDATE tb_tugas_luar SET status_approval = ? , date_approval = ? WHERE id_tugas_luar = ?`,
+      `UPDATE tb_tugas_luar SET status_approval = ? ${status} , date_approval = ? WHERE id_tugas_luar = ?`,
       ["approve", date, idTugas]
     );
 

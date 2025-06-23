@@ -108,7 +108,7 @@ function App() {
         <Route path="/arsip/dokumen/:id" element={<PdfArsipDokumen />} />
         <Route path="/SignIn" element={<Regist />} />
         <Route path="/generate" element={<Pdf />} />
-        <Route path="/generate/pdf/SPD" element={<PdfSuratTugas />} />
+        <Route path="/generate/pdf/SPD/:id" element={<PdfSuratTugas />} />
         <Route path="/generate/pdf/laporan/:id" element={<PdfLaporan />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
