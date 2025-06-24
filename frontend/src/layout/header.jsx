@@ -1,4 +1,5 @@
 import BurgerBtn from "../components/BurgerBtn";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { Tooltip, Avatar, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
@@ -12,8 +13,8 @@ const Header = ({
   notifManny,
   message,
   displayModal,
-  onMannyReset,
   onClose,
+  deleteNotif,
 }) => {
   const [modalActive, setModalActive] = useState(false);
   const [modalNotifActive, setModalNotifActive] = useState(false);
@@ -31,10 +32,6 @@ const Header = ({
   };
   const handlerCloseNotifModal = () => {
     setModalNotifActive(false);
-    if (notifManny > 0) {
-      onMannyReset();
-      // fetch untuk reset notif
-    }
   };
 
   return (
@@ -46,15 +43,29 @@ const Header = ({
         displayModal={modalNotifActive ? "active" : ""}
         onClose={handlerCloseNotifModal}
       >
-        <div style={{ overflow: "auto", maxHeight: "470px" }}>
-          {(!notifData || notifData.length < 1) && <p>Tidak ada notifikasi</p>}
-          {notifData?.map((value, index) => (
-            <div key={index}>
-              <p>{value.message}</p>
-              <p>{value.created_at}</p>
-            </div>
-          ))}
-        </div>
+        <>
+          {notifManny > 0 && (
+            <button
+              className="btn-delete-notif"
+              onClick={(e) => {
+                deleteNotif();
+              }}
+            >
+              <DeleteOutlineOutlinedIcon sx={{ fontSize: "30px" }} />
+            </button>
+          )}
+          <div style={{ overflow: "auto", maxHeight: "470px" }}>
+            {(!notifData || notifData.length < 1) && (
+              <p>Tidak ada notifikasi</p>
+            )}
+            {notifData?.map((value, index) => (
+              <div key={index}>
+                <p>{value.message}</p>
+                <p>{value.created_at}</p>
+              </div>
+            ))}
+          </div>
+        </>
       </NotifModal>
       <InformationModal
         displayModal={modalActive ? "active" : ""}

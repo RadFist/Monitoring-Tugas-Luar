@@ -260,7 +260,7 @@ export const approveTugas = async (req, res) => {
   const format = formatDateOnly(date);
 
   if (tanggal <= format) {
-    statusChange = `, status = 'DIproses' `;
+    statusChange = `, status = 'Diproses' `;
   }
   try {
     const result = await updateStatusApproveTugas(idTugas, statusChange);

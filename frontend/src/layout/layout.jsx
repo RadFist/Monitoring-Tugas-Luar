@@ -47,8 +47,8 @@ const Layout = () => {
         console.log(error);
       }
     };
-
     const token = getToken();
+
     if (!token) {
       navigate("/login");
       return;
@@ -92,10 +92,16 @@ const Layout = () => {
     setSidebarActive(!sidebarActive);
   };
 
-  const resetNotif = () => {
-    setNotification((prev) => ({ ...prev, data: [], manny: "" }));
+  const deleteNotif = async () => {
+    if (notification.manny > 0) {
+      try {
+        setNotification((prev) => ({ ...prev, data: [], manny: "" }));
+        await api.delete(`notification/${payload.id_user}`);
+      } catch (error) {
+        alert("server error");
+      }
+    }
   };
-
   document.title = pagelocation || "My Website";
 
   return (
@@ -116,9 +122,9 @@ const Layout = () => {
           displayModal={displayModal}
           notifData={notification.data || []}
           notifManny={notification.manny}
-          onMannyReset={resetNotif}
           message={message}
           onClose={handlerClose}
+          deleteNotif={deleteNotif}
         />
         <main className="content">
           <Outlet />

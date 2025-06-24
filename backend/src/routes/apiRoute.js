@@ -15,7 +15,10 @@ import {
   approveTugas,
   getArsip,
 } from "../controllers/tugasLuarController.js";
-import { getNotifIdUser } from "../controllers/notifControler.js";
+import {
+  deleteNotifIdUser,
+  getNotifIdUser,
+} from "../controllers/notifControler.js";
 import {
   deleteFoto,
   getFoto,
@@ -78,6 +81,7 @@ router.patch("/PenugasanTugasLuar/Approve", authCamat, approveTugas);
 
 //======Notif Route======
 router.get("/notification/:id", getNotifIdUser);
+router.delete("/notification/:id", deleteNotifIdUser);
 
 //======Laporan Route======
 router.get("/laporan/rincian/:id", authenticateToken, getRincianDana);

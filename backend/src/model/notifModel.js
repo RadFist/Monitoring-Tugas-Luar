@@ -24,3 +24,26 @@ export const getNotifById = async (id) => {
     throw error; // ← penting agar error bisa ditangani di tempat lain
   }
 };
+
+export const deleteNotif = async (id) => {
+  try {
+    const [result] = await db.query(
+      "DELETE FROM `tb_notifikasi` WHERE user_id = ?",
+      [id]
+    );
+
+    if (result.affectedRows === 0) {
+      return {
+        success: false,
+        message: "Data notif kosong.",
+      };
+    }
+
+    return {
+      success: true,
+      message: "notifikasi berhasil dihapus.",
+    };
+  } catch (error) {
+    throw new Error("Gagal menghapus jabatan: " + error.message);
+  }
+};
