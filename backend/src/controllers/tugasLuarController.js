@@ -6,6 +6,7 @@ import {
   updateStatusApproveTugas,
   getListTugasWithUser,
   getListTugasGrupTime,
+  deleteTugasLuar,
 } from "../model/tugasLuarModel.js";
 import { schemaPneguasan } from "../utils/schemaJoi.js";
 import {
@@ -118,7 +119,7 @@ export const listTugas = async (req, res) => {
 
       // Tambahkan filter date jika ada
       if (dateFilter) {
-        filterConditions.push(`tanggal_mulai = '${dateFilter}'`);
+        filterConditions.push(` DATE(tanggal_mulai)= '${dateFilter}'`);
       }
       // Tambahkan filter status jika ada
 
@@ -304,13 +305,62 @@ export const approveTugas = async (req, res) => {
   }
 };
 
+export const deleteTugas = async (req, res) => {
+  const idTugas = req.params.id;
+  const judul = req.body.judul;
+  console.log(judul);
+
+  // Validasi input
+  if (!idTugas) {
+    return res
+      .status(400)
+      .json({ success: false, message: "ID tugas tidak boleh kosong." });
+  }
+
+  try {
+    // === Ambil pegawai yang ditugaskan ===
+    const pegawaiList = await getAllUsersBYIdTugas(idTugas);
+
+    for (const pegawai of pegawaiList) {
+      const userId = pegawai.id_user;
+      const notifMessage = `Tugas dinas ${judul} ditolak.`;
+
+      // 1. Simpan ke DB
+      await saveNotif(userId, notifMessage);
+
+      // 2. Kirim notifikasi realtime via socket (jika online)
+      const socketId = connectedUsers.get(userId);
+      if (socketId) {
+        io.to(socketId).emit("notification", {
+          message: notifMessage,
+          link: `/tugas/${idTugas}`,
+        });
+      }
+    }
+    io.emit("verification", {
+      message: "status tugas berubah",
+    });
+
+    const result = await deleteTugasLuar(idTugas);
+
+    res.status(200).json(result.message);
+  } catch (error) {
+    console.error("Error in approveTugas:", error);
+    res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan pada server.",
+      error,
+    });
+  }
+};
+
 export const getArsip = async (req, res) => {
   try {
     let cond = "";
     const dateFilter = req.query.date;
 
     if (dateFilter) {
-      cond = `AND tanggal_mulai = '${dateFilter}'`;
+      cond = `AND  DATE(tanggal_mulai) = '${dateFilter}'`;
     }
     console.log(dateFilter);
     const data = await getListTugas(cond, true);

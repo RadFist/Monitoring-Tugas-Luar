@@ -50,6 +50,7 @@ export const getListTugas = async (cond, Arsiped = false) => {
   if (Arsiped == true) {
     symbol = "=";
   }
+
   try {
     const [rows] = await db.query(
       `SELECT 
@@ -70,6 +71,29 @@ export const getListTugas = async (cond, Arsiped = false) => {
     return rows;
   } catch (error) {
     throw new Error("Error fetching list tugas: " + error.message);
+  }
+};
+
+export const deleteTugasLuar = async (id) => {
+  try {
+    const [result] = await db.query(
+      "DELETE FROM `tb_tugas_luar` WHERE `id_tugas_luar` = ?",
+      [id]
+    );
+
+    if (result.affectedRows === 0) {
+      return {
+        success: false,
+        message: "Data kosong.",
+      };
+    }
+
+    return {
+      success: true,
+      message: "tugas berhasil dihapus.",
+    };
+  } catch (error) {
+    throw new Error("Gagal menghapus jabatan: " + error.message);
   }
 };
 

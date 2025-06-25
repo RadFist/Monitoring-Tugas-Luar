@@ -66,8 +66,6 @@ const ListTugas = () => {
         const responseGetListTugas = (await api.get(routeList + routeFilter))
           .data;
         setDaftarTugas(responseGetListTugas.data);
-
-        console.log(responseGetListTugas.data);
       } catch (error) {
         console.error("Error fetching :", error.message);
       } finally {
@@ -88,18 +86,22 @@ const ListTugas = () => {
   };
 
   const handlerApprove = async (id, tanggal) => {
-    if (!id) {
-      console.error("ID tugas tidak valid.");
-      return;
-    }
+    const konfirmasi = window.confirm(
+      "Apakah Anda yakin ingin menyetujui tugas ini?"
+    );
+
+    if (!konfirmasi) return;
     try {
       const response = await api.patch(`/PenugasanTugasLuar/Approve`, {
         id: id,
         tanggal: tanggal,
       });
       if (response.data && response.data.success) {
-        setFilter((prev) => ({ ...prev, status_approval: "approve" }));
-        setFilter((prev) => ({ ...prev, status: "none" }));
+        setFilter((prev) => ({
+          ...prev,
+          status_approval: "approve",
+          status: "none",
+        }));
       } else {
         console.error("Gagal memperbarui daftar tugas:", error);
       }
@@ -119,6 +121,24 @@ const ListTugas = () => {
         ...prev,
         status: "none",
       }));
+    }
+  };
+
+  const handlerReject = async (id, judul) => {
+    const konfirmasi = window.confirm(
+      `Apakah Anda yakin ingin menghapus tugas "${judul}"?`
+    );
+    if (!konfirmasi) return;
+
+    try {
+      await api.delete(`/tugas/${id}`, {
+        data: { judul },
+      });
+      setDaftarTugas((prevTugas) =>
+        prevTugas.filter((tugas) => tugas.id_tugas_luar !== id)
+      );
+    } catch (error) {
+      console.error("Gagal menghapus tugas:", error);
     }
   };
 
@@ -196,13 +216,15 @@ const ListTugas = () => {
                 <div className="tugas-item" key={item.id_tugas_luar}>
                   <div className="tugas-header">
                     <h3>{item.judul_tugas}</h3>
-                    <span
-                      className={`status ${item.status
-                        .replace(" ", "-")
-                        .toLowerCase()}`}
-                    >
-                      {item.status}
-                    </span>
+                    {item.status_approval == "approve" && (
+                      <span
+                        className={`status ${item.status
+                          .replace(" ", "-")
+                          .toLowerCase()}`}
+                      >
+                        {item.status}
+                      </span>
+                    )}
                   </div>
                   <p>
                     <strong>lokasi:</strong> {item.lokasi}
@@ -229,7 +251,7 @@ const ListTugas = () => {
                               : ""
                           }`}
                           onClick={(e) => {
-                            alert(item.id_tugas_luar);
+                            handlerReject(item.id_tugas_luar, item.judul_tugas);
                           }}
                         >
                           Reject
