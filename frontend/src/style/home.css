@@ -63,6 +63,11 @@
 }
 
 .dataWrapCard .cardIndicator:nth-child(3) {
+  background: linear-gradient(90deg, #dade4f, #eaff00, #d1d643);
+    background-size: 200% 200%;
+    background-position: left;
+}
+.dataWrapCard .cardIndicator:nth-child(4) {
   background: linear-gradient(90deg, #f44336, #ff8d8d, #e85656);
     background-size: 200% 200%;
     background-position: left;

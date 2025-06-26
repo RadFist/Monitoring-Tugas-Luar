@@ -177,7 +177,7 @@ LIMIT 4;`
   FROM tb_tugas_luar AS tl
   JOIN tb_pivot_tugas AS pv ON pv.id_tugas_luar = tl.id_tugas_luar
   JOIN tb_user AS ur ON ur.id_user = pv.id_pegawai
-  WHERE DATE(tl.tanggal_mulai) IN (${placeholders})
+  WHERE DATE(tl.tanggal_mulai) IN (${placeholders}) AND tl.status_approval = "approve"
   ORDER BY tl.tanggal_mulai ASC`,
       tanggalList
     );

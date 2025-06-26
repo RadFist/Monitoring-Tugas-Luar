@@ -61,102 +61,53 @@ export const inputPenugasan = async (req, res) => {
 };
 
 export const listTugas = async (req, res) => {
-  const grup = req.query.grup || "";
   const dateFilter = req.query.date || "";
   const statusApprovalFilter = req.query.status_approval || "";
   const statusFilter = req.query.status || "";
 
-  //refactor untuk dashboar archived
-  if (grup === "date") {
-    try {
-      const data = await getListTugasGrupTime();
-      const dataConvert = data.map((tugas) => ({
-        ...tugas,
-        tanggal_nama: formatTanggalIndo(formatDateIso(tugas.tanggal_mulai)),
-        tanggal_mulai: formatDateIso(tugas.tanggal_mulai),
-      }));
+  try {
+    let filterConditions = [];
+    let tugasListRaw;
 
-      const groupedByTanggal = {};
-
-      dataConvert.forEach((item) => {
-        let tanggal = item.tanggal_nama;
-        let tanggalNumber = item.tanggal_mulai;
-
-        if (!groupedByTanggal[tanggal]) {
-          groupedByTanggal[tanggal] = {
-            tanggal,
-            tanggalNumber,
-            kegiatan: new Set(),
-            pegawai: new Set(),
-            status: new Set(),
-          };
-        }
-
-        groupedByTanggal[tanggal].kegiatan.add(item.judul_tugas);
-        groupedByTanggal[tanggal].pegawai.add(item.nama);
-        groupedByTanggal[tanggal].status.add(item.status);
-      });
-
-      const result = Object.values(groupedByTanggal).map((item) => ({
-        tanggal: item.tanggal,
-        tanggalNumber: item.tanggalNumber,
-        kegiatan: Array.from(item.kegiatan),
-        pegawai: Array.from(item.pegawai),
-        status: Array.from(item.status),
-      }));
-
-      return res.status(200).json({ message: `success`, data: result });
-    } catch (error) {
-      console.error("Failed to fetch data tugas:", error);
-      return res.status(500).json({
-        message: "An error occurred while fetching data tugas",
-      });
+    // Tambahkan filter date jika ada
+    if (dateFilter) {
+      filterConditions.push(` DATE(tanggal_mulai)= '${dateFilter}'`);
     }
-  } else {
-    try {
-      let filterConditions = [];
-      let tugasListRaw;
+    // Tambahkan filter status jika ada
 
-      // Tambahkan filter date jika ada
-      if (dateFilter) {
-        filterConditions.push(` DATE(tanggal_mulai)= '${dateFilter}'`);
-      }
-      // Tambahkan filter status jika ada
-
-      if (statusFilter) {
-        filterConditions.push(`status = '${statusFilter}'`);
-      }
-
-      if (statusApprovalFilter) {
-        filterConditions.push(`status_approval = '${statusApprovalFilter}'`);
-      }
-      // Gabungkan semua filter jadi satu string
-
-      filterConditions.length > 0 ? filterConditions.join(" AND ") : "";
-
-      let whereClause =
-        filterConditions.length > 0
-          ? `AND ${filterConditions.join(" AND ")}`
-          : "";
-
-      tugasListRaw = await getListTugas(whereClause);
-
-      const tugasList = tugasListRaw.map((tugas) => ({
-        ...tugas,
-        tanggal_mulai: formatDateIso(tugas.tanggal_mulai),
-        tanggal_selesai: formatDateIso(tugas.tanggal_selesai),
-      }));
-
-      res.status(200).json({
-        message: "Data tugas retrieved successfully",
-        data: tugasList,
-      });
-    } catch (error) {
-      console.error("Failed to fetch data tugas:", error);
-      res.status(500).json({
-        message: "An error occurred while fetching data tugas",
-      });
+    if (statusFilter) {
+      filterConditions.push(`status = '${statusFilter}'`);
     }
+
+    if (statusApprovalFilter) {
+      filterConditions.push(`status_approval = '${statusApprovalFilter}'`);
+    }
+    // Gabungkan semua filter jadi satu string
+
+    filterConditions.length > 0 ? filterConditions.join(" AND ") : "";
+
+    let whereClause =
+      filterConditions.length > 0
+        ? `AND ${filterConditions.join(" AND ")}`
+        : "";
+
+    tugasListRaw = await getListTugas(whereClause);
+
+    const tugasList = tugasListRaw.map((tugas) => ({
+      ...tugas,
+      tanggal_mulai: formatDateIso(tugas.tanggal_mulai),
+      tanggal_selesai: formatDateIso(tugas.tanggal_selesai),
+    }));
+
+    res.status(200).json({
+      message: "Data tugas retrieved successfully",
+      data: tugasList,
+    });
+  } catch (error) {
+    console.error("Failed to fetch data tugas:", error);
+    res.status(500).json({
+      message: "An error occurred while fetching data tugas",
+    });
   }
 };
 

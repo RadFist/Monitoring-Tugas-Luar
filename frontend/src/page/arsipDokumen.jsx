@@ -29,7 +29,7 @@ export const ArsipDokumen = () => {
       } catch (error) {}
     };
     fetchData();
-    navigate(date);
+    // navigate(date);
   }, [filter]);
 
   const handlerClickDetail = (id) => {

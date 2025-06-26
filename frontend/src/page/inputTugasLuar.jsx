@@ -138,7 +138,6 @@ const InputTugas = () => {
 
       setPegawai([]);
       setFormData(initialFormState);
-      setJabatanOptions([]);
       setSelectedJabatan("");
     } catch (error) {}
 

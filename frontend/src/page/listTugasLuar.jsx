@@ -20,7 +20,7 @@ const ListTugas = () => {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
 
-  const filterDate = query.get("filterDate") || "";
+  const filterDate = query.get("date") || "";
   const FilterStatusApproval =
     query.get("status_approval") || (level === "camat" && !filterDate)
       ? "pending"
@@ -62,7 +62,8 @@ const ListTugas = () => {
         if (queryParams.length > 0) {
           routeFilter += "?" + queryParams.join("&");
         }
-        navigate(routeFilter);
+        // navigate(routeFilter);
+
         const responseGetListTugas = (await api.get(routeList + routeFilter))
           .data;
         setDaftarTugas(responseGetListTugas.data);

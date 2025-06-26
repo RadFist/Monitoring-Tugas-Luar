@@ -1,23 +1,23 @@
 import "../style/home.css";
 import CardSchedule from "../components/schedule/cardSchedule";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { IndicatorDahboard as Indicate } from "../components/chart/indicator";
 import BarChart from "../components/chart/barChart";
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { HeaderSecond } from "../layout/headerSecond";
-import { useNavigate } from "react-router-dom";
-import { Tooltip } from "@mui/material";
+import { data, useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const [grupTugas, setGrupTugas] = useState([]);
+  const [dataKegiatan, setDataKegiatan] = useState([]);
+  const [count, setCount] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = (await api.get("/allTugas?grup=date")).data;
-        setGrupTugas(response.data);
+        const responseData = (await api.get("/dashboard")).data.data;
+        setCount(responseData.count);
+        setDataKegiatan(responseData.list);
       } catch (error) {
         console.error("Error fetching:", error.message);
       }
@@ -27,22 +27,31 @@ const Home = () => {
   }, []);
 
   const handlerClickDetai = (params) => {
-    navigate(`/Tugas-Luar?filterDate=${params}`);
+    navigate(`/Tugas-Luar?date=${params}`);
   };
   return (
     <div>
       <HeaderSecond text="Dashboard"></HeaderSecond>
       <div className="dataWrapCard">
-        <Indicate text="Total Tugas" data={1}>
+        <Indicate text="Total Pegawai" data={count.user}>
+          <img src="/svg/people-svgrepo-com.svg" style={{ width: "100px" }} />
+        </Indicate>
+
+        <Indicate text="Total Tugas" data={count.tugas}>
           <img
             src="/svg/Project Management-svgrepo-com.svg"
             style={{ width: "100px" }}
           />
         </Indicate>
-        <Indicate text="Total Pegawai" data={2}>
-          <img src="/svg/people-svgrepo-com.svg" style={{ width: "100px" }} />
+
+        <Indicate text="Total Pending" data={count.pending}>
+          <img
+            src="/svg/archives preservation-svgrepo-com.svg"
+            style={{ width: "90px" }}
+          />
         </Indicate>
-        <Indicate text="Total Arsip Dokumen" data={10}>
+
+        <Indicate text="Total Arsip Dokumen" data={count.arsip}>
           <img
             src="/svg/archives preservation-svgrepo-com.svg"
             style={{ width: "90px" }}
@@ -54,14 +63,13 @@ const Home = () => {
           <h2 className="schedule-title">
             📅 Jadwal Kegiatan yang akan datang
           </h2>
-          {grupTugas.length > 0 ? (
+          {dataKegiatan.length > 0 ? (
             <div className="schedule-list">
-              {grupTugas.map((value) => (
+              {dataKegiatan.map((value) => (
                 <CardSchedule
                   key={value.tanggal}
                   time={value.tanggal}
-                  listActivity={value.kegiatan}
-                  listEmployee={value.pegawai}
+                  data={value.kegiatan}
                   handlerClick={() => handlerClickDetai(value.tanggalNumber)}
                 />
               ))}

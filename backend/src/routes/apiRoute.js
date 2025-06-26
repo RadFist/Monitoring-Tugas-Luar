@@ -37,10 +37,14 @@ import {
   postRincianDana,
 } from "../controllers/laporanControler.js";
 import { addJabatan } from "../controllers/jabatranController.js";
+import { getDataDashboard } from "../controllers/Dashboard.js";
 
 const router = express.Router();
 const authCamat = [authenticateToken, authRole("camat")];
 const authSuperAdmin = [authenticateToken, authRole("super admin")];
+
+router.get("/dashboard", getDataDashboard);
+
 //======User Route======
 //get
 router.get("/users", authenticateToken, userControler.allUser);
