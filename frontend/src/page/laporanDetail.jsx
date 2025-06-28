@@ -40,6 +40,7 @@ export default function LaporanDetail() {
       const dataResult = data.data.data;
 
       setDataTugas(dataResult.dataTugas[0]);
+
       if (dataResult.dataLaporan.length > 0) {
         setLaporan(dataResult.dataLaporan[0]);
         setDisabled(true);
@@ -84,6 +85,7 @@ export default function LaporanDetail() {
         const result = await api.get(`/laporan/${idDetail}`);
         const dataResult = result.data.data;
         setLaporan(dataResult.dataLaporan[0]);
+        setHasValue(true);
       } catch (error) {
         alert(error);
       }
@@ -262,16 +264,17 @@ export default function LaporanDetail() {
 
         <div className="laporan-actions">
           <button
-            className={!hasValue ? "btn-disabled" : ""}
-            disabled={!hasValue}
+            className={!disabled || !hasValue ? "btn-disabled" : ""}
+            disabled={!disabled || !hasValue}
             onClick={(e) => {
               e.preventDefault();
+
               navigate(`/generate/pdf/laporan/${idDetail}`);
             }}
           >
             PDF Laporan
           </button>
-          {hasValue && !disabled && (
+          {!disabled && hasValue && (
             <button
               className="cencel-btn"
               onClick={(e) => {

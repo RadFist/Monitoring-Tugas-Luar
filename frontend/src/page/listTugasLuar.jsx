@@ -27,7 +27,7 @@ const ListTugas = () => {
       : "none";
   const filterStatus = query.get("status");
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [modalActive, setModalActive] = useState(false);
   const [daftarTugas, setDaftarTugas] = useState([]);
   const [filter, setFilter] = useState({

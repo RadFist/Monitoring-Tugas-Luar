@@ -87,3 +87,27 @@ export const ListRincianDana = ({
     </div>
   );
 };
+
+// components/listManagement.jsx
+export const ListUserProductivity = ({ data = [] }) => {
+  return (
+    <div className="list-productivity-wrapper">
+      <h2 className="list-productivity-title">
+        Pegawai dengan Tugas Luar Terbanyak
+      </h2>
+      <div className="list-productivity-content">
+        {data.length === 0 ? (
+          <p className="empty-data">Belum ada data tersedia</p>
+        ) : (
+          data.map((item, index) => (
+            <div key={index} className="user-productivity-item">
+              <div className="user-rank">{index + 1}</div>
+              <div className="user-name">{item.nama}</div>
+              <div className="user-count">{item.tugas} tugas</div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+};

@@ -39,33 +39,33 @@ const LaporanPdf = ({
           </View>
           <View style={{ flexDirection: "row", marginBottom: 5 }}>
             <Text style={{ width: 80 }}>Dari</Text>
-            <Text>: {dataLaporan.bagian}</Text>
+            <Text>: {dataLaporan?.bagian}</Text>
           </View>
           <View style={{ flexDirection: "row", marginBottom: 5 }}>
             <Text style={{ width: 80 }}>Tanggal</Text>
             <Text>
-              : {dataLaporan.Tanggal_dibuat}
+              : {dataLaporan?.Tanggal_dibuat}
               benerin
             </Text>
           </View>
           <View style={{ flexDirection: "row", marginBottom: 5 }}>
             <Text style={{ width: 80 }}>Dasar</Text>
-            <Text>: {dataTugas.dasar}</Text>
+            <Text>: {dataTugas?.dasar}</Text>
           </View>
         </View>
         <View style={{ marginBottom: "15px" }}>
           <Text style={{ marginBottom: 5 }}>A. Pelaksanaan</Text>
           <View style={{ flexDirection: "row", marginBottom: 5 }}>
             <Text style={{ width: 80 }}>Hari, Tanggal</Text>
-            <Text>: {dataTugas.tanggal_mulai}</Text>
+            <Text>: {dataTugas?.tanggal_mulai}</Text>
           </View>
           <View style={{ flexDirection: "row", marginBottom: 5 }}>
             <Text style={{ width: 80 }}>Materi</Text>
-            <Text>: {dataLaporan.materi}</Text>
+            <Text>: {dataLaporan?.materi}</Text>
           </View>
           <View style={{ flexDirection: "row", marginBottom: 5 }}>
             <Text style={{ width: 80 }}>Tempat</Text>
-            <Text>: {dataTugas.lokasi}</Text>
+            <Text>: {dataTugas?.lokasi}</Text>
           </View>
         </View>
         <View style={{ marginBottom: 35 }}>
@@ -73,7 +73,7 @@ const LaporanPdf = ({
           <View style={{ marginLeft: 12, minHeight: "40px" }}>
             <Text
               style={{ lineHeight: "20px" }}
-            >{`${dataLaporan.laporan}`}</Text>
+            >{`${dataLaporan?.laporan}`}</Text>
           </View>
         </View>
       </Page>

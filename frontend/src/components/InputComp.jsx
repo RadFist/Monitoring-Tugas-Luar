@@ -47,9 +47,7 @@ export function SelectedComp({
         required
       >
         {/* refactor */}
-        <option value="" disabled>
-          -- Pilih Level --
-        </option>
+        <option value="">-- Pilih Level --</option>
         {optionValue.map((item) => (
           <option key={item.id_jabatan} value={item.id_jabatan}>
             {item.jabatan}

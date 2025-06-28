@@ -1,4 +1,4 @@
-import { customQuery } from "../model/model.js";
+import { customQuery, customQueryArray } from "../model/model.js";
 import { getListTugasGrupTime } from "../model/tugasLuarModel.js";
 import { formatDateIso, formatTanggalIndo } from "../utils/dateFormater.js";
 
@@ -16,6 +16,13 @@ export const getDataDashboard = async (req, res) => {
     );
     const countPending = await customQuery(
       `SELECT COUNT(id_tugas_luar) as pending FROM tb_tugas_luar WHERE status_approval = "pending"`
+    );
+    const countUserProductivity = await customQueryArray(
+      `SELECT u.nama, COUNT(tl.id_tugas_luar) AS tugas FROM tb_tugas_luar AS tl
+      JOIN tb_pivot_tugas AS p ON p.id_tugas_luar = tl.id_tugas_luar
+      JOIN tb_user AS u ON u.id_user = p.id_pegawai
+      WHERE tl.status_approval != "pending" 
+      GROUP BY u.id_user ORDER BY tugas DESC LIMIT 5;`
     );
 
     //
@@ -64,6 +71,7 @@ export const getDataDashboard = async (req, res) => {
         arsip: countArsip.arsip,
         pending: countPending.pending,
       },
+      userProductivity: countUserProductivity,
     };
 
     return res.status(200).json({ message: `success`, data: result });

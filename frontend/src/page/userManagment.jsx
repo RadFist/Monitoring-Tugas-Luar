@@ -26,7 +26,8 @@ const UserManagment = () => {
     const fetchData = async () => {
       try {
         const responseGetUsaer = (await api.get("/users")).data;
-        const responseGetJabatan = (await plainApi.get("/Jabatan")).data;
+        const responseGetJabatan = (await api.get("/Jabatan/usermanagement"))
+          .data;
         setJabatanOptions(responseGetJabatan.data);
         const data = responseGetUsaer.data || [];
         setGetData({

@@ -8,6 +8,16 @@ export const getListJabatan = async () => {
     throw new Error("Error fetching list Jabatan: " + error.message);
   }
 };
+export const getListJabatanLimit = async () => {
+  try {
+    const [rows] = await db.query(
+      `SELECT * from tb_jabatan WHERE jabatan != "camat" AND jabatan != "super admin"`
+    );
+    return rows;
+  } catch (error) {
+    throw new Error("Error fetching list Jabatan: " + error.message);
+  }
+};
 
 export const createJabatan = async (jabatan) => {
   const [result] = await db.query(

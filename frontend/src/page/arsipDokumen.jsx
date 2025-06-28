@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { FormControl, TextField } from "@mui/material";
 import api from "../services/api";
+import { loadingCompSpin as LoadingSpin } from "../components/LoadingComp";
 
 export const ArsipDokumen = () => {
   const [daftarDokumen, setDaftarDokume] = useState([]);
@@ -14,6 +15,7 @@ export const ArsipDokumen = () => {
   const query = new URLSearchParams(search);
   const filterDate = query.get("dateFilter");
   const [filter, setFilter] = useState({ date: filterDate });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let queryFilter = "";
@@ -26,7 +28,10 @@ export const ArsipDokumen = () => {
       try {
         const response = await api.get(`/arsip${queryFilter}`);
         setDaftarDokume(response.data.data);
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
     // navigate(date);
@@ -35,6 +40,15 @@ export const ArsipDokumen = () => {
   const handlerClickDetail = (id) => {
     navigate(`/arsip/dokumen/${id}`);
   };
+
+  if (loading) {
+    return (
+      <div style={{ height: "80vh" }}>
+        <LoadingSpin />;
+      </div>
+    );
+  }
+
   return (
     <div>
       <HeaderSecond text="Arsip Dokumen">

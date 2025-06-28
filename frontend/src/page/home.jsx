@@ -6,10 +6,14 @@ import BarChart from "../components/chart/barChart";
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { HeaderSecond } from "../layout/headerSecond";
-import { data, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { ListUserProductivity } from "../components/listManagement";
+import { loadingCompSpin as LoadingSpin } from "../components/LoadingComp";
 
 const Home = () => {
   const [dataKegiatan, setDataKegiatan] = useState([]);
+  const [dataTopPegawai, setDataTopPegawai] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [count, setCount] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
@@ -17,9 +21,12 @@ const Home = () => {
       try {
         const responseData = (await api.get("/dashboard")).data.data;
         setCount(responseData.count);
+        setDataTopPegawai(responseData.userProductivity);
         setDataKegiatan(responseData.list);
       } catch (error) {
         console.error("Error fetching:", error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -29,6 +36,15 @@ const Home = () => {
   const handlerClickDetai = (params) => {
     navigate(`/Tugas-Luar?date=${params}`);
   };
+
+  if (loading) {
+    return (
+      <div style={{ height: "80vh" }}>
+        <LoadingSpin />;
+      </div>
+    );
+  }
+
   return (
     <div>
       <HeaderSecond text="Dashboard"></HeaderSecond>
@@ -46,7 +62,7 @@ const Home = () => {
 
         <Indicate text="Total Pending" data={count.pending}>
           <img
-            src="/svg/archives preservation-svgrepo-com.svg"
+            src="/svg/waiting-list-clock-svgrepo-com.svg"
             style={{ width: "90px" }}
           />
         </Indicate>
@@ -98,7 +114,7 @@ const Home = () => {
             <BarChart />
           </div>
           <div className="chart-box">
-            <BarChart />
+            <ListUserProductivity data={dataTopPegawai} />
           </div>
         </section>
       </div>

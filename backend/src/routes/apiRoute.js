@@ -5,6 +5,7 @@ import * as userControler from "../controllers/userControler.js";
 import {
   allJabatan,
   deleteJjabatan,
+  getJabatanLimited,
   updateJabatan,
 } from "../controllers/jabatranController.js";
 import {
@@ -58,7 +59,8 @@ router.delete("/user/delete/:id", authSuperAdmin, userControler.userDelete);
 
 // ======jabatan Route======
 // get
-router.get("/Jabatan", allJabatan);
+router.get("/Jabatan/usermanagement", authSuperAdmin, allJabatan);
+router.get("/Jabatan", getJabatanLimited);
 //post
 
 router.post("/jabatan", authenticateToken, addJabatan);

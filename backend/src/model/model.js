@@ -4,6 +4,12 @@ export const customQuery = async (query, params) => {
   const [result] = await db.query(query, params);
   return result[0];
 };
+
+export const customQueryArray = async (query, params) => {
+  const [result] = await db.query(query, params);
+  return result;
+};
+
 export const checkUserExists = async (username, email) => {
   try {
     const [rows] = await db.query(
