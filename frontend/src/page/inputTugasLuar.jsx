@@ -8,12 +8,14 @@ import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { HeaderSecond } from "../layout/headerSecond";
+import { SuccessModal } from "../components/modal";
 
 const InputTugas = () => {
   const [formData, setFormData] = useState({});
   const [listPegawaiOption, setListPegawaiOption] = useState([]);
   const [pegawai, setPegawai] = useState([]);
   const [jabatanOptions, setJabatanOptions] = useState([]);
+  const [modalActive, setModalActive] = useState(false);
   const [selectedJabatan, setSelectedJabatan] = useState("");
   const [loading, setLoading] = useState(true);
   const [valueTime, setValueTime] = useState(null);
@@ -141,7 +143,11 @@ const InputTugas = () => {
       setSelectedJabatan("");
     } catch (error) {}
 
-    alert("Tugas berhasil disimpan!");
+    setModalActive(true);
+  };
+
+  const handlerCloseModal = () => {
+    setModalActive(false);
   };
 
   if (loading) {
@@ -154,6 +160,13 @@ const InputTugas = () => {
   return (
     <div>
       <HeaderSecond text="Penugasan Pegawai"></HeaderSecond>
+      <SuccessModal
+        displayModal={modalActive ? "active" : ""}
+        onClose={handlerCloseModal}
+      >
+        <h2>Success!</h2>
+        <p>Data tugas berhasil ditambahkan</p>
+      </SuccessModal>
       <div className="page-container">
         <div className="page-header">
           <h2>Input Tugas </h2>

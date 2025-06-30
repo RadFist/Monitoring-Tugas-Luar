@@ -112,7 +112,7 @@ export const getListTugasWithUser = async (valueParams, query = "") => {
 FROM tb_tugas_luar AS tl
 JOIN tb_pivot_tugas AS pv 
   ON pv.id_tugas_luar = tl.id_tugas_luar
-  WHERE pv.id_pegawai = ? AND status_approval != "archived"
+  WHERE pv.id_pegawai = ? AND status_approval != "archived" AND status_approval = "approve"
   ${query}
 ORDER BY tl.tanggal_mulai ASC;
 `,

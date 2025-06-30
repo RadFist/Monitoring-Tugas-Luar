@@ -76,7 +76,15 @@ export const listTugas = async (req, res) => {
     // Tambahkan filter status jika ada
 
     if (statusFilter) {
-      filterConditions.push(`status = '${statusFilter}'`);
+      if (statusFilter == "belum mulai") {
+        filterConditions.push(`status != 'selesai'  `);
+        filterConditions.push(`DATE(tanggal_mulai) > CURDATE()`);
+      } else if (statusFilter == "Diproses") {
+        filterConditions.push(`status != 'selesai' `);
+        filterConditions.push(`DATE(tanggal_mulai) <= CURDATE()`);
+      } else {
+        filterConditions.push(`status = 'selesai' `);
+      }
     }
 
     if (statusApprovalFilter) {
@@ -125,14 +133,25 @@ export const listTugasPegawai = async (req, res) => {
   // Tambahkan filter status jika ada
 
   if (statusFilter) {
-    filterConditions.push(`status = ? `);
-    arrValue.push(statusFilter);
+    if (statusFilter == "belum mulai") {
+      filterConditions.push(`status != ? `);
+      arrValue.push("selesai");
+      filterConditions.push(`DATE(tl.tanggal_mulai) > CURDATE()`);
+    } else if (statusFilter == "Diproses") {
+      filterConditions.push(`status != ? `);
+      arrValue.push("selesai");
+      filterConditions.push(`DATE(tl.tanggal_mulai) <= CURDATE()`);
+    } else {
+      filterConditions.push(`status = ? `);
+      arrValue.push(statusFilter);
+    }
   }
 
   // Gabungkan semua filter jadi satu string
   const whereClause =
     filterConditions.length > 0 ? `AND ${filterConditions.join(" AND ")}` : "";
 
+  console.log(whereClause);
   try {
     const tugasListRaw = await getListTugasWithUser(arrValue, whereClause);
     const tugasList = tugasListRaw.map((tugas) => ({
@@ -226,7 +245,7 @@ export const approveTugas = async (req, res) => {
 
     for (const pegawai of pegawaiList) {
       const userId = pegawai.id_user;
-      const notifMessage = "Tugas dinas luar kamu telah disetujui.";
+      const notifMessage = "Kamu sudah ditugaskan";
       console.log(userId);
 
       // 1. Simpan ke DB

@@ -23,7 +23,7 @@ export const ManagJabat = () => {
   useEffect(() => {
     const fetchJabatan = async () => {
       try {
-        const response = (await api.get("/jabatan")).data;
+        const response = (await api.get("/Jabatan/usermanagement")).data;
         const data = response.data;
         setJabatanData({
           data,

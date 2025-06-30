@@ -11,6 +11,7 @@ import { getToken } from "../utils/tokenManpulation";
 import { SuccessModal } from "../components/modal";
 import api from "../services/api";
 import { HeaderSecond } from "../layout/headerSecond";
+import { formatDateOnly } from "../utils/formatedTime";
 
 const ListTugas = () => {
   const token = getToken();
@@ -19,6 +20,7 @@ const ListTugas = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
   const query = new URLSearchParams(search);
+  const today = formatDateOnly(new Date());
 
   const filterDate = query.get("date") || "";
   const FilterStatusApproval =
@@ -66,6 +68,7 @@ const ListTugas = () => {
 
         const responseGetListTugas = (await api.get(routeList + routeFilter))
           .data;
+
         setDaftarTugas(responseGetListTugas.data);
       } catch (error) {
         console.error("Error fetching :", error.message);
@@ -219,11 +222,17 @@ const ListTugas = () => {
                     <h3>{item.judul_tugas}</h3>
                     {item.status_approval == "approve" && (
                       <span
-                        className={`status ${item.status
-                          .replace(" ", "-")
-                          .toLowerCase()}`}
+                        className={`status ${
+                          today >= item.tanggal_mulai &&
+                          item.status === "belum mulai"
+                            ? "diproses"
+                            : item.status.replace(/\s+/g, "-").toLowerCase()
+                        }`}
                       >
-                        {item.status}
+                        {today >= item.tanggal_mulai &&
+                        item.status === "belum mulai"
+                          ? "Diproses"
+                          : item.status}
                       </span>
                     )}
                   </div>

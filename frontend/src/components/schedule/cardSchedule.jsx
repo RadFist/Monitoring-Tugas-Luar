@@ -41,7 +41,7 @@ const cardSchedule = ({ time = "Time", data = [], handlerClick }) => {
         >
           <ScheduleBodyPart title={"Kegiatan"} data={activity} />
         </div>
-        <ScheduleBodyPart title={"Pegawai"} data={employer[0]} />
+        <ScheduleBodyPart title={"Pegawai"} data={employer} />
         <div className="button-wrapper">
           <ButtonComp
             text="detail"

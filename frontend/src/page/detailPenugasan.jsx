@@ -123,18 +123,23 @@ const DetailPenugasan = () => {
     }
   };
 
-  const handlerDeleteFoto = (path) => {
+  const handlerDeleteFoto = async (path) => {
     const pathname = path.file_url;
-    api.delete("/documentation", {
-      data: {
-        idTugas: idDetail,
-        pathName: pathname,
-      },
-    });
-    setImageUrl((prev) => {
-      const updated = prev.filter((item) => item.file_url != pathname);
-      return updated;
-    });
+    try {
+      await api.delete("/documentation", {
+        data: {
+          idTugas: idDetail,
+          pathName: pathname,
+        },
+      });
+
+      setImageUrl((prev) => {
+        const updated = prev.filter((item) => item.file_url != pathname);
+        return updated;
+      });
+    } catch (error) {
+      console.error("Terjadi kesalahan saat menghapus foto:", error);
+    }
   };
 
   const handlerLaporan = (id) => {
@@ -277,11 +282,7 @@ const DetailPenugasan = () => {
           {assigned &&
             tugas.status_persetujuan == "approve" &&
             tugas.status != "selesai" && (
-              <input
-                type="file"
-                accept="image/*,.pdf"
-                onChange={handleFileChange}
-              />
+              <input type="file" accept="image/*" onChange={handleFileChange} />
             )}
         </div>
         <div className="image-preview-container">

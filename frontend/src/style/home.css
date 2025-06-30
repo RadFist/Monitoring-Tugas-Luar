@@ -63,12 +63,12 @@
 }
 
 .dataWrapCard .cardIndicator:nth-child(3) {
-background: linear-gradient(90deg, #fbc02d, #ffeb3b, #fdd835);
+background: linear-gradient(90deg, #fbc02d, #f9e104, #fdd835);
     background-size: 300% 200%;
     background-position: left;
 }
 .dataWrapCard .cardIndicator:nth-child(4) {
-background: linear-gradient(90deg, #37474f, #546e7a, #263238);
+  background: linear-gradient(90deg, #f44336, #ff6c6c, #f44336);
     background-size: 200% 200%;
     background-position: left;
 }
@@ -96,6 +96,7 @@ background: linear-gradient(90deg, #37474f, #546e7a, #263238);
   gap: 16px;
   justify-content: flex-start;
 }
+
 .schedule-list.empty {
   align-items: center;
   justify-content: center;
