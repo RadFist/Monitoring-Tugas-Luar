@@ -332,7 +332,7 @@ export const getArsip = async (req, res) => {
     if (dateFilter) {
       cond = `AND  DATE(tanggal_mulai) = '${dateFilter}'`;
     }
-    console.log(dateFilter);
+
     const data = await getListTugas(cond, true);
     const dataFormated = data.map((value) => ({
       ...value,

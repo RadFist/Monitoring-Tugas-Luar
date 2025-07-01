@@ -9,12 +9,14 @@ import api from "../services/api";
 import { loadingCompSpin as LoadingSpin } from "../components/LoadingComp";
 
 export const ArsipDokumen = () => {
-  const [daftarDokumen, setDaftarDokume] = useState([]);
+  const [dataAsli, setDataAsli] = useState([]);
+  const [daftarDokumen, setDaftarDokumen] = useState([]);
   const navigate = useNavigate();
   const { search } = useLocation();
   const query = new URLSearchParams(search);
   const filterDate = query.get("dateFilter");
   const [filter, setFilter] = useState({ date: filterDate });
+  const [searchTugas, setSearchTugas] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,7 +29,8 @@ export const ArsipDokumen = () => {
     const fetchData = async () => {
       try {
         const response = await api.get(`/arsip${queryFilter}`);
-        setDaftarDokume(response.data.data);
+        setDaftarDokumen(response.data.data);
+        setDataAsli(response.data.data);
       } catch (error) {
       } finally {
         setLoading(false);
@@ -36,6 +39,17 @@ export const ArsipDokumen = () => {
     fetchData();
     // navigate(date);
   }, [filter]);
+
+  useEffect(() => {
+    if (searchTugas.trim() === "") {
+      setDaftarDokumen(dataAsli);
+    } else {
+      const filtered = dataAsli.filter((item) =>
+        item.judul_tugas.toLowerCase().includes(searchTugas.toLowerCase())
+      );
+      setDaftarDokumen(filtered);
+    }
+  }, [searchTugas, dataAsli]);
 
   const handlerClickDetail = (id) => {
     navigate(`/arsip/dokumen/${id}`);
@@ -53,11 +67,22 @@ export const ArsipDokumen = () => {
     <div>
       <HeaderSecond text="Arsip Dokumen">
         <FormControl size="small" style={{ marginRight: "20px" }}>
+          <p className="filterLabel">Cari Tugas:</p>
+          <TextField
+            placeholder="cari tugas 🔎"
+            size="small"
+            type="text"
+            value={searchTugas || ""}
+            style={{ width: "300px" }}
+            onChange={(e) => setSearchTugas(e.target.value)}
+          />
+        </FormControl>
+        <FormControl size="small" style={{ marginRight: "20px" }}>
           <p className="filterLabel">Tanggal:</p>
           <TextField
             size="small"
             type="date"
-            value={filter.date}
+            value={filter.date || ""}
             onChange={(e) =>
               setFilter((prev) => ({ ...prev, date: e.target.value }))
             }
