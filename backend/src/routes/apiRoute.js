@@ -81,7 +81,7 @@ router.get("/user/tugas/:id", listTugasPegawai);
 router.get("/tugas/detail/:id", detailTugas);
 
 //post
-router.post("/PenugasanTugasLuar", authenticateToken, inputPenugasan);
+router.post("/PenugasanTugasLuar", inputPenugasan);
 
 //patch
 router.patch("/PenugasanTugasLuar/Approve", authCamat, approveTugas);

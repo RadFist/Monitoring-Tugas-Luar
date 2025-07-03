@@ -18,9 +18,12 @@ import {
 import { getAllUsersBYIdTugas } from "../model/userModel.js";
 import { saveNotif } from "../model/notifModel.js";
 import { connectedUsers, io } from "../socket.js";
+import { customQuery } from "../model/model.js";
 
 export const inputPenugasan = async (req, res) => {
   const data = req.body; //ngambil data dari body request
+  console.log(data);
+
   const { value, error } = schemaPneguasan.validate(data); //validasi skema joi yang diambil dari import
   if (error) {
     return res.status(400).json({ message: error.details[0].message }); // return status 404 jika tidak ada di schema
@@ -51,6 +54,24 @@ export const inputPenugasan = async (req, res) => {
       tanggalSelesai,
       daftarPegawai
     ); // mengirim ke model untuk dikirim ke database
+
+    const camatId = (
+      await customQuery(
+        "SELECT id_user FROM `tb_user` WHERE level = ?",
+        "camat"
+      )
+    ).id_user;
+
+    const message = `tugas baru dengan nama ${data.namaTugas} telah dibuat, mohon untuk di cek`;
+    await saveNotif(camatId, message);
+    const socketId = connectedUsers.get(camatId);
+
+    if (socketId) {
+      io.to(socketId).emit("notification", {
+        message: message,
+      });
+    }
+
     res.status(200).json({ response: "Employee assignment successful" }); // mengirim response ke front
   } catch (error) {
     console.error("Failed to save assignment:", error);

@@ -114,6 +114,7 @@ const InputTugas = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (pegawai.length < 1) {
       return alert("Tugaskan minimal 1 pegawai");
     }
@@ -141,6 +142,7 @@ const InputTugas = () => {
       setPegawai([]);
       setFormData(initialFormState);
       setSelectedJabatan("");
+      setValueTime("");
     } catch (error) {}
 
     setModalActive(true);
