@@ -60,3 +60,15 @@
 .button-wrapper {
     margin-top: auto; /* Dorong button ke bawah */
   }
+
+  @media (max-width: 480px) {
+  .schedule-card-container {
+    flex: 0 0 80%; /* Atur ukuran kartu */
+    scroll-snap-align: start;
+    margin: 0 8px;
+    min-width: 250px;
+    max-width: unset; /* hilangkan batas max-width lama */
+  }
+
+
+}

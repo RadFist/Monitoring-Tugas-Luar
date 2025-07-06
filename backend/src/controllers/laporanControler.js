@@ -59,7 +59,6 @@ export const postLaporan = async (req, res) => {
     const message = `laporan ${judul_tugas} sudah dikirim`;
     await saveNotif(camatId, message);
     const socketId = connectedUsers.get(camatId);
-    console.log(socketId);
 
     if (socketId) {
       io.to(socketId).emit("notification", {
@@ -187,7 +186,7 @@ export const deleteRincianDana = async (req, res) => {
 
 export const laporPdf = async (req, res) => {
   const id = req.params.id;
-  const DOMAIN = process.env.DOMAIN;
+  const DOMAIN = process.env.DOMAIN || "localhost";
   const PORT = process.env.PORT;
   try {
     const rincianDana = await getDana(id);

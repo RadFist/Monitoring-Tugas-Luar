@@ -227,12 +227,103 @@ background: linear-gradient(90deg, #fbc02d, #f9e104, #fdd835);
 
 /* Responsiveness */
 @media (max-width: 768px) {
-  .schedule-list {
+  .dataWrapCard {
     flex-direction: column;
     align-items: center;
+    gap: 16px;
+    padding: 15px;
+  }
+
+  .cardIndicator {
+    width: 90%;
+    flex-direction: column;
+    text-align: center;
+    padding: 16px;
+  }
+
+  .cardIndicator .value-indicator {
+    font-size: 1.4rem;
+  }
+
+  .schedule-section {
+    padding: 16px;
+  }
+
+  .schedule-title {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .schedule-list {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-semua-tugas {
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .list-productivity-title {
+    font-size: 18px;
+    margin: 16px 10px;
+  }
+
+  .user-productivity-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .user-rank,
+  .user-name,
+  .user-count {
+    font-size: 14px;
+  }
+}
+
+
+@media (max-width: 480px) {
+
+  .schedule-list {
+    flex-direction: row;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding-bottom: 12px;
+  }
+  .schedule-list::-webkit-scrollbar {
+    display: none; /* sembunyikan scrollbar di mobile */
+  }
+
+  .cardIndicator {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .user-productivity-item {
+     flex-direction: row;
+    flex-wrap: nowrap;              
+}
+
+  .cardIndicator .value-indicator {
+    font-size: 1.2rem;
   }
 
   .chart-box {
-    width: 100%;
+    min-height: 250px;
+  }
+
+  .list-productivity-title {
+    font-size: 16px;
+  }
+
+  .user-rank,
+  .user-name,
+  .user-count {
+    font-size: 13px;
   }
 }

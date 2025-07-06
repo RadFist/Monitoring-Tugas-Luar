@@ -3,6 +3,7 @@ import { getListTugasGrupTime } from "../model/tugasLuarModel.js";
 import { formatDateIso, formatTanggalIndo } from "../utils/dateFormater.js";
 
 export const getDataDashboard = async (req, res) => {
+  const YEAR = new Date().getFullYear();
   try {
     const data = await getListTugasGrupTime();
     const countUser = await customQuery(
@@ -23,6 +24,11 @@ export const getDataDashboard = async (req, res) => {
       JOIN tb_user AS u ON u.id_user = p.id_pegawai
       WHERE tl.status_approval != "pending" 
       GROUP BY u.id_user ORDER BY tugas DESC LIMIT 5;`
+    );
+    const dataTugasbyMonth = await customQueryArray(
+      `SELECT DATE_FORMAT(tanggal_mulai, '%M') AS bulan, COUNT(*) AS total_tugas FROM  tb_tugas_luar 
+      WHERE YEAR(tanggal_mulai) = ${YEAR}
+      GROUP BY  MONTH(tanggal_mulai), bulan ORDER BY MONTH(tanggal_mulai);`
     );
 
     //
@@ -72,6 +78,7 @@ export const getDataDashboard = async (req, res) => {
         pending: countPending.pending,
       },
       userProductivity: countUserProductivity,
+      TugasbyMonth: dataTugasbyMonth,
     };
 
     return res.status(200).json({ message: `success`, data: result });

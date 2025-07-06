@@ -9,7 +9,17 @@ import http from "http";
 import initSocket from "./socket.js"; // import file soket io for realtime
 
 const app = express();
-const allowedOrigins = ["http://localhost:5050", "http://localhost:5173"];
+
+//declaration
+const PORT = process.env.PORT || 5000;
+const DOMAIN = process.env.DOMAIN || "localhost";
+
+const allowedOrigins = [
+  "http://localhost:5050",
+  "http://localhost:5173",
+  `http://${DOMAIN}:5050`,
+  `http://${DOMAIN}:5173`,
+];
 
 // Middleware
 app.use(
@@ -29,10 +39,6 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//declaration
-const PORT = process.env.PORT || 5000;
-const domain = process.env.DOMAIN || "localhost?";
-
 //loging request don't forget to delete
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url} `);
@@ -46,23 +52,18 @@ app.use("/public", express.static("public"));
 app.use(cookieParser());
 
 // Routes
-
 app.use(authRoutes);
 app.use(apiRoute);
+
 // ==========================
 // SOCKET.IO SETUP
 // ==========================
 
 const server = http.createServer(app);
 
-initSocket(server, allowedOrigins);
+initSocket(server, allowedOrigins); // cors soket and start
 
-// Server
-// app.listen(PORT, () => {
-//   console.log(`Server running on  http://localhost:${PORT}`);
-// });
-
-//server sooket
+//server
 server.listen(PORT, () => {
-  console.log(`Server soket.io running on  http://${domain}:${PORT}`);
+  console.log(`Server soket.io running on  http://${DOMAIN}:${PORT}`);
 });

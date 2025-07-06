@@ -7,7 +7,7 @@ import {
 import { io } from "../socket.js";
 
 const PORT = process.env.PORT || 5000;
-const DOMAIN = process.env.DOMAIN;
+const DOMAIN = process.env.DOMAIN || "localhost";
 
 export const getFoto = async (req, res) => {
   const id = req.params.id;

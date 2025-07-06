@@ -13,6 +13,7 @@ import { loadingCompSpin as LoadingSpin } from "../components/LoadingComp";
 const Home = () => {
   const [dataKegiatan, setDataKegiatan] = useState([]);
   const [dataTopPegawai, setDataTopPegawai] = useState([]);
+  const [dataBarChart, setDataBarChart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState([]);
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const Home = () => {
         setCount(responseData.count);
         setDataTopPegawai(responseData.userProductivity);
         setDataKegiatan(responseData.list);
+        setDataBarChart(responseData.TugasbyMonth);
       } catch (error) {
         console.error("Error fetching:", error.message);
       } finally {
@@ -111,7 +113,7 @@ const Home = () => {
 
         <section className="chart-section">
           <div className="chart-box">
-            <BarChart />
+            <BarChart data={dataBarChart} />
           </div>
           <div className="chart-box">
             <ListUserProductivity data={dataTopPegawai} />
