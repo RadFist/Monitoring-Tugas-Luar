@@ -110,7 +110,9 @@ const DetailPenugasan = () => {
     formData.append("id", idDetail);
     try {
       const res = await axios.post(
-        "http://localhost:8080/documentation",
+        `${
+          import.meta.env.VITE_API_BACKEND_BASE_URL || "http/localhost:8080"
+        }/documentation`,
         formData,
         {
           withCredentials: true, // jika perlu kirim cookie

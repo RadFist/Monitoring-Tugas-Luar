@@ -73,7 +73,7 @@ export const ArsipDokumen = () => {
             size="small"
             type="text"
             value={searchTugas || ""}
-            style={{ width: "300px" }}
+            className="search-archive"
             onChange={(e) => setSearchTugas(e.target.value)}
           />
         </FormControl>

@@ -223,3 +223,35 @@ body{
     -ms-filter: blur(5px);
     filter: blur(5px);
 }
+
+
+.search-archive{
+ width: 400px; 
+box-sizing: border-box;
+}
+
+
+@media (max-width: 828px) {
+.search-archive{
+  width: 300px;
+}
+}
+
+@media (max-width: 720px) {
+.search-archive{
+  width: 100px;
+}
+.header-second-actions{
+  flex-direction: column-reverse;
+  flex-wrap: nowrap;
+}
+}
+@media (max-width: 480px) {
+.search-archive{
+  width: 60px;
+}
+.header-second-actions{
+  flex-direction: column-reverse;
+  flex-wrap: nowrap;
+}
+}
