@@ -24,7 +24,6 @@ body {
   /* Kotak putih berisi daftar */
   .list-tugas {
     width: 100%;
-   
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -170,3 +169,100 @@ body {
   font-style: italic;
 }
 
+
+/* arsip */
+ .list-arsip {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap; /* memungkinkan konten membungkus ke bawah */
+  gap: 16px;
+  /* agar konten tetap di tengah */
+  border-radius: 12px;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.arsip-item {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%; /* default full width (untuk mobile) */
+  max-width: 300px; /* dibatasi */
+  box-shadow: 2px 4px 6px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Hover efek */
+.arsip-item:hover {
+  transform: translateY(-2px);
+}
+
+.arsip-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.arsip-header h3 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.arsip-body-card > p {
+  margin: 2px 0 4px 0;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* Responsive image */
+.arsip-item img {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+}
+
+/* Responsive text button */
+.detail-button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+.detail-button:hover {
+  background-color: #1565c0;
+}
+
+/* Media Query: Tablet */
+@media (max-width: 768px) {
+  .list-arsip{
+     justify-content: center;
+  }
+  .arsip-item {
+    max-width: 45%;
+  }
+}
+@media (min-width: 769px) {
+  .list-arsip{
+     justify-content: start;
+  }
+
+}
+
+/* Media Query: Mobile */
+@media (max-width: 480px) {
+  .arsip-item {
+    max-width: 100%;
+  }
+}

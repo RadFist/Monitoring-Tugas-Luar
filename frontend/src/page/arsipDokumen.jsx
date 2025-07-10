@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import DescriptionIcon from "@mui/icons-material/Description";
 import "../style/listTugas.css";
 import { HeaderSecond } from "../layout/headerSecond";
@@ -69,11 +69,11 @@ export const ArsipDokumen = () => {
         <FormControl size="small" style={{ marginRight: "20px" }}>
           <p className="filterLabel">Cari Tugas:</p>
           <TextField
+            className="search-archive"
             placeholder="cari tugas 🔎"
             size="small"
             type="text"
             value={searchTugas || ""}
-            className="search-archive"
             onChange={(e) => setSearchTugas(e.target.value)}
           />
         </FormControl>
@@ -91,23 +91,28 @@ export const ArsipDokumen = () => {
       </HeaderSecond>
 
       <div className="content-list-tugas">
-        <div className="list-tugas">
+        <div className="list-arsip">
           {daftarDokumen.length === 0 ? (
             <p style={{ textAlign: "center" }} className="no-tugas-message">
               Arsip Kosong
             </p>
           ) : (
             daftarDokumen.map((item) => (
-              <div className="tugas-item" key={item.id_tugas_luar}>
-                <div className="tugas-header">
+              <div className="arsip-item" key={item.id_tugas_luar}>
+                <div className="arsip-header">
                   <h3>{item.judul_tugas}</h3>
                 </div>
-                <p>
-                  <strong>lokasi:</strong> {item.lokasi}
-                </p>
-                <p>
-                  <strong>tanggal:</strong> {item.tanggal_mulai}
-                </p>
+                <div>
+                  <img src="/img/pdf.png" style={{ width: "250px" }} />
+                </div>
+                <div className="arsip-body-card">
+                  <p>
+                    <strong>lokasi:</strong> {item.lokasi}
+                  </p>
+                  <p>
+                    <strong>tanggal:</strong> {item.tanggal_mulai}
+                  </p>
+                </div>
                 <button
                   className="detail-button"
                   onClick={(e) => {
