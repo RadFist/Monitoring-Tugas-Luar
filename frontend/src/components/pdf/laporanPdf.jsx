@@ -34,10 +34,6 @@ const LaporanPdf = ({
             <Text>: Bapak Camat Sukadiri</Text>
           </View>
           <View style={{ flexDirection: "row", marginBottom: 5 }}>
-            <Text style={{ width: 80 }}>Melalui</Text>
-            <Text>: Bapak Sekertaris Kecamatan Sukadiri</Text>
-          </View>
-          <View style={{ flexDirection: "row", marginBottom: 5 }}>
             <Text style={{ width: 80 }}>Dari</Text>
             <Text>: {dataLaporan?.bagian}</Text>
           </View>

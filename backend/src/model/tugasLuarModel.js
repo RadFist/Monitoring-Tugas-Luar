@@ -33,7 +33,7 @@ export const postTugas = async (
     // Simpan banyak pegawai ke tabel relasi tugas_pegawai
     for (let pegawai of daftar) {
       await db.query(
-        `INSERT INTO tb_pivot_tugas (id_tugas_luar, id_pegawai) VALUES (?, ?)`,
+        `INSERT INTO tb_pivot_tugas (id_tugas_luar, id_user) VALUES (?, ?)`,
         [id, pegawai.id]
       );
     }
@@ -112,7 +112,7 @@ export const getListTugasWithUser = async (valueParams, query = "") => {
 FROM tb_tugas_luar AS tl
 JOIN tb_pivot_tugas AS pv 
   ON pv.id_tugas_luar = tl.id_tugas_luar
-  WHERE pv.id_pegawai = ? AND status_approval != "archived" AND status_approval = "approve"
+  WHERE pv.id_user = ? AND status_approval != "archived" AND status_approval = "approve"
   ${query}
 ORDER BY tl.tanggal_mulai ASC;
 `,
@@ -140,7 +140,7 @@ export const getDetailTugas = async (id) => {
 FROM tb_tugas_luar AS tugas
 JOIN tb_pivot_tugas AS pivot 
   ON pivot.id_tugas_luar = tugas.id_tugas_luar
-  JOIN tb_user as user on user.id_user = pivot.id_pegawai
+  JOIN tb_user as user on user.id_user = pivot.id_user
   JOIN tb_jabatan as jb on jb.id_jabatan = user.jabatan
 WHERE tugas.id_tugas_luar = ? `,
       [id]
@@ -176,7 +176,7 @@ LIMIT 4;`
     END AS status 
   FROM tb_tugas_luar AS tl
   JOIN tb_pivot_tugas AS pv ON pv.id_tugas_luar = tl.id_tugas_luar
-  JOIN tb_user AS ur ON ur.id_user = pv.id_pegawai
+  JOIN tb_user AS ur ON ur.id_user = pv.id_user
   WHERE DATE(tl.tanggal_mulai) IN (${placeholders}) AND tl.status_approval = "approve"
   ORDER BY tl.tanggal_mulai ASC`,
       tanggalList

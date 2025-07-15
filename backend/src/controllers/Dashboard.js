@@ -21,7 +21,7 @@ export const getDataDashboard = async (req, res) => {
     const countUserProductivity = await customQueryArray(
       `SELECT u.nama, COUNT(tl.id_tugas_luar) AS tugas FROM tb_tugas_luar AS tl
       JOIN tb_pivot_tugas AS p ON p.id_tugas_luar = tl.id_tugas_luar
-      JOIN tb_user AS u ON u.id_user = p.id_pegawai
+      JOIN tb_user AS u ON u.id_user = p.id_user
       WHERE tl.status_approval != "pending" 
       GROUP BY u.id_user ORDER BY tugas DESC LIMIT 5;`
     );

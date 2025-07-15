@@ -148,7 +148,7 @@ export const listTugasPegawai = async (req, res) => {
   arrValue.push(req.params.id);
   // Tambahkan filter date jika ada
   if (dateFilter) {
-    filterConditions.push(`tanggal_mulai = ? `);
+    filterConditions.push(`DATE(tanggal_mulai) = ? `);
     arrValue.push(dateFilter);
   }
   // Tambahkan filter status jika ada
@@ -172,7 +172,7 @@ export const listTugasPegawai = async (req, res) => {
   const whereClause =
     filterConditions.length > 0 ? `AND ${filterConditions.join(" AND ")}` : "";
 
-  console.log(whereClause);
+  console.log(whereClause + " " + arrValue);
   try {
     const tugasListRaw = await getListTugasWithUser(arrValue, whereClause);
     const tugasList = tugasListRaw.map((tugas) => ({

@@ -98,7 +98,7 @@ export const getAllUsersBYIdTugas = async (idTugas) => {
     const [rows] = await db.query(
       `SELECT u.id_user,u.nama FROM tb_tugas_luar AS tl
       JOIN tb_pivot_tugas AS pt ON pt.id_tugas_luar = tl.id_tugas_luar
-      JOIN tb_user AS u ON u.id_user = pt.id_pegawai
+      JOIN tb_user AS u ON u.id_user = pt.id_user
       WHERE tl.id_tugas_luar = ?`,
       [idTugas] // << perbaikan: bungkus dengan array
     );
