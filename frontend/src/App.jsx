@@ -18,6 +18,7 @@ import { PrivateWraper as PrivateRoute } from "./components/logic/PrivateWarperA
 import LaporanDetail from "./page/laporanDetail.jsx";
 import ArsipDokumen from "./page/arsipDokumen.jsx";
 import { Buffer } from "buffer";
+import Profile from "./page/profile.jsx";
 
 function App() {
   if (typeof window !== "undefined") {
@@ -80,6 +81,14 @@ function App() {
             element={
               <PrivateRoute>
                 <ArsipDokumen title="Arsip Dukomen" />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="profile"
+            element={
+              <PrivateRoute>
+                <Profile title="Profile" />
               </PrivateRoute>
             }
           />

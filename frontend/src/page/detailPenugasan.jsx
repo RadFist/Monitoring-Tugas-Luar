@@ -246,32 +246,43 @@ const DetailPenugasan = () => {
           <p>
             <strong>Lokasi:</strong> {tugas.lokasi}
           </p>
-          <p>
-            <strong>Tanggal Mulai:</strong> {tugas.tanggal_mulai}
-          </p>
+          <hr />
+          <div style={{ display: "flex", gap: "15px" }}>
+            <p>
+              <strong>Tanggal Mulai:</strong> {tugas.tanggal_mulai}
+            </p>
+            <p>
+              <strong>Lama Tugas:</strong>{" "}
+              {hitungLamaTugas(tugas.tanggal_mulai, tugas.tanggal_selesai)}
+            </p>
+          </div>
           <p>
             <strong>Tanggal Selesai:</strong> {tugas.tanggal_selesai}
           </p>
-          <p>
-            <strong>Status:</strong>{" "}
-            <span
-              className={`status ${tugas.status
-                .toLowerCase()
-                .replace(" ", "-")}`}
-            >
-              {tugas.status}
-            </span>
-          </p>
-          <p>
-            <strong>Status Tugas:</strong>{" "}
-            <span
-              className={`status ${tugas.status_persetujuan
-                ?.toLowerCase()
-                .replace(" ", "-")}`}
-            >
-              {tugas.status_persetujuan || "Belum Ada"}
-            </span>
-          </p>
+          <hr />
+          <div style={{ display: "flex", gap: "15px" }}>
+            <p>
+              <strong>Status:</strong>{" "}
+              <span
+                className={`status ${tugas.status
+                  .toLowerCase()
+                  .replace(" ", "-")}`}
+              >
+                {tugas.status}
+              </span>
+            </p>
+            <p>
+              <strong>Status Persetujuan:</strong>{" "}
+              <span
+                className={`status ${tugas.status_persetujuan
+                  ?.toLowerCase()
+                  .replace(" ", "-")}`}
+              >
+                {tugas.status_persetujuan || "Belum Ada"}
+              </span>
+            </p>
+          </div>
+          <hr />
           <p>
             <strong>Deskripsi:</strong> {tugas.deskripsi}
           </p>
@@ -379,6 +390,14 @@ const DetailPenugasan = () => {
       </div>
     </div>
   );
+};
+
+const hitungLamaTugas = (mulai, selesai) => {
+  const start = new Date(mulai);
+  const end = new Date(selesai);
+  const diffTime = end - start;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+  return `${diffDays} hari`;
 };
 
 export default DetailPenugasan;

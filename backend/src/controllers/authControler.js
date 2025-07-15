@@ -52,7 +52,7 @@ export const registration = async (req, res) => {
       email,
       nip,
       jabatan,
-      "user"
+      "pegawai"
     );
 
     return res.status(200).json({ message: "data stored succesfully" });

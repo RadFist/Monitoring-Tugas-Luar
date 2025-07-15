@@ -62,7 +62,7 @@ export const addUser = async (req, res) => {
     //get data
     const id = uuidv4();
     const { username, email, password, nip, nama, jabatan } = value;
-    const level = value.level || "user";
+    const level = value.level || "pegawai";
 
     //get data from db
     const checkUser = await checkUserExists(username, email);

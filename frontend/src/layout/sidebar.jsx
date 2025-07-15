@@ -6,6 +6,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import InfoIcon from "@mui/icons-material/Info";
 import LogoutIcon from "@mui/icons-material/Logout";
+import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 import { useNavigate } from "react-router-dom";
 import { clearToken, getToken } from "../utils/tokenManpulation";
@@ -114,6 +115,15 @@ const Sidebar = ({ displaySidebar = false, handlerClickArrow, userLevel }) => {
             }}
           >
             <InfoIcon /> <span>About</span>
+          </div>
+          <div
+            className="menu-item"
+            onClick={() => {
+              navigate("/profile");
+              handlerClickArrow();
+            }}
+          >
+            <PersonIcon /> <span>Profile</span>
           </div>
           <div className="menu-item" onClick={handlerLogOut}>
             <LogoutIcon /> <span>Logout</span>

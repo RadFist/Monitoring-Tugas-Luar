@@ -37,7 +37,7 @@ export const AddUser = async (
   email,
   nip,
   jabatan,
-  level = "user"
+  level = "pegawai"
 ) => {
   const response = await api.post("/user/add", {
     username,

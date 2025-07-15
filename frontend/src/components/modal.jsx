@@ -35,7 +35,12 @@ export const SuccessModal = ({ displayModal, onClose, children }) => {
   );
 };
 
-export const InformationModal = ({ displayModal, onClose, payload }) => {
+export const InformationModal = ({
+  displayModal,
+  onClose,
+  payload,
+  onClick,
+}) => {
   return (
     <div className={`information-modal ${displayModal}`} onClick={onClose}>
       <div
@@ -51,6 +56,9 @@ export const InformationModal = ({ displayModal, onClose, payload }) => {
         <p>nip. {payload.nip}</p>
         <p>{payload.jabatan}</p>
         <p>level : {payload.level}</p>
+        <button className="btn-proifle" onClick={onClick}>
+          profile
+        </button>
       </div>
     </div>
   );

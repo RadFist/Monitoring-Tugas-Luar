@@ -5,6 +5,7 @@ import { Tooltip, Avatar, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import { useState } from "react";
 import { InformationModal, NotifModal } from "../components/modal";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({
   onToggleSidebar,
@@ -19,6 +20,7 @@ const Header = ({
   const [modalActive, setModalActive] = useState(false);
   const [modalNotifActive, setModalNotifActive] = useState(false);
   const username = payload.username || "";
+  const navigate = useNavigate();
   // Fungsi waktu berdasarkan jam lokal
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -33,7 +35,10 @@ const Header = ({
   const handlerCloseNotifModal = () => {
     setModalNotifActive(false);
   };
-
+  const handlerClickProfile = () => {
+    navigate("/profile");
+    setModalActive(false);
+  };
   return (
     <header className="header-cont">
       <NotifModal displayModal={displayModal ? "active" : ""} onClose={onClose}>
@@ -71,6 +76,7 @@ const Header = ({
         displayModal={modalActive ? "active" : ""}
         onClose={handlerCloseModal}
         payload={payload}
+        onClick={handlerClickProfile}
       />
       <div className="left-side">
         <BurgerBtn toggleSidebar={onToggleSidebar} />
