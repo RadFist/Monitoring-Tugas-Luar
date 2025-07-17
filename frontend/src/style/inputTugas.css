@@ -218,3 +218,21 @@
 .btn-delete-pegawai:hover {
   background-color: #e03b3d;
 }
+
+.btn-tampil-map {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-tampil-map:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}

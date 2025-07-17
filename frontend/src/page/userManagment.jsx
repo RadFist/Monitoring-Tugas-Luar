@@ -368,7 +368,7 @@ const UserManagment = () => {
             >
               <option value="">-- Pilih Level --</option>
               <option value="kasi">Kasi</option>
-              <option value="user">User</option>
+              <option value="pegawai">Pegawai</option>
               <option value="camat">Camat</option>
               <option value="super admin">Super Admin</option>
             </select>

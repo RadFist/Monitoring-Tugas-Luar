@@ -13,6 +13,7 @@ import { SuccessModal } from "../components/modal";
 import axios from "axios";
 import socket from "../services/socket";
 import { formatDateOnly } from "../utils/formatedTime";
+import GoogleMaps from "../components/google";
 
 const DetailPenugasan = () => {
   const navigate = useNavigate();
@@ -243,9 +244,12 @@ const DetailPenugasan = () => {
           <p>
             <strong>Perihal:</strong> {tugas.perihal}
           </p>
-          <p>
-            <strong>Lokasi:</strong> {tugas.lokasi}
-          </p>
+          <div>
+            <p>
+              <strong>Lokasi:</strong> {tugas.lokasi}
+            </p>
+            <GoogleMaps locationParam={tugas.lokasi} />
+          </div>
           <hr />
           <div style={{ display: "flex", gap: "15px" }}>
             <p>

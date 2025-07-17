@@ -9,6 +9,7 @@ import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { HeaderSecond } from "../layout/headerSecond";
 import { SuccessModal } from "../components/modal";
+import GoogleMaps from "../components/google";
 
 const InputTugas = () => {
   const [formData, setFormData] = useState({});
@@ -16,7 +17,9 @@ const InputTugas = () => {
   const [pegawai, setPegawai] = useState([]);
   const [jabatanOptions, setJabatanOptions] = useState([]);
   const [modalActive, setModalActive] = useState(false);
+  const [displayMap, setDisplayMap] = useState(false);
   const [selectedJabatan, setSelectedJabatan] = useState("");
+  const [map, setMap] = useState("");
   const [loading, setLoading] = useState(true);
   const [valueTime, setValueTime] = useState(null);
 
@@ -152,6 +155,12 @@ const InputTugas = () => {
     setModalActive(false);
   };
 
+  const handlerMap = (e) => {
+    e.preventDefault();
+    setMap(formData.lokasi);
+    setDisplayMap(true);
+  };
+
   if (loading) {
     return (
       <div className="content-penugasan-loading">
@@ -215,17 +224,25 @@ const InputTugas = () => {
             />
           </label>
 
-          <label>
-            lokasi
-            <input
-              type="text"
-              name="lokasi"
-              value={formData.lokasi || ""}
-              placeholder="ex: gedung abc dixyz"
-              onChange={handleInputChange}
-              required
-            />
-          </label>
+          <div>
+            <label>
+              lokasi
+              <input
+                type="text"
+                name="lokasi"
+                value={formData.lokasi || ""}
+                placeholder="ex: gedung abc dixyz"
+                onChange={handleInputChange}
+                required
+              />
+            </label>
+
+            <GoogleMaps locationParam={map || ""} display={displayMap}>
+              <button className="btn-tampil-map" onClick={(e) => handlerMap(e)}>
+                tampilkan map
+              </button>
+            </GoogleMaps>
+          </div>
 
           <div className="date-row">
             <label>
