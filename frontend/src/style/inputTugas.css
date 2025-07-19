@@ -57,12 +57,10 @@
   
   .date-row {
     display: flex;
+    align-items: start;
     gap: 20px;
   }
   
-  .waktu-label-input{
-    margin-top: 10px;
-  }
   .waktu-label-input input{
    margin-top: 6px;
     padding: 10px;

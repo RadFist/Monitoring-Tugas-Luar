@@ -157,7 +157,7 @@ const InputTugas = () => {
 
   const handlerMap = (e) => {
     e.preventDefault();
-    setMap(formData.lokasi);
+    setMap(formData.alamat);
     setDisplayMap(true);
   };
 
@@ -225,18 +225,30 @@ const InputTugas = () => {
           </label>
 
           <div>
-            <label>
-              lokasi
-              <input
-                type="text"
-                name="lokasi"
-                value={formData.lokasi || ""}
-                placeholder="ex: gedung abc dixyz"
-                onChange={handleInputChange}
-                required
-              />
-            </label>
-
+            <div style={{ display: "flex", gap: "10px", width: "100%" }}>
+              <label style={{ flex: 1 }}>
+                Alamat
+                <input
+                  type="text"
+                  name="alamat"
+                  value={formData.alamat || ""}
+                  placeholder="ex: jln abc kab efg"
+                  onChange={handleInputChange}
+                  required
+                />
+              </label>
+              <label style={{ flex: 1 }}>
+                Lokasi
+                <input
+                  type="text"
+                  name="lokasi"
+                  value={formData.lokasi || ""}
+                  placeholder="ex: gedung abc dixyz"
+                  onChange={handleInputChange}
+                  required
+                />
+              </label>
+            </div>
             <GoogleMaps locationParam={map || ""} display={displayMap}>
               <button className="btn-tampil-map" onClick={(e) => handlerMap(e)}>
                 tampilkan map
@@ -254,20 +266,7 @@ const InputTugas = () => {
                 onChange={handleInputChange}
                 required
               />
-              <label className="waktu-label-input">
-                waktu Mulai
-                <DatePicker
-                  disableDayPicker
-                  format="HH:mm"
-                  plugins={[<TimePicker />]}
-                  value={valueTime}
-                  onChange={handleTimeChange}
-                  editable={false}
-                  required
-                />
-              </label>
             </label>
-
             <label>
               Tanggal Selesai
               <input
@@ -278,7 +277,38 @@ const InputTugas = () => {
                 required
               />
             </label>
+            <label className="waktu-label-input">
+              waktu Mulai
+              <DatePicker
+                disableDayPicker
+                format="HH:mm"
+                plugins={[<TimePicker />]}
+                value={valueTime}
+                onChange={handleTimeChange}
+                editable={false}
+                required
+              />
+            </label>
           </div>
+
+          <label>
+            Kendaraan
+            <select
+              className="select-pegawai"
+              name="kendaraan"
+              value={formData.kendaraan || ""}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="" disabled hidden>
+                Pilih kendaraan
+              </option>
+              <option value="mobil dinas">Mobil Dinas</option>
+              <option value="motor dinas">Motor Dinas</option>
+              <option value="kendaraan pribadi">Kendaraan Pribadi</option>
+              <option value="lainnya">Lainnya</option>
+            </select>
+          </label>
 
           <div className="cont-penugasan-pegawai">
             <div className="pegawai-controls">

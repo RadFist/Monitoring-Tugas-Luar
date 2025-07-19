@@ -244,9 +244,15 @@ const DetailPenugasan = () => {
           <p>
             <strong>Perihal:</strong> {tugas.perihal}
           </p>
+          <p>
+            <strong>Kendaraan:</strong> Roda Empat Dinas
+          </p>
           <div>
             <p>
-              <strong>Lokasi:</strong> {tugas.lokasi}
+              <strong>Alamat:</strong> {tugas.lokasi}
+            </p>
+            <p>
+              <strong>Lokasi:</strong> Gedung DPR {/*refactor nanti  */}
             </p>
             <GoogleMaps locationParam={tugas.lokasi} />
           </div>
