@@ -63,6 +63,7 @@ export const InformationModal = ({
     </div>
   );
 };
+
 export const NotifModal = ({ displayModal, onClose, children }) => {
   return (
     <div className={`notif-modal ${displayModal}`} onClick={onClose}>
@@ -75,4 +76,21 @@ export const NotifModal = ({ displayModal, onClose, children }) => {
     </div>
   );
 };
+
+export const ImageModal = ({ displayModal, onClose, url }) => {
+  return (
+    <div
+      className={`image-modal ${displayModal ? "active" : ""}`}
+      onClick={onClose}
+    >
+      <div className="image-modal-cont" onClick={(e) => e.stopPropagation()}>
+        <button className="close-btn" onClick={onClose}>
+          <CloseIcon />
+        </button>
+        <img src={url} alt="gambar dokumentasi" />
+      </div>
+    </div>
+  );
+};
+
 export default FormModal;

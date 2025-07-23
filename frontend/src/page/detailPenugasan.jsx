@@ -9,7 +9,7 @@ import { loadingCompSpin as Loading } from "../components/LoadingComp";
 import api from "../services/api";
 import { getToken } from "../utils/tokenManpulation";
 import { jwtDecode } from "jwt-decode";
-import { SuccessModal } from "../components/modal";
+import { SuccessModal, ImageModal } from "../components/modal";
 import axios from "axios";
 import socket from "../services/socket";
 import { formatDateOnly } from "../utils/formatedTime";
@@ -19,6 +19,8 @@ const DetailPenugasan = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [modalActive, setModalActive] = useState(false);
+  const [modalImageActive, setModalImageActive] = useState(false);
+  const [urlModal, setUrlModal] = useState("");
   const [tugas, setTugas] = useState([]);
   const [btnDisabled, setBtnDisabled] = useState(false);
   const { idDetail } = useParams();
@@ -167,6 +169,15 @@ const DetailPenugasan = () => {
     }
   };
 
+  const handlerShowImage = (url) => {
+    setUrlModal(url);
+    setModalImageActive(true);
+  };
+  const handlerCloseImageModal = () => {
+    setModalImageActive(false);
+    setUrlModal("");
+  };
+
   const handlerApprove = async (id, tanggal) => {
     if (!id) {
       console.error("ID tugas tidak valid.");
@@ -227,6 +238,11 @@ const DetailPenugasan = () => {
       >
         {modalChildren}
       </SuccessModal>
+      <ImageModal
+        displayModal={modalImageActive ? "active" : ""}
+        onClose={handlerCloseImageModal}
+        url={urlModal}
+      />
       <div className="header-detail">
         <button className="btn-kembali" onClick={() => navigate(-1)}>
           <ChevronLeftIcon /> Kembali
@@ -314,7 +330,13 @@ const DetailPenugasan = () => {
             <>
               {imageUrl.map((value, index) => (
                 <div key={index} className="warp-img-prev">
-                  <img src={value.file_url} alt="Gambar hasil upload" />
+                  <img
+                    src={value.file_url}
+                    alt="Gambar hasil upload"
+                    onClick={(e) => {
+                      handlerShowImage(value.file_url);
+                    }}
+                  />
                   {assigned && tugas.status != "selesai" && (
                     <button
                       onClick={(e) => {
