@@ -6,8 +6,10 @@ export const postTugas = async (
   tugas,
   dasar,
   perihal,
+  alamat,
   lokasi,
   deskripsi,
+  kendaraan,
   mulai,
   selesai,
   daftar
@@ -15,15 +17,17 @@ export const postTugas = async (
   try {
     // Simpan data utama ke tabel tugas_luar
     await db.query(
-      `INSERT INTO tb_tugas_luar (id_tugas_luar, judul_tugas, dasar, perihal, deskripsi, lokasi, status, tanggal_mulai, tanggal_selesai)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO tb_tugas_luar (id_tugas_luar, judul_tugas, dasar, perihal, deskripsi, alamat, lokasi, kendaraan, status, tanggal_mulai, tanggal_selesai)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         tugas,
         dasar,
         perihal,
         deskripsi,
+        alamat,
         lokasi,
+        kendaraan,
         "belum mulai",
         mulai,
         selesai,

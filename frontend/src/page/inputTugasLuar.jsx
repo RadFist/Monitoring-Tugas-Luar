@@ -134,9 +134,11 @@ const InputTugas = () => {
       await api.post("/PenugasanTugasLuar", {
         namaTugas: formData.tugas,
         lokasi: formData.lokasi,
+        alamat: formData.alamat,
         dasar: formData.dasar,
         perihal: formData.perihal,
         deskripsi: formData.deskripsi,
+        kendaraan: formData.kendaraan,
         tanggalMulai: `${formData.tanggalMulai}T${formData.waktuMulai}:00`,
         tanggalSelesai: formData.tanggalSelesai,
         daftarPegawai: pegawai,
@@ -303,10 +305,10 @@ const InputTugas = () => {
               <option value="" disabled hidden>
                 Pilih kendaraan
               </option>
-              <option value="mobil dinas">Mobil Dinas</option>
-              <option value="motor dinas">Motor Dinas</option>
-              <option value="kendaraan pribadi">Kendaraan Pribadi</option>
-              <option value="lainnya">Lainnya</option>
+              <option value="Mobil Dinas">Mobil Dinas</option>
+              <option value="Motor Dinas">Motor Dinas</option>
+              <option value="Kendaraan Pribadi">Kendaraan Pribadi</option>
+              <option value="Lainnya">Lainnya</option>
             </select>
           </label>
 

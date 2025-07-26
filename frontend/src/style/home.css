@@ -295,6 +295,7 @@ background: linear-gradient(90deg, #fbc02d, #f9e104, #fdd835);
     gap: 12px;
     padding-bottom: 12px;
   }
+  
   .schedule-list::-webkit-scrollbar {
     display: none; /* sembunyikan scrollbar di mobile */
   }

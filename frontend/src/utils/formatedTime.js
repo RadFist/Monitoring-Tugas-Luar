@@ -5,6 +5,28 @@ export const formatDateOnly = (d) => {
   return `${year}-${month}-${day}`;
 };
 
+export const formatTanggalBulan = (tanggal) => {
+  if (!tanggal) return "tanggal kosong";
+
+  const bulanIndo = [
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember",
+  ];
+
+  const [tahun, bulan, hari] = tanggal.split("-");
+  return `${hari}-${bulanIndo[parseInt(bulan) - 1]}-${tahun}`;
+};
+
 export const formatTanggalIndo = (tanggal) => {
   const bulanIndo = [
     "Januari",

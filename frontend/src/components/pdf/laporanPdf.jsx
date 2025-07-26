@@ -1,6 +1,7 @@
 import Kopsurat from "../../components/pdf/Kopsurat";
 import { Page, Text, View, Image } from "@react-pdf/renderer";
 import styles from "../../style/pdf/Pdf";
+import { formatTanggalBulan } from "../../utils/formatedTime";
 
 const LaporanPdf = ({
   dataLaporan,
@@ -39,10 +40,7 @@ const LaporanPdf = ({
           </View>
           <View style={{ flexDirection: "row", marginBottom: 5 }}>
             <Text style={{ width: 80 }}>Tanggal</Text>
-            <Text>
-              : {dataLaporan?.Tanggal_dibuat}
-              benerin
-            </Text>
+            <Text>: {formatTanggalBulan(dataLaporan?.Tanggal_dibuat)}</Text>
           </View>
           <View style={{ flexDirection: "row", marginBottom: 5 }}>
             <Text style={{ width: 80 }}>Dasar</Text>

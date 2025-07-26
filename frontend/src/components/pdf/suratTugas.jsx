@@ -65,7 +65,7 @@ const SuratTugas = ({ data }) => {
             <View
               style={{
                 flexDirection: "row",
-                marginBottom: 5,
+                marginBottom: 10,
                 marginTop: 5,
               }}
             >
@@ -78,23 +78,46 @@ const SuratTugas = ({ data }) => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                marginBottom: "20px",
               }}
             >
-              <View>
-                <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                  <Text style={{ width: 50 }}>Tanggal</Text>
-                  <Text>: {data?.tanggal_mulai}</Text>
-                </View>
-                <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                  <Text style={{ width: 50 }}>Waktu</Text>
-                  <Text>: {data?.jam}</Text>
-                </View>
-                <View style={{ flexDirection: "row", marginBottom: 30 }}>
-                  <Text style={{ width: 50 }}>Tempat</Text>
-                  <Text>: {data?.lokasi}</Text>
-                </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginBottom: 5,
+                  maxWidth: "100%",
+                  alignItems: "flex-start",
+                }}
+              >
+                <Text style={{ width: 60, fontWeight: "bold" }}>Tanggal</Text>
+                <Text style={{ width: 400 }}>: {data?.tanggal_mulai}</Text>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginBottom: 5,
+                  maxWidth: "100%",
+                  alignItems: "flex-start",
+                }}
+              >
+                <Text style={{ width: 60, fontWeight: "bold" }}>Alamat</Text>
+                <Text style={{ width: 400 }}>: {data?.alamat}</Text>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginBottom: 5,
+                  maxWidth: "100%",
+                  alignItems: "flex-start",
+                }}
+              >
+                <Text style={{ width: 60, fontWeight: "bold" }}>Tempat</Text>
+                <Text style={{ width: 400 }}>: {data?.lokasi}</Text>
               </View>
             </View>
+
             <Text style={{ textAlign: "justify", lineHeight: 1.3 }}>
               {"                      "}Demikian Surat Perintah Ini Dekeluarkan
               Agar Dapat Dilaksanakan Sebaik-baiknya dengan penuh rasa Tanggung
@@ -119,6 +142,7 @@ const SuratTugas = ({ data }) => {
           >
             <Text>Sukadiri, {data?.tanggal_persetujuan}</Text>
             <Text>Camat Sukadiri</Text>
+            <Text> </Text>
             <Text> </Text>
             <Text> </Text>
             <Text> </Text>

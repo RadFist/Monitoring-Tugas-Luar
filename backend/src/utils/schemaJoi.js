@@ -49,6 +49,8 @@ export const schemaPneguasan = Joi.object({
   dasar: Joi.string().required(),
   perihal: Joi.string().required(),
   deskripsi: Joi.string().required(),
+  alamat: Joi.string().required(),
+  kendaraan: Joi.string().required(),
   tanggalMulai: Joi.date().required(),
   tanggalSelesai: Joi.date().required(),
   daftarPegawai: Joi.array().required(),

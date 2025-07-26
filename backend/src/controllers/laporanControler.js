@@ -191,7 +191,7 @@ export const laporPdf = async (req, res) => {
   try {
     const rincianDana = await getDana(id);
     const tugas = await getTugasByid(
-      "judul_tugas,dasar,lokasi,tanggal_mulai",
+      "judul_tugas,dasar,alamat,lokasi,tanggal_mulai",
       id
     );
     const users = await getAllUsersBYIdTugas(id);

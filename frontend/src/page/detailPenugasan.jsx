@@ -265,12 +265,12 @@ const DetailPenugasan = () => {
           </p>
           <div>
             <p>
-              <strong>Alamat:</strong> {tugas.lokasi}
+              <strong>Alamat:</strong> {tugas.alamat}
             </p>
             <p>
-              <strong>Lokasi:</strong> Gedung DPR {/*refactor nanti  */}
+              <strong>Lokasi:</strong> {tugas.lokasi}
             </p>
-            <GoogleMaps locationParam={tugas.lokasi} />
+            <GoogleMaps locationParam={tugas.alamat} />
           </div>
           <hr />
           <div style={{ display: "flex", gap: "15px" }}>

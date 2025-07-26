@@ -22,7 +22,6 @@ import { customQuery } from "../model/model.js";
 
 export const inputPenugasan = async (req, res) => {
   const data = req.body; //ngambil data dari body request
-  console.log(data);
 
   const { value, error } = schemaPneguasan.validate(data); //validasi skema joi yang diambil dari import
   if (error) {
@@ -34,9 +33,11 @@ export const inputPenugasan = async (req, res) => {
   const {
     namaTugas,
     lokasi,
+    alamat,
     dasar,
     perihal,
     deskripsi,
+    kendaraan,
     tanggalMulai,
     tanggalSelesai,
     daftarPegawai,
@@ -48,8 +49,10 @@ export const inputPenugasan = async (req, res) => {
       namaTugas,
       dasar,
       perihal,
+      alamat,
       lokasi,
       deskripsi,
+      kendaraan,
       tanggalMulai,
       tanggalSelesai,
       daftarPegawai
@@ -213,6 +216,7 @@ export const detailTugas = async (req, res) => {
       status: result[0].status,
       status_persetujuan: result[0].status_approval,
       tanggal_persetujuan: waktuPersetujuan.tanggal,
+      alamat: result[0].alamat,
       lokasi: result[0].lokasi,
       tanggal_mulai: waktu.tanggal,
       jam: waktu.jamMenit,
