@@ -51,7 +51,7 @@ const LaporanPdf = ({
           <Text style={{ marginBottom: 5 }}>A. Pelaksanaan</Text>
           <View style={{ flexDirection: "row", marginBottom: 5 }}>
             <Text style={{ width: 80 }}>Hari, Tanggal</Text>
-            <Text>: {dataTugas?.tanggal_mulai}</Text>
+            <Text>: {formatTanggalBulan(dataTugas?.tanggal_mulai)}</Text>
           </View>
           <View style={{ flexDirection: "row", marginBottom: 5 }}>
             <Text style={{ width: 80 }}>Materi</Text>
