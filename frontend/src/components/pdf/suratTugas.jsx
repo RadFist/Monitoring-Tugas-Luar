@@ -154,7 +154,7 @@ const SuratTugas = ({ data }) => {
                   borderBottomColor: "black",
                   alignSelf: "auto", // supaya View selebar isi teks
                   paddingBottom: 2,
-                  marginBottom: "10px",
+                  marginBottom: "2px",
                 }}
               >
                 <Text style={{ fontWeight: "bold" }}>{camat}</Text>
@@ -181,6 +181,384 @@ const SuratTugas = ({ data }) => {
             <Text style={{ fontWeight: "bold", fontSize: 18 }}>
               SURAT PERJALANAN DINAS (SPD)
             </Text>
+          </View>
+
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: "black",
+              margin: 10,
+              fontSize: 10,
+            }}
+          >
+            {/* Baris 1 */}
+            <View
+              style={{
+                flexDirection: "row",
+                borderBottomWidth: 1,
+                borderColor: "black",
+              }}
+            >
+              <View
+                style={{
+                  width: "5%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>1.</Text>
+              </View>
+              <View
+                style={{
+                  width: "45%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>Pengguna Anggaran/Kuasa Pengguna Anggaran</Text>
+              </View>
+              <View style={{ width: "50%", padding: 4 }}>
+                <Text>CAMAT SUKADIRI</Text>
+              </View>
+            </View>
+
+            {/* Baris 2 */}
+            <View
+              style={{
+                flexDirection: "row",
+                borderBottomWidth: 1,
+                borderColor: "black",
+              }}
+            >
+              <View
+                style={{
+                  width: "5%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>2.</Text>
+              </View>
+              <View
+                style={{
+                  width: "45%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>Nama/NIP Pegawai yang melaksanakan perjalanan dinas</Text>
+              </View>
+              <View style={{ width: "50%", padding: 4 }}>
+                <Text>AHMAD JAJULIS, S.Pd., S.IP., MM</Text>
+                <Text>NIP: 19700715 199003 1 003</Text>
+              </View>
+            </View>
+
+            {/* Baris 3 */}
+            <View
+              style={{
+                flexDirection: "row",
+                borderBottomWidth: 1,
+                borderColor: "black",
+              }}
+            >
+              <View
+                style={{
+                  width: "5%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>3.</Text>
+              </View>
+              <View
+                style={{
+                  width: "45%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>a. Pangkat dan Golongan</Text>
+                <Text>b. Jabatan/Instansi</Text>
+              </View>
+              <View style={{ width: "50%", padding: 4 }}>
+                <Text>Pembina (IV/a)</Text>
+                <Text>Sekretaris Camat</Text>
+              </View>
+            </View>
+
+            {/* Baris 4 */}
+            <View
+              style={{
+                flexDirection: "row",
+                borderBottomWidth: 1,
+                borderColor: "black",
+              }}
+            >
+              <View
+                style={{
+                  width: "5%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>4.</Text>
+              </View>
+              <View
+                style={{
+                  width: "45%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>Maksud Perjalanan Dinas</Text>
+              </View>
+              <View style={{ width: "50%", padding: 4 }}>
+                <Text>
+                  Menghadiri undangan rapat koordinasi pelaksanaan program 100
+                  hari kerja bupati dan wakil bupati tangerang
+                </Text>
+              </View>
+            </View>
+
+            {/* Baris 5 */}
+            <View
+              style={{
+                flexDirection: "row",
+                borderBottomWidth: 1,
+                borderColor: "black",
+              }}
+            >
+              <View
+                style={{
+                  width: "5%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>5.</Text>
+              </View>
+              <View
+                style={{
+                  width: "45%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>Alat angkut yang dipergunakan</Text>
+              </View>
+              <View style={{ width: "50%", padding: 4 }}>
+                <Text>Kendaraan Roda 4</Text>
+              </View>
+            </View>
+
+            {/* Baris 6 */}
+            <View
+              style={{
+                flexDirection: "row",
+                borderBottomWidth: 1,
+                borderColor: "black",
+              }}
+            >
+              <View
+                style={{
+                  width: "5%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>6.</Text>
+              </View>
+              <View
+                style={{
+                  width: "45%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>a. Tempat berangkat</Text>
+                <Text>b. Tempat tujuan</Text>
+              </View>
+              <View style={{ width: "50%", padding: 4 }}>
+                <Text>Kecamatan Sukadiri</Text>
+                <Text>Gedung Smart Building</Text>
+              </View>
+            </View>
+
+            {/* Baris 7 */}
+            <View
+              style={{
+                flexDirection: "row",
+                borderBottomWidth: 1,
+                borderColor: "black",
+              }}
+            >
+              <View
+                style={{
+                  width: "5%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>7.</Text>
+              </View>
+              <View
+                style={{
+                  width: "45%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>a. Lamanya Perjalanan Dinas</Text>
+                <Text>b. Tanggal berangkat</Text>
+                <Text>c. Tanggal harus kembali/tiba di tempat baru</Text>
+              </View>
+              <View style={{ width: "50%", padding: 4 }}>
+                <Text>1 (satu) Hari</Text>
+                <Text>12 Maret 2025</Text>
+                <Text>12 Maret 2025</Text>
+              </View>
+            </View>
+
+            {/* Baris 8 (Pengikut) */}
+            <View
+              style={{
+                flexDirection: "row",
+                borderBottomWidth: 1,
+                borderColor: "black",
+              }}
+            >
+              <View
+                style={{
+                  width: "5%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>8.</Text>
+              </View>
+              <View
+                style={{
+                  width: "45%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>Pengikut </Text>
+              </View>
+              <View style={{ width: "50%", padding: 4 }}>
+                <Text>Nama</Text>
+                {[...Array(5)].map((_, i) => (
+                  <Text key={i}>
+                    {i + 1}.
+                    ....................................................
+                  </Text>
+                ))}
+              </View>
+            </View>
+
+            {/* Baris 9 */}
+            <View
+              style={{
+                flexDirection: "row",
+                borderBottomWidth: 1,
+                borderColor: "black",
+              }}
+            >
+              <View
+                style={{
+                  width: "5%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>9.</Text>
+              </View>
+              <View
+                style={{
+                  width: "45%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>Pembebanan Anggaran</Text>
+              </View>
+              <View style={{ width: "50%", padding: 4 }}>
+                <Text>a. SKPD: 3001.26</Text>
+                <Text>b. Akun: 5.1.02.04.01.0001</Text>
+              </View>
+            </View>
+
+            {/* Baris 10 */}
+            <View style={{ flexDirection: "row" }}>
+              <View
+                style={{
+                  width: "5%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>10.</Text>
+              </View>
+              <View
+                style={{
+                  width: "45%",
+                  borderRightWidth: 1,
+                  borderColor: "black",
+                  padding: 4,
+                }}
+              >
+                <Text>Keterangan lain-lain</Text>
+              </View>
+              <View style={{ width: "50%", padding: 4 }}>
+                <Text>-</Text>
+              </View>
+            </View>
+          </View>
+
+          <View
+            style={{
+              marginTop: 20,
+              display: "flex",
+              alignItems: "flex-end",
+              paddingRight: 10,
+            }}
+          >
+            <View
+              style={{
+                marginTop: 20,
+                display: "flex",
+                alignItems: "center",
+                textAlign: "center",
+              }}
+            >
+              <Text>Dikeluarkan di : Sukadiri</Text>
+              <Text>Tanggal : 12 Maret 2025</Text>
+              <Text>CAMAT SUKADIRI</Text>
+            </View>
+            <Text style={{ marginTop: 50, fontWeight: "bold" }}>
+              AHMAD HAPID, A.P., M.Si
+            </Text>
+            <Text>NIP. 19731219 199403 1 003</Text>
           </View>
         </View>
       </Page>
