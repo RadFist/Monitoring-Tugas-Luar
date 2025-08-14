@@ -7,7 +7,7 @@ export const getDataDashboard = async (req, res) => {
   try {
     const data = await getListTugasGrupTime();
     const countUser = await customQuery(
-      `SELECT COUNT(id_user) as user FROM tb_user WHERE level != "super admin"`
+      `SELECT COUNT(id_user) as user FROM tb_user WHERE level != "umpeg"`
     );
     const countTugas = await customQuery(
       `SELECT COUNT(id_tugas_luar) as tugas FROM tb_tugas_luar WHERE status_approval = "approve"`

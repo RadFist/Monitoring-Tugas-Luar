@@ -93,9 +93,11 @@ export const ArsipDokumen = () => {
       <div className="content-list-tugas">
         <div className="list-arsip">
           {daftarDokumen.length === 0 ? (
-            <p style={{ textAlign: "center" }} className="no-tugas-message">
-              Arsip Kosong
-            </p>
+            <div style={{ width: "100%" }}>
+              <p style={{ textAlign: "center" }} className="no-tugas-message">
+                Arsip Kosong
+              </p>
+            </div>
           ) : (
             daftarDokumen.map((item) => (
               <div className="arsip-item" key={item.id_tugas_luar}>

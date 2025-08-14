@@ -165,6 +165,9 @@ ORDER BY tanggal ASC
 LIMIT 4;`
     );
     const tanggalList = hasilTanggal.map((item) => item.tanggal);
+    if (tanggalList.length === 0) {
+      return []; // tidak ada data
+    }
     const placeholders = tanggalList.map(() => "?").join(", ");
 
     const [data] = await db.query(

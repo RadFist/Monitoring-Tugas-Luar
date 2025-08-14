@@ -10,6 +10,7 @@ import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { HeaderSecond } from "../layout/headerSecond";
 import { SuccessModal } from "../components/modal";
 import GoogleMaps from "../components/google";
+import { useNavigate, useParams } from "react-router-dom";
 
 const InputTugas = () => {
   const [formData, setFormData] = useState({});
@@ -22,6 +23,8 @@ const InputTugas = () => {
   const [map, setMap] = useState("");
   const [loading, setLoading] = useState(true);
   const [valueTime, setValueTime] = useState(null);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const initialFormState = {
     tugas: "",
@@ -39,7 +42,37 @@ const InputTugas = () => {
       try {
         const responseGetJabatan = (await plainApi.get("/Jabatan")).data;
         setJabatanOptions(responseGetJabatan.data);
+
+        //mode edit
+        if (id) {
+          const responses = (await api.get(`/tugas/edit/${id}`)).data.data;
+          const data = responses.data.data;
+
+          setFormData({
+            tugas: data.judul_tugas || "",
+            alamat: data.alamat || "",
+            lokasi: data.lokasi || "",
+            dasar: data.dasar || "",
+            perihal: data.perihal || "",
+            deskripsi: data.deskripsi || "",
+            tanggalMulai: data.tanggal_mulai || "",
+            tanggalSelesai: data.tanggal_selesai || "",
+            waktuMulai: data.jam || "",
+            kendaraan: data.kendaraan || "",
+          });
+          if (data.jam) {
+            const [hours, minutes] = data.jam.split(":");
+            const dateObj = new Date();
+            dateObj.setHours(parseInt(hours), parseInt(minutes), 0);
+            setValueTime(dateObj);
+          }
+          setPegawai(data.pegawai);
+        }
       } catch (error) {
+        if (error.response && error.response.status === 404) {
+          // kalau backend kirim 404
+          navigate(`/notFound`);
+        }
         console.error("Error fetching :", error.message);
       } finally {
         setLoading(false);
@@ -109,6 +142,7 @@ const InputTugas = () => {
       return;
     }
     setPegawai((prev) => [...prev, formData.pegawai]);
+    console.log(formData.pegawai);
   };
 
   const handlerDelete = (pegawai) => {

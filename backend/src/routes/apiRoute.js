@@ -16,6 +16,7 @@ import {
   approveTugas,
   getArsip,
   deleteTugas,
+  detailTugasEdit,
 } from "../controllers/tugasLuarController.js";
 import {
   deleteNotifIdUser,
@@ -42,7 +43,7 @@ import { getDataDashboard } from "../controllers/Dashboard.js";
 
 const router = express.Router();
 const authCamat = [authenticateToken, authRole("camat")];
-const authSuperAdmin = [authenticateToken, authRole("super admin")];
+const authSuperAdmin = [authenticateToken, authRole("umpeg")];
 
 router.get("/dashboard", getDataDashboard);
 
@@ -79,6 +80,7 @@ router.get("/allTugas", authenticateToken, listTugas);
 router.get("/tugas/approval", authCamat, listTugas);
 router.get("/user/tugas/:id", listTugasPegawai);
 router.get("/tugas/detail/:id", detailTugas);
+router.get("/tugas/edit/:id", detailTugasEdit);
 
 //post
 router.post("/PenugasanTugasLuar", inputPenugasan);

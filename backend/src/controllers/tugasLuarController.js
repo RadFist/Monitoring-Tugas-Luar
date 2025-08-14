@@ -213,6 +213,7 @@ export const detailTugas = async (req, res) => {
       dasar: result[0].dasar,
       perihal: result[0].perihal,
       deskripsi: result[0].deskripsi,
+      kendaraan: result[0].kendaraan,
       status: result[0].status,
       status_persetujuan: result[0].status_approval,
       tanggal_persetujuan: waktuPersetujuan.tanggal,
@@ -230,6 +231,51 @@ export const detailTugas = async (req, res) => {
         nama: tugas.nama,
         nip: tugas.nip,
         jabatan: tugas.jabatan,
+      });
+    });
+
+    res.status(200).json({ message: "Success fetching data", data: data });
+  } catch (error) {
+    console.error("Failed to fetch data detail tugas:", error);
+    res.status(500).json({
+      message: "An error occurred while fetching data detail tugas",
+    });
+  }
+};
+export const detailTugasEdit = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await getDetailTugas(id);
+
+    if (!result || result.length < 1) {
+      return res.status(404).json({ message: "Data not found" });
+    }
+
+    const waktu = parseDateTime(result[0].tanggal_mulai);
+    const waktuPersetujuan = parseDateTime(result[0].date_approval);
+    const data = {
+      id_tugas_luar: result[0].id_tugas_luar,
+      judul_tugas: result[0].judul_tugas,
+      dasar: result[0].dasar,
+      perihal: result[0].perihal,
+      deskripsi: result[0].deskripsi,
+      kendaraan: result[0].kendaraan,
+      status: result[0].status,
+      status_persetujuan: result[0].status_approval,
+      tanggal_persetujuan: waktuPersetujuan.tanggal,
+      alamat: result[0].alamat,
+      lokasi: result[0].lokasi,
+      tanggal_mulai: waktu.tanggal,
+      jam: waktu.jamMenit,
+      tanggal_selesai: formatDateIso(result[0].tanggal_selesai),
+      pegawai: [],
+    };
+
+    result.forEach((tugas) => {
+      data.pegawai.push({
+        id: tugas.id_user,
+        nama: tugas.nama,
+        nip: tugas.nip,
       });
     });
 

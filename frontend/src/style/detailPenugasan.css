@@ -35,6 +35,22 @@
   color: #073776;
 }
 
+.btn-edit {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 8px 14px;
+  background-color: inherit;
+  color: #1a73e8;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+
 .title-detail {
   font-size: 30px;
   font-weight: bold;

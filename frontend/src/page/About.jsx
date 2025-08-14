@@ -32,7 +32,7 @@ const About = () => {
 
         <ul className="about-features">
           <li>📌 Penjadwalan dan pencatatan tugas luar</li>
-          <li>🧾 Pengarsipan laporan kegiatan</li>
+          <li>🧾 Penyimpanan laporan kegiatan</li>
           <li>🔍 Monitoring status tugas secara real-time</li>
           <li>📥 Pembuatan laporan otomatis dalam bentuk PDF</li>
         </ul>

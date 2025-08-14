@@ -26,7 +26,7 @@ export const schemaAdd = Joi.object({
     .pattern(/^\d{8,20}$/)
     .required(),
   level: Joi.string()
-    .valid("admin", "super admin", "pegawai", "verifikator")
+    .valid("admin", "umpeg", "pegawai", "verifikator")
     .default("pegawai"),
   jabatan: Joi.string(),
 });
@@ -38,7 +38,7 @@ export const schemaEdit = Joi.object({
   nama: Joi.string().min(1).max(100),
   nip: Joi.string().pattern(/^\d{8,20}$/),
   level: Joi.string()
-    .valid("kasi", "super admin", "pegawai", "camat")
+    .valid("kasi", "umpeg", "pegawai", "camat")
     .default("pegawai"),
   Jabatan: Joi.string(),
 });

@@ -248,6 +248,14 @@ const DetailPenugasan = () => {
           <ChevronLeftIcon /> Kembali
         </button>
         <h2 className="title-detail">Detail Penugasan</h2>
+        {level === "umpeg" && (
+          <button
+            className="btn-edit"
+            onClick={() => navigate(`/Input-Tugas/Edit/${idDetail}`)}
+          >
+            edit
+          </button>
+        )}
       </div>
       <div className="card-detail">
         <div className="info-detail">
@@ -261,7 +269,7 @@ const DetailPenugasan = () => {
             <strong>Perihal:</strong> {tugas.perihal}
           </p>
           <p>
-            <strong>Kendaraan:</strong> Roda Empat Dinas
+            <strong>Kendaraan:</strong> {tugas.kendaraan}
           </p>
           <div>
             <p>

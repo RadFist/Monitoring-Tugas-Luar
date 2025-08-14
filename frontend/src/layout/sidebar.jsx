@@ -51,7 +51,7 @@ const Sidebar = ({ displaySidebar = false, handlerClickArrow, userLevel }) => {
           >
             <DashboardIcon /> <span>Dashboard</span>
           </div>
-          {userLevel == "super admin" && (
+          {userLevel == "umpeg" && (
             <>
               <div
                 className="menu-item"
@@ -110,20 +110,20 @@ const Sidebar = ({ displaySidebar = false, handlerClickArrow, userLevel }) => {
           <div
             className="menu-item"
             onClick={() => {
-              navigate("/about");
-              handlerClickArrow();
-            }}
-          >
-            <InfoIcon /> <span>About</span>
-          </div>
-          <div
-            className="menu-item"
-            onClick={() => {
               navigate("/profile");
               handlerClickArrow();
             }}
           >
             <PersonIcon /> <span>Profile</span>
+          </div>
+          <div
+            className="menu-item"
+            onClick={() => {
+              navigate("/about");
+              handlerClickArrow();
+            }}
+          >
+            <InfoIcon /> <span>About</span>
           </div>
           <div className="menu-item" onClick={handlerLogOut}>
             <LogoutIcon /> <span>Logout</span>

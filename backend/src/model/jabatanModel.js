@@ -11,7 +11,7 @@ export const getListJabatan = async () => {
 export const getListJabatanLimit = async () => {
   try {
     const [rows] = await db.query(
-      `SELECT * from tb_jabatan WHERE jabatan != "camat" AND jabatan != "super admin"`
+      `SELECT * from tb_jabatan WHERE jabatan != "camat" AND jabatan != "umpeg"`
     );
     return rows;
   } catch (error) {
