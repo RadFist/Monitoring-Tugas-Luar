@@ -17,6 +17,7 @@ import {
   getArsip,
   deleteTugas,
   detailTugasEdit,
+  editPenugasan,
 } from "../controllers/tugasLuarController.js";
 import {
   deleteNotifIdUser,
@@ -84,6 +85,8 @@ router.get("/tugas/edit/:id", detailTugasEdit);
 
 //post
 router.post("/PenugasanTugasLuar", inputPenugasan);
+//put
+router.put("/PenugasanTugasLuar", editPenugasan);
 
 //patch
 router.patch("/PenugasanTugasLuar/Approve", authCamat, approveTugas);

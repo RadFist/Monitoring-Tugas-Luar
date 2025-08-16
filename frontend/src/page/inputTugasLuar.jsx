@@ -45,7 +45,7 @@ const InputTugas = () => {
 
         //mode edit
         if (id) {
-          const responses = (await api.get(`/tugas/edit/${id}`)).data.data;
+          const responses = await api.get(`/tugas/edit/${id}`);
           const data = responses.data.data;
 
           setFormData({
@@ -58,6 +58,7 @@ const InputTugas = () => {
             tanggalMulai: data.tanggal_mulai || "",
             tanggalSelesai: data.tanggal_selesai || "",
             waktuMulai: data.jam || "",
+            tingkat_biaya: data.tingkat_biaya || "",
             kendaraan: data.kendaraan || "",
           });
           if (data.jam) {
@@ -164,27 +165,50 @@ const InputTugas = () => {
     );
     if (!yakin) return; // Jika user klik 'Batal', hentikan
 
-    try {
-      await api.post("/PenugasanTugasLuar", {
-        namaTugas: formData.tugas,
-        lokasi: formData.lokasi,
-        alamat: formData.alamat,
-        dasar: formData.dasar,
-        perihal: formData.perihal,
-        deskripsi: formData.deskripsi,
-        kendaraan: formData.kendaraan,
-        tanggalMulai: `${formData.tanggalMulai}T${formData.waktuMulai}:00`,
-        tanggalSelesai: formData.tanggalSelesai,
-        daftarPegawai: pegawai,
-      });
+    if (id) {
+      try {
+        await api.put("/PenugasanTugasLuar", {
+          namaTugas: formData.tugas,
+          lokasi: formData.lokasi,
+          alamat: formData.alamat,
+          dasar: formData.dasar,
+          perihal: formData.perihal,
+          deskripsi: formData.deskripsi,
+          kendaraan: formData.kendaraan,
+          tingkat_biaya: formData.tingkat_biaya,
+          tanggalMulai: `${formData.tanggalMulai}T${formData.waktuMulai}:00`,
+          tanggalSelesai: formData.tanggalSelesai,
+          daftarPegawai: pegawai,
+          tugas_id: id,
+        });
+        setModalActive(true);
+        navigate(`/Tugas-Luar/Detail-Penugasan/${id}`);
+      } catch (error) {}
+    } else {
+      try {
+        await api.post("/PenugasanTugasLuar", {
+          namaTugas: formData.tugas,
+          lokasi: formData.lokasi,
+          alamat: formData.alamat,
+          dasar: formData.dasar,
+          perihal: formData.perihal,
+          deskripsi: formData.deskripsi,
+          kendaraan: formData.kendaraan,
+          tingkat_biaya: formData.tingkat_biaya,
+          tanggalMulai: `${formData.tanggalMulai}T${formData.waktuMulai}:00`,
+          tanggalSelesai: formData.tanggalSelesai,
+          daftarPegawai: pegawai,
+        });
 
-      setPegawai([]);
-      setFormData(initialFormState);
-      setSelectedJabatan("");
-      setValueTime("");
-    } catch (error) {}
-
-    setModalActive(true);
+        setPegawai([]);
+        setFormData(initialFormState);
+        setSelectedJabatan("");
+        setValueTime("");
+        setModalActive(true);
+      } catch (error) {
+        alert("error saat melakukan post " + error);
+      }
+    }
   };
 
   const handlerCloseModal = () => {
@@ -328,6 +352,23 @@ const InputTugas = () => {
           </div>
 
           <label>
+            Tingkat Biaya
+            <select
+              className="select-pegawai"
+              name="tingkat_biaya"
+              value={formData.tingkat_biaya || ""}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="" disabled hidden>
+                Pilih tingkat biaya
+              </option>
+              <option value="Dalam Daerah">Dalam Daerah</option>
+              <option value="Luar Daerah">Luar Daerah</option>
+            </select>
+          </label>
+
+          <label>
             Kendaraan
             <select
               className="select-pegawai"
@@ -419,7 +460,7 @@ const InputTugas = () => {
           </label>
 
           <button type="submit" className="submit-btn">
-            Simpan Tugas
+            {id ? "Edit Tugas" : "Simpan Tugas"}
           </button>
         </form>
       </div>

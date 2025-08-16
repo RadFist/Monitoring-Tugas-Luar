@@ -2,6 +2,7 @@ import Kopsurat from "../../components/pdf/Kopsurat";
 import { Page, Text, View } from "@react-pdf/renderer";
 import styles from "../../style/pdf/Pdf";
 import { TableComponentST } from "./tablePdf";
+import { formatTanggalBulan, hitungLamaTugas } from "../../utils/formatedTime";
 
 const SuratTugas = ({ data }) => {
   const camat = "AHMAD HAPID, A.P,M.Si";
@@ -91,7 +92,9 @@ const SuratTugas = ({ data }) => {
                   }}
                 >
                   <Text style={{ width: 60, fontWeight: "bold" }}>Tanggal</Text>
-                  <Text style={{ width: 400 }}>: {data?.tanggal_mulai}</Text>
+                  <Text style={{ width: 400 }}>
+                    : {formatTanggalBulan(data?.tanggal_mulai)}
+                  </Text>
                 </View>
 
                 <View
@@ -141,7 +144,9 @@ const SuratTugas = ({ data }) => {
                 alignItems: "center",
               }}
             >
-              <Text>Sukadiri, {data?.tanggal_persetujuan}</Text>
+              <Text>
+                Sukadiri, {formatTanggalBulan(data?.tanggal_persetujuan, false)}
+              </Text>
               <Text>Camat Sukadiri</Text>
               <Text> </Text>
               <Text> </Text>
@@ -250,11 +255,10 @@ const SuratTugas = ({ data }) => {
                   padding: 4,
                 }}
               >
-                <Text>Nama/NIP Pegawai yang melaksanakan perjalanan dinas</Text>
+                <Text>Tingkat Biaya Perjalanan Dinas</Text>
               </View>
               <View style={{ width: "50%", padding: 4 }}>
-                <Text>AHMAD JAJULIS, S.Pd., S.IP., MM</Text>
-                <Text>NIP: 19700715 199003 1 003</Text>
+                <Text>{data?.tingkat_biaya}</Text>
               </View>
             </View>
 
@@ -284,12 +288,10 @@ const SuratTugas = ({ data }) => {
                   padding: 4,
                 }}
               >
-                <Text>a. Pangkat dan Golongan</Text>
-                <Text>b. Jabatan/Instansi</Text>
+                <Text>Maksud Perjalanan Dinas</Text>
               </View>
               <View style={{ width: "50%", padding: 4 }}>
-                <Text>Pembina (IV/a)</Text>
-                <Text>Sekretaris Camat</Text>
+                <Text>Menghadiri {data?.perihal}</Text>
               </View>
             </View>
 
@@ -319,13 +321,10 @@ const SuratTugas = ({ data }) => {
                   padding: 4,
                 }}
               >
-                <Text>Maksud Perjalanan Dinas</Text>
+                <Text>Alat angkut yang dipergunakan</Text>
               </View>
               <View style={{ width: "50%", padding: 4 }}>
-                <Text>
-                  Menghadiri undangan rapat koordinasi pelaksanaan program 100
-                  hari kerja bupati dan wakil bupati tangerang
-                </Text>
+                <Text>{data?.kendaraan}</Text>
               </View>
             </View>
 
@@ -355,10 +354,12 @@ const SuratTugas = ({ data }) => {
                   padding: 4,
                 }}
               >
-                <Text>Alat angkut yang dipergunakan</Text>
+                <Text>a. Tempat berangkat</Text>
+                <Text>b. Tempat tujuan</Text>
               </View>
               <View style={{ width: "50%", padding: 4 }}>
-                <Text>Kendaraan Roda 4</Text>
+                <Text>Kecamatan Sukadiri</Text>
+                <Text> {data?.lokasi}</Text>
               </View>
             </View>
 
@@ -388,16 +389,20 @@ const SuratTugas = ({ data }) => {
                   padding: 4,
                 }}
               >
-                <Text>a. Tempat berangkat</Text>
-                <Text>b. Tempat tujuan</Text>
+                <Text>a. Lamanya Perjalanan Dinas</Text>
+                <Text>b. Tanggal berangkat</Text>
+                <Text>c. Tanggal harus kembali/tiba di tempat baru</Text>
               </View>
               <View style={{ width: "50%", padding: 4 }}>
-                <Text>Kecamatan Sukadiri</Text>
-                <Text>Gedung Smart Building</Text>
+                <Text>
+                  {hitungLamaTugas(data?.tanggal_mulai, data?.tanggal_selesai)}
+                </Text>
+                <Text>{formatTanggalBulan(data?.tanggal_mulai)}</Text>
+                <Text>{formatTanggalBulan(data?.tanggal_selesai)}</Text>
               </View>
             </View>
 
-            {/* Baris 7 */}
+            {/* Baris 7 (Pengikut) */}
             <View
               style={{
                 flexDirection: "row",
@@ -423,25 +428,23 @@ const SuratTugas = ({ data }) => {
                   padding: 4,
                 }}
               >
-                <Text>a. Lamanya Perjalanan Dinas</Text>
-                <Text>b. Tanggal berangkat</Text>
-                <Text>c. Tanggal harus kembali/tiba di tempat baru</Text>
+                <Text>Pelaksana </Text>
               </View>
               <View style={{ width: "50%", padding: 4 }}>
-                <Text>1 (satu) Hari</Text>
-                <Text>12 Maret 2025</Text>
-                <Text>12 Maret 2025</Text>
+                <Text>Nama</Text>
+                {data?.pegawai.map((value, i) => (
+                  <>
+                    <Text key={i}>
+                      {i + 1}.{value.nama}
+                      {"  "} Nip.{value.nip}
+                    </Text>
+                  </>
+                ))}
               </View>
             </View>
 
-            {/* Baris 8 (Pengikut) */}
-            <View
-              style={{
-                flexDirection: "row",
-                borderBottomWidth: 1,
-                borderColor: "black",
-              }}
-            >
+            {/* Baris 8*/}
+            <View style={{ flexDirection: "row" }}>
               <View
                 style={{
                   width: "5%",
@@ -460,77 +463,10 @@ const SuratTugas = ({ data }) => {
                   padding: 4,
                 }}
               >
-                <Text>Pengikut </Text>
-              </View>
-              <View style={{ width: "50%", padding: 4 }}>
-                <Text>Nama</Text>
-                {[...Array(5)].map((_, i) => (
-                  <Text key={i}>
-                    {i + 1}.
-                    ....................................................
-                  </Text>
-                ))}
-              </View>
-            </View>
-
-            {/* Baris 9 */}
-            <View
-              style={{
-                flexDirection: "row",
-                borderBottomWidth: 1,
-                borderColor: "black",
-              }}
-            >
-              <View
-                style={{
-                  width: "5%",
-                  borderRightWidth: 1,
-                  borderColor: "black",
-                  padding: 4,
-                }}
-              >
-                <Text>9.</Text>
-              </View>
-              <View
-                style={{
-                  width: "45%",
-                  borderRightWidth: 1,
-                  borderColor: "black",
-                  padding: 4,
-                }}
-              >
-                <Text>Pembebanan Anggaran</Text>
-              </View>
-              <View style={{ width: "50%", padding: 4 }}>
-                <Text>a. SKPD: 3001.26</Text>
-                <Text>b. Akun: 5.1.02.04.01.0001</Text>
-              </View>
-            </View>
-
-            {/* Baris 10 */}
-            <View style={{ flexDirection: "row" }}>
-              <View
-                style={{
-                  width: "5%",
-                  borderRightWidth: 1,
-                  borderColor: "black",
-                  padding: 4,
-                }}
-              >
-                <Text>10.</Text>
-              </View>
-              <View
-                style={{
-                  width: "45%",
-                  borderRightWidth: 1,
-                  borderColor: "black",
-                  padding: 4,
-                }}
-              >
                 <Text>Keterangan lain-lain</Text>
               </View>
               <View style={{ width: "50%", padding: 4 }}>
-                <Text>-</Text>
+                <Text>{data?.deskripsi}</Text>
               </View>
             </View>
           </View>
@@ -552,7 +488,9 @@ const SuratTugas = ({ data }) => {
               }}
             >
               <Text>Dikeluarkan di : Sukadiri</Text>
-              <Text>Tanggal : 12 Maret 2025</Text>
+              <Text>
+                Tanggal : {formatTanggalBulan(data?.tanggal_persetujuan, false)}
+              </Text>
               <Text>CAMAT SUKADIRI</Text>
             </View>
             <Text style={{ marginTop: 50, fontWeight: "bold" }}>

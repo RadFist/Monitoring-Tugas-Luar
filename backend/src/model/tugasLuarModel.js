@@ -9,6 +9,7 @@ export const postTugas = async (
   alamat,
   lokasi,
   deskripsi,
+  tingkat_biaya,
   kendaraan,
   mulai,
   selesai,
@@ -17,8 +18,8 @@ export const postTugas = async (
   try {
     // Simpan data utama ke tabel tugas_luar
     await db.query(
-      `INSERT INTO tb_tugas_luar (id_tugas_luar, judul_tugas, dasar, perihal, deskripsi, alamat, lokasi, kendaraan, status, tanggal_mulai, tanggal_selesai)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO tb_tugas_luar (id_tugas_luar, judul_tugas, dasar, perihal, deskripsi, alamat, lokasi, tingkat_biaya, kendaraan, status, tanggal_mulai, tanggal_selesai)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         tugas,
@@ -27,6 +28,7 @@ export const postTugas = async (
         deskripsi,
         alamat,
         lokasi,
+        tingkat_biaya,
         kendaraan,
         "belum mulai",
         mulai,
@@ -35,6 +37,55 @@ export const postTugas = async (
     );
 
     // Simpan banyak pegawai ke tabel relasi tugas_pegawai
+    for (let pegawai of daftar) {
+      await db.query(
+        `INSERT INTO tb_pivot_tugas (id_tugas_luar, id_user) VALUES (?, ?)`,
+        [id, pegawai.id]
+      );
+    }
+
+    return { success: true, message: "Tugas dan pegawai berhasil disimpan" };
+  } catch (error) {
+    console.error("Gagal menyimpan tugas:", error);
+    throw new Error("Terjadi kesalahan saat menyimpan data");
+  }
+};
+
+export const putTugas = async (
+  id,
+  tugas,
+  dasar,
+  perihal,
+  alamat,
+  lokasi,
+  deskripsi,
+  tingkat_biaya,
+  kendaraan,
+  mulai,
+  selesai,
+  daftar
+) => {
+  try {
+    await db.query(
+      `UPDATE tb_tugas_luar SET judul_tugas = ?,  deskripsi = ?,  dasar = ?,  perihal = ?, alamat = ?, lokasi = ?,  tingkat_biaya = ?, kendaraan = ?, tanggal_mulai = ?, tanggal_selesai = ?
+       WHERE id_tugas_luar = ?`,
+      [
+        tugas,
+        deskripsi,
+        dasar,
+        perihal,
+        alamat,
+        lokasi,
+        tingkat_biaya,
+        kendaraan,
+        mulai,
+        selesai,
+        id,
+      ]
+    );
+
+    await db.query(`DELETE FROM tb_pivot_tugas WHERE id_tugas_luar = ?`, [id]);
+
     for (let pegawai of daftar) {
       await db.query(
         `INSERT INTO tb_pivot_tugas (id_tugas_luar, id_user) VALUES (?, ?)`,

@@ -7,6 +7,7 @@ import {
   getListTugasWithUser,
   getListTugasGrupTime,
   deleteTugasLuar,
+  putTugas,
 } from "../model/tugasLuarModel.js";
 import { schemaPneguasan } from "../utils/schemaJoi.js";
 import {
@@ -37,6 +38,7 @@ export const inputPenugasan = async (req, res) => {
     dasar,
     perihal,
     deskripsi,
+    tingkat_biaya,
     kendaraan,
     tanggalMulai,
     tanggalSelesai,
@@ -52,6 +54,72 @@ export const inputPenugasan = async (req, res) => {
       alamat,
       lokasi,
       deskripsi,
+      tingkat_biaya,
+      kendaraan,
+      tanggalMulai,
+      tanggalSelesai,
+      daftarPegawai
+    ); // mengirim ke model untuk dikirim ke database
+
+    const camatId = (
+      await customQuery(
+        "SELECT id_user FROM `tb_user` WHERE level = ?",
+        "camat"
+      )
+    ).id_user;
+
+    const message = `tugas baru dengan nama ${data.namaTugas} telah dibuat, mohon untuk di cek`;
+    await saveNotif(camatId, message);
+    const socketId = connectedUsers.get(camatId);
+
+    if (socketId) {
+      io.to(socketId).emit("notification", {
+        message: message,
+      });
+    }
+
+    res.status(200).json({ response: "Employee assignment successful" }); // mengirim response ke front
+  } catch (error) {
+    console.error("Failed to save assignment:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while saving the assignment" }); // response internal server bermasalah
+  }
+};
+
+export const editPenugasan = async (req, res) => {
+  const data = req.body; //ngambil data dari body request
+
+  const { value, error } = schemaPneguasan.validate(data); //validasi skema joi yang diambil dari import
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message }); // return status 404 jika tidak ada di schema
+  }
+
+  const {
+    namaTugas,
+    lokasi,
+    alamat,
+    dasar,
+    perihal,
+    deskripsi,
+    tingkat_biaya,
+    kendaraan,
+    tanggalMulai,
+    tanggalSelesai,
+    daftarPegawai,
+    tugas_id,
+  } = value; // pengambilan value dari masing-masing key
+
+  try {
+    await putTugas(
+      tugas_id,
+      namaTugas,
+      dasar,
+      perihal,
+      alamat,
+      lokasi,
+      deskripsi,
+      tingkat_biaya,
       kendaraan,
       tanggalMulai,
       tanggalSelesai,
@@ -213,6 +281,7 @@ export const detailTugas = async (req, res) => {
       dasar: result[0].dasar,
       perihal: result[0].perihal,
       deskripsi: result[0].deskripsi,
+      tingkat_biaya: result[0].tingkat_biaya,
       kendaraan: result[0].kendaraan,
       status: result[0].status,
       status_persetujuan: result[0].status_approval,
@@ -259,6 +328,7 @@ export const detailTugasEdit = async (req, res) => {
       dasar: result[0].dasar,
       perihal: result[0].perihal,
       deskripsi: result[0].deskripsi,
+      tingkat_biaya: result[0].tingkat_biaya,
       kendaraan: result[0].kendaraan,
       status: result[0].status,
       status_persetujuan: result[0].status_approval,

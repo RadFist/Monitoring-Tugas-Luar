@@ -12,7 +12,7 @@ import { jwtDecode } from "jwt-decode";
 import { SuccessModal, ImageModal } from "../components/modal";
 import axios from "axios";
 import socket from "../services/socket";
-import { formatDateOnly } from "../utils/formatedTime";
+import { formatDateOnly, hitungLamaTugas } from "../utils/formatedTime";
 import GoogleMaps from "../components/google";
 
 const DetailPenugasan = () => {
@@ -253,7 +253,7 @@ const DetailPenugasan = () => {
             className="btn-edit"
             onClick={() => navigate(`/Input-Tugas/Edit/${idDetail}`)}
           >
-            edit
+            Edit
           </button>
         )}
       </div>
@@ -430,14 +430,6 @@ const DetailPenugasan = () => {
       </div>
     </div>
   );
-};
-
-const hitungLamaTugas = (mulai, selesai) => {
-  const start = new Date(mulai);
-  const end = new Date(selesai);
-  const diffTime = end - start;
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
-  return `${diffDays} hari`;
 };
 
 export default DetailPenugasan;

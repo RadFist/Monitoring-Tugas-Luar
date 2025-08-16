@@ -5,7 +5,7 @@ export const formatDateOnly = (d) => {
   return `${year}-${month}-${day}`;
 };
 
-export const formatTanggalBulan = (tanggal) => {
+export const formatTanggalBulan = (tanggal, dash = true) => {
   if (!tanggal) return "tanggal kosong";
 
   const bulanIndo = [
@@ -24,7 +24,11 @@ export const formatTanggalBulan = (tanggal) => {
   ];
 
   const [tahun, bulan, hari] = tanggal.split("-");
-  return `${hari}-${bulanIndo[parseInt(bulan) - 1]}-${tahun}`;
+  if (dash) {
+    return `${hari}-${bulanIndo[parseInt(bulan) - 1]}-${tahun}`;
+  } else {
+    return `${hari} ${bulanIndo[parseInt(bulan) - 1]} ${tahun}`;
+  }
 };
 
 export const formatTanggalIndo = (tanggal) => {
@@ -49,4 +53,12 @@ export const formatTanggalIndo = (tanggal) => {
   const tahun = dateObj.getFullYear();
 
   return `${tanggalNum} ${bulan} ${tahun}`;
+};
+
+export const hitungLamaTugas = (mulai, selesai) => {
+  const start = new Date(mulai);
+  const end = new Date(selesai);
+  const diffTime = end - start;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+  return `${diffDays} hari`;
 };
