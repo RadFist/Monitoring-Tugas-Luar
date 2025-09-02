@@ -69,11 +69,13 @@ export const ManagJabat = () => {
 
   const rows = useMemo(
     () =>
-      jabatanData.data.map((row, index) => ({
-        ...row,
-        id: row.id_jabatan,
-        number: index + 1,
-      })),
+      jabatanData.data
+        .filter((item) => item.jabatan.toLowerCase() !== "super admin")
+        .map((row, index) => ({
+          ...row,
+          id: row.id_jabatan,
+          number: index + 1,
+        })),
     [jabatanData]
   );
 

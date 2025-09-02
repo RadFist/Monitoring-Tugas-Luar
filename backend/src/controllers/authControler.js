@@ -144,6 +144,10 @@ export const refereshTokenAuth = (req, res) => {
   });
 };
 
+export const changePassword = () => {
+  return res.status(200).json({ message: "okeeh" });
+};
+
 export const logout = (req, res) => {
   res.clearCookie("refreshToken", {
     httpOnly: true,

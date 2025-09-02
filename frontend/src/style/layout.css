@@ -261,8 +261,50 @@ body{
     align-items: stretch;
   }
 
+  .header-title{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px !important; /* kecilkan jadi ~16px */
+    font-weight: 600; /* kalau mau tetap tegas */
+  }
+
   .header-second-actions > * {
     width: 100%;
+  }
+
+  .greating{
+    display: none;
+  }
+
+  .icon-btn {
+  width: 35px ;
+  height: 35px;
+}
+  .notif-icon{
+     font-size: 20px !important;
+  }
+
+  .icon-badge {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 15px;
+  height: 15px;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+  .avatar-icon{
+     width: 25px !important;
+     height: 25px !important;
+    font-size: 15px !important;
   }
 
   .search-archive {

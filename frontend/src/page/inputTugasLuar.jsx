@@ -202,7 +202,7 @@ const InputTugas = () => {
 
         setPegawai([]);
         setFormData(initialFormState);
-        setSelectedJabatan("");
+        // setSelectedJabatan("");
         setValueTime("");
         setModalActive(true);
       } catch (error) {
@@ -285,7 +285,7 @@ const InputTugas = () => {
           </label>
 
           <div>
-            <div style={{ display: "flex", gap: "10px", width: "100%" }}>
+            <div className="duoble-input">
               <label style={{ flex: 1 }}>
                 Alamat
                 <input
@@ -398,11 +398,15 @@ const InputTugas = () => {
                   className="select-pegawai"
                 >
                   <option value="">-- Pilih Jabtaan --</option>
-                  {jabatanOptions.map((item) => (
-                    <option key={item.id_jabatan} value={item.id_jabatan}>
-                      {item.jabatan}
-                    </option>
-                  ))}
+                  {jabatanOptions
+                    .filter(
+                      (item) => item.jabatan.toLowerCase() !== "super admin"
+                    )
+                    .map((item) => (
+                      <option key={item.id_jabatan} value={item.id_jabatan}>
+                        {item.jabatan}
+                      </option>
+                    ))}
                 </select>
               </div>
               {selectedJabatan && (

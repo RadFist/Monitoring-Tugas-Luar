@@ -77,8 +77,11 @@ background: linear-gradient(90deg, #fbc02d, #f9e104, #fdd835);
 /* Jadwal Section */
 .schedule-section {
   background-color: #ffffff;
-  padding: 20px;
-  margin-bottom: 20px;
+  width: 98%;
+  /* padding: 20px; */
+  padding: 30px 10px;
+  /* margin-bottom: 20px; */
+  margin: 25px auto 10px auto;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }

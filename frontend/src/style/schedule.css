@@ -57,6 +57,11 @@
     cursor: pointer;
 }
 
+.btn-schedule:hover{
+    background-color: #5f5fee;
+    color: aliceblue;
+}
+
 .button-wrapper {
     margin-top: auto; /* Dorong button ke bawah */
   }

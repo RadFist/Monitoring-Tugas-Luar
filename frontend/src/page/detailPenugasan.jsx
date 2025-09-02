@@ -244,11 +244,11 @@ const DetailPenugasan = () => {
         url={urlModal}
       />
       <div className="header-detail">
-        <button className="btn-kembali" onClick={() => navigate(-1)}>
+        <button className="btn-kembali" onClick={() => navigate("/Tugas-Luar")}>
           <ChevronLeftIcon /> Kembali
         </button>
         <h2 className="title-detail">Detail Penugasan</h2>
-        {level === "umpeg" && (
+        {level === "umpeg" && imageUrl.length < 1 && (
           <button
             className="btn-edit"
             onClick={() => navigate(`/Input-Tugas/Edit/${idDetail}`)}
@@ -294,7 +294,7 @@ const DetailPenugasan = () => {
             <strong>Tanggal Selesai:</strong> {tugas.tanggal_selesai}
           </p>
           <hr />
-          <div style={{ display: "flex", gap: "15px" }}>
+          <div className="status-warp">
             <p>
               <strong>Status:</strong>{" "}
               <span

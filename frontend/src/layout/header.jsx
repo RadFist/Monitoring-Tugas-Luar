@@ -93,7 +93,11 @@ const Header = ({
               }}
             />
           </Typography>
-          <Typography variant="body2" color="textSecondary">
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            className="greating"
+          >
             {getGreeting()} 👋
           </Typography>
         </div>
@@ -110,7 +114,10 @@ const Header = ({
               }}
               aria-label="notifications"
             >
-              <NotificationsNoneIcon sx={{ fontSize: 28 }} />
+              <NotificationsNoneIcon
+                sx={{ fontSize: 28 }}
+                className="notif-icon"
+              />
               {notifManny > 0 && (
                 <span className="icon-badge">{notifManny}</span>
               )}
@@ -129,6 +136,7 @@ const Header = ({
             onClick={() => {
               setModalActive("active");
             }}
+            className="avatar-icon"
           >
             {username[0]}
           </Avatar>

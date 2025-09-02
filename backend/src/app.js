@@ -13,7 +13,7 @@ const app = express();
 //declaration
 const PORT = process.env.PORT || 5000;
 const DOMAIN = process.env.DOMAIN || "localhost";
-console.log(DOMAIN);
+// console.log(DOMAIN);
 
 const allowedOrigins = [
   "http://localhost:5050",

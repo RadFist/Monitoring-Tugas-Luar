@@ -79,6 +79,11 @@
   margin-top: 30px;
 }
 
+.status-warp{
+  display: flex;
+  gap: 15px;
+}
+
 .pegawai-list-detail h3 {
   margin-bottom: 15px;
   font-size: 20px;
@@ -279,4 +284,15 @@ position: absolute;
   .pegawai-item-detail {
     padding: 10px 15px;
   }
+}
+
+
+@media (max-width: 480px) {
+  .status-warp{
+    flex-direction: column;
+  }
+
+  .btn-kembali {
+  padding: 8px 2px;
+}
 }

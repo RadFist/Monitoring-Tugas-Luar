@@ -105,7 +105,9 @@ const LaporanPdf = ({
           </View>
 
           <View>
-            <Text style={{ marginBottom: 10 }}>Rincian Dana</Text>
+            {dataRincianDana.lenght > 0 && (
+              <Text style={{ marginBottom: 10 }}>Rincian Dana</Text>
+            )}
             <View style={{ marginLeft: 20 }}>
               {dataRincianDana.map((value, index) => {
                 total = total + value.jumlah;
@@ -133,7 +135,7 @@ const LaporanPdf = ({
                   </View>
                 );
               })}
-              <Text>Total : Rp {total}</Text>
+              {dataRincianDana.lenght > 0 && <Text>Total : Rp {total}</Text>}
             </View>
           </View>
         </View>

@@ -68,6 +68,8 @@ export const inputPenugasan = async (req, res) => {
       )
     ).id_user;
 
+    // console.log(connectedUsers);
+
     const message = `tugas baru dengan nama ${data.namaTugas} telah dibuat, mohon untuk di cek`;
     await saveNotif(camatId, message);
     const socketId = connectedUsers.get(camatId);
@@ -126,22 +128,22 @@ export const editPenugasan = async (req, res) => {
       daftarPegawai
     ); // mengirim ke model untuk dikirim ke database
 
-    const camatId = (
-      await customQuery(
-        "SELECT id_user FROM `tb_user` WHERE level = ?",
-        "camat"
-      )
-    ).id_user;
+    // const camatId = (
+    //   await customQuery(
+    //     "SELECT id_user FROM `tb_user` WHERE level = ?",
+    //     "camat"
+    //   )
+    // ).id_user;
 
-    const message = `tugas baru dengan nama ${data.namaTugas} telah dibuat, mohon untuk di cek`;
-    await saveNotif(camatId, message);
-    const socketId = connectedUsers.get(camatId);
+    // const message = `tugas baru dengan nama ${data.namaTugas} telah dibuat, mohon untuk di cek`;
+    // await saveNotif(camatId, message);
+    // const socketId = connectedUsers.get(camatId);
 
-    if (socketId) {
-      io.to(socketId).emit("notification", {
-        message: message,
-      });
-    }
+    // if (socketId) {
+    //   io.to(socketId).emit("notification", {
+    //     message: message,
+    //   });
+    // }
 
     res.status(200).json({ response: "Employee assignment successful" }); // mengirim response ke front
   } catch (error) {
