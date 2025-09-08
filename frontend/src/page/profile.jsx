@@ -2,37 +2,54 @@ import "../style/profile.css";
 import { useState } from "react";
 import { getToken } from "../utils/tokenManpulation";
 import { jwtDecode } from "jwt-decode";
+import api from "../services/api";
 
 const Profile = () => {
   const token = getToken();
   const payload = token ? jwtDecode(token) : "";
 
-  const user = {
-    nama: "Budiono Siregar",
-    email: "KapalLawd@gmail.com",
-    nip: "23434893480939",
-    jabatan: "Subbag Umum dan Kepegawaian",
-    level: "Pegawai",
-    username: "user1",
-  };
-
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = async (e) => {
     e.preventDefault();
-    if (!newPassword || !confirmPassword) {
-      setMessage("Password tidak boleh kosong.");
+
+    if (newPassword.length < 8) {
+      setMessage("Password minimal 8 karakter.");
       return;
     }
+
     if (newPassword !== confirmPassword) {
       setMessage("Password dan konfirmasi tidak cocok.");
       return;
     }
 
+    const confirmChange = window.confirm(
+      "Apakah Anda yakin ingin mengubah password?"
+    );
+    if (!confirmChange) {
+      return;
+    }
     // Simulasi kirim ke server
-    console.log("Password baru:", newPassword);
+    try {
+      const res = await api.patch(`/user/changePassword/${payload.id_user}`, {
+        Password: newPassword,
+      });
+
+      alert(res.data.message);
+    } catch (error) {
+      if (error.response) {
+        // kalau error dari backend (misalnya 404, 500)
+        alert(error.response.data.message);
+      } else {
+        // kalau error dari jaringan/axios
+        console.log(error);
+
+        alert("Something went wrong");
+      }
+    }
+
     setMessage("Password berhasil diperbarui.");
     setNewPassword("");
     setConfirmPassword("");
@@ -88,9 +105,15 @@ const Profile = () => {
             placeholder="Konfirmasi password baru"
           />
         </div>
-        <button type="submit" className="btn-simpan-password">
+
+        <button
+          type="submit"
+          className={`btn-simpan-password`}
+          disabled={newPassword === "" || confirmPassword === ""}
+        >
           Simpan Password
         </button>
+
         {message && <p className="message">{message}</p>}
       </form>
     </div>

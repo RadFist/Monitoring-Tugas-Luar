@@ -126,7 +126,7 @@ export const editPenugasan = async (req, res) => {
       tanggalMulai,
       tanggalSelesai,
       daftarPegawai
-    ); // mengirim ke model untuk dikirim ke database
+    );
 
     // const camatId = (
     //   await customQuery(
@@ -145,7 +145,7 @@ export const editPenugasan = async (req, res) => {
     //   });
     // }
 
-    res.status(200).json({ response: "Employee assignment successful" }); // mengirim response ke front
+    res.status(200).json({ message: "Edited assignment successful" }); // mengirim response ke front
   } catch (error) {
     console.error("Failed to save assignment:", error);
     res

@@ -76,3 +76,8 @@
   font-size: 14px;
   color: #d93025; /* merah */
 }
+
+.btn-simpan-password:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

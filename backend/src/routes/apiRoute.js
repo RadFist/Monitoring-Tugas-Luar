@@ -56,6 +56,11 @@ router.get("/user/:id", authenticateToken, userControler.userId);
 router.post("/user/add", authSuperAdmin, userControler.addUser);
 //patch
 router.patch("/user/edit/:id", authSuperAdmin, userControler.userEdit);
+router.patch(
+  "/user/changePassword/:id",
+  authenticateToken,
+  userControler.changePassword
+);
 //delete
 router.delete("/user/delete/:id", authSuperAdmin, userControler.userDelete);
 
@@ -64,7 +69,6 @@ router.delete("/user/delete/:id", authSuperAdmin, userControler.userDelete);
 router.get("/Jabatan/usermanagement", authSuperAdmin, allJabatan);
 router.get("/Jabatan", getJabatanLimited);
 //post
-
 router.post("/jabatan", authenticateToken, addJabatan);
 router.post(
   "/users/jabatan",
@@ -85,6 +89,7 @@ router.get("/tugas/edit/:id", detailTugasEdit);
 
 //post
 router.post("/PenugasanTugasLuar", inputPenugasan);
+
 //put
 router.put("/PenugasanTugasLuar", editPenugasan);
 

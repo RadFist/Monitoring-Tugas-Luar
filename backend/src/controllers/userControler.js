@@ -203,3 +203,28 @@ export const userWhereJabatan = async (req, res) => {
       .json({ message: " Internal Server Error, please try again later." });
   }
 };
+
+export const changePassword = async (req, res) => {
+  const idUser = req.params.id;
+
+  const { Password } = req.body;
+
+  const hassing = await bcrypt.hash(Password, 6);
+
+  const queryField = "password = ?,  updated_at = ?";
+
+  const updateTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
+
+  const values = [hassing, updateTime, idUser];
+
+  try {
+    await editUser(queryField, values);
+    res.status(200).json({ message: "Password has been changed" });
+  } catch (error) {
+    console.log(error.message);
+    if (error.message === "user not found") {
+      return res.status(404).json({ message: "user not found" });
+    }
+    return res.status(500).json({ message: "Internal Server Error." });
+  }
+};

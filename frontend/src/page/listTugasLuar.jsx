@@ -40,7 +40,7 @@ const ListTugas = () => {
 
   const roleRoutes = {
     camat: "/tugas/approval",
-    user: "user/tugas/" + payload.id_user,
+    pegawai: "user/tugas/" + payload.id_user,
   };
 
   let routeList = roleRoutes[level] || "/allTugas";

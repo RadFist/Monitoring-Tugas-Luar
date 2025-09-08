@@ -52,9 +52,6 @@ export const InformationModal = ({
         </button>
         <h2>{payload.username}</h2>
         <p>{payload.nama}</p>
-        <p>{payload.email}</p>
-        <p>nip. {payload.nip}</p>
-        <p>{payload.jabatan}</p>
         <p>level : {payload.level}</p>
         <button className="btn-proifle" onClick={onClick}>
           profile
@@ -87,7 +84,7 @@ export const ImageModal = ({ displayModal, onClose, url }) => {
         <button className="close-btn" onClick={onClose}>
           <CloseIcon />
         </button>
-        <img src={url} alt="gambar dokumentasi" />
+        {url && <img src={url} alt="gambar dokumentasi" />}
       </div>
     </div>
   );
