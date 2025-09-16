@@ -148,7 +148,7 @@ const ListTugas = () => {
 
   return (
     <div>
-      <HeaderSecond text="List Tugas">
+      <HeaderSecond text={level == "pegawai" ? "Tugas Anda" : "List Tugas"}>
         <FormControl size="small" style={{ marginRight: "20px" }}>
           <p className="filterLabel">Tanggal:</p>
           <TextField
@@ -213,7 +213,9 @@ const ListTugas = () => {
             />
             {daftarTugas.length === 0 ? (
               <p style={{ textAlign: "center" }} className="no-tugas-message">
-                Tidak ada tugas baru-baru ini
+                {level == "pegawai"
+                  ? "Anda belum ditugaskan"
+                  : "Tidak ada tugas baru-baru ini"}
               </p>
             ) : (
               daftarTugas.map((item) => (

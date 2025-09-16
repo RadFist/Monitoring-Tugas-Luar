@@ -92,14 +92,14 @@ const Home = () => {
                 />
               ))}
               <div className="btn-semua-tugas">
-                <button
+                {/* <button
                   className="btn-icon-semua-tugas"
                   onClick={() => {
                     navigate(`/Tugas-Luar`);
                   }}
                 >
                   <ChevronRightIcon fontSize="large" />
-                </button>
+                </button> */}
               </div>
             </div>
           ) : (

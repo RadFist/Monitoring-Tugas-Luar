@@ -48,7 +48,9 @@ const SuratTugas = ({ data }) => {
               </View>
               <View style={{ flexDirection: "row", marginBottom: 30 }}>
                 <Text style={{ width: 80 }}>Perihal</Text>
-                <Text>: {data?.perihal}</Text>
+                <Text style={{ flex: 1, flexWrap: "wrap" }}>
+                  : {data?.perihal}
+                </Text>
               </View>
               <View
                 style={{

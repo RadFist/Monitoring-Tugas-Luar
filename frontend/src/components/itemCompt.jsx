@@ -3,6 +3,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import EditIcon from "@mui/icons-material/Edit";
 
 import { useState } from "react";
+import { formatRupiah } from "../utils/formatedOther";
 
 export const Item = ({ item, onDelete }) => {
   return (
@@ -87,7 +88,7 @@ export const RincianDana = ({
   } else {
     component = (
       <div className="rincian-dana-wrap">
-        <p>{item.deskripsi}</p> : <p>{item.jumlah}</p>
+        <p>{item.deskripsi}</p> : <p>Rp.{formatRupiah(item.jumlah)}</p>
       </div>
     );
 

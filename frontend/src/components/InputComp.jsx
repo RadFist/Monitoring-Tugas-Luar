@@ -48,11 +48,13 @@ export function SelectedComp({
       >
         {/* refactor */}
         <option value="">-- Pilih Level --</option>
-        {optionValue.map((item) => (
-          <option key={item.id_jabatan} value={item.id_jabatan}>
-            {item.jabatan}
-          </option>
-        ))}
+        {optionValue
+          .filter((item) => item.jabatan.toLowerCase() !== "super admin")
+          .map((item) => (
+            <option key={item.id_jabatan} value={item.id_jabatan}>
+              {item.jabatan}
+            </option>
+          ))}
       </select>
     </>
   );

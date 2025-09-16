@@ -70,7 +70,7 @@ export const inputPenugasan = async (req, res) => {
 
     // console.log(connectedUsers);
 
-    const message = `tugas baru dengan nama ${data.namaTugas} telah dibuat, mohon untuk di cek`;
+    const message = `tugas baru, ${data.namaTugas} telah dibuat, mohon untuk di cek`;
     await saveNotif(camatId, message);
     const socketId = connectedUsers.get(camatId);
 

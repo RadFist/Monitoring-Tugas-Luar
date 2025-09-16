@@ -2,6 +2,7 @@ import Kopsurat from "../../components/pdf/Kopsurat";
 import { Page, Text, View, Image } from "@react-pdf/renderer";
 import styles from "../../style/pdf/Pdf";
 import { formatTanggalBulan } from "../../utils/formatedTime";
+import { formatRupiah } from "../../utils/formatedOther";
 
 const LaporanPdf = ({
   dataLaporan,
@@ -130,12 +131,14 @@ const LaporanPdf = ({
                         marginRight: 10,
                       }}
                     >
-                      <Text>: Rp.{value.jumlah} </Text>
+                      <Text>: Rp.{formatRupiah(value.jumlah)} </Text>
                     </View>
                   </View>
                 );
               })}
-              {dataRincianDana.lenght > 0 && <Text>Total : Rp {total}</Text>}
+              {dataRincianDana.length > 0 && (
+                <Text>Total : Rp {formatRupiah(total)}</Text>
+              )}
             </View>
           </View>
         </View>
