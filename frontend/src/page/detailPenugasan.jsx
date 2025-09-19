@@ -329,7 +329,12 @@ const DetailPenugasan = () => {
           {assigned &&
             tugas.status_persetujuan == "approve" &&
             tugas.status != "selesai" && (
-              <input type="file" accept="image/*" onChange={handleFileChange} />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                disabled={today >= tugas.tanggal_mulai ? false : true}
+              />
             )}
         </div>
         <div className="image-preview-container">

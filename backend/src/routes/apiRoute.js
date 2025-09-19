@@ -18,6 +18,7 @@ import {
   deleteTugas,
   detailTugasEdit,
   editPenugasan,
+  detailSuratTugas,
 } from "../controllers/tugasLuarController.js";
 import {
   deleteNotifIdUser,
@@ -85,6 +86,7 @@ router.get("/allTugas", authenticateToken, listTugas);
 router.get("/tugas/approval", authCamat, listTugas);
 router.get("/user/tugas/:id", listTugasPegawai);
 router.get("/tugas/detail/:id", detailTugas);
+router.get("/surat-tugas/detail/:id", detailSuratTugas);
 router.get("/tugas/edit/:id", detailTugasEdit);
 
 //post

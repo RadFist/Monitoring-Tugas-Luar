@@ -165,6 +165,10 @@ const InputTugas = () => {
     );
     if (!yakin) return; // Jika user klik 'Batal', hentikan
 
+    if (formData.lokasi.length > 45) {
+      return alert("lokasi melebihi 45 char");
+    }
+
     if (id) {
       try {
         await api.put("/PenugasanTugasLuar", {
@@ -229,7 +233,7 @@ const InputTugas = () => {
     );
   }
   return (
-    <div>
+    <div style={{ paddingBottom: "20px" }}>
       <HeaderSecond text="Penugasan Pegawai"></HeaderSecond>
       <SuccessModal
         displayModal={modalActive ? "active" : ""}

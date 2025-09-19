@@ -5,7 +5,8 @@ import { TableComponentST } from "./tablePdf";
 import { formatTanggalBulan, hitungLamaTugas } from "../../utils/formatedTime";
 
 const SuratTugas = ({ data }) => {
-  const camat = "AHMAD HAPID, A.P,M.Si";
+  const camat = data?.dataCamat.nama;
+  const nip = data?.dataCamat.nip;
   return (
     <>
       <Page size="A4" style={styles.page}>
@@ -36,7 +37,7 @@ const SuratTugas = ({ data }) => {
               </View>
               <View style={{ flexDirection: "row", marginBottom: 5 }}>
                 <Text style={{ width: 80 }}>Nip</Text>
-                <Text>: 197312191994031003</Text>
+                <Text>: {nip}</Text>
               </View>
               <View style={{ flexDirection: "row", marginBottom: 5 }}>
                 <Text style={{ width: 80 }}>Jabatan</Text>
@@ -44,7 +45,9 @@ const SuratTugas = ({ data }) => {
               </View>
               <View style={{ flexDirection: "row", marginBottom: 5 }}>
                 <Text style={{ width: 80 }}>Dasar</Text>
-                <Text>: {data?.dasar}</Text>
+                <Text style={{ flex: 1, flexWrap: "wrap" }}>
+                  : {data?.dasar}
+                </Text>
               </View>
               <View style={{ flexDirection: "row", marginBottom: 30 }}>
                 <Text style={{ width: 80 }}>Perihal</Text>
@@ -74,7 +77,9 @@ const SuratTugas = ({ data }) => {
                 }}
               >
                 <Text>untuk </Text>
-                <Text>: Menghadiri {data?.perihal} pada:</Text>
+                <Text style={{ flex: 1, flexWrap: "wrap" }}>
+                  : Menghadiri {data?.perihal} pada:
+                </Text>
               </View>
 
               <View
@@ -166,7 +171,7 @@ const SuratTugas = ({ data }) => {
               >
                 <Text style={{ fontWeight: "bold" }}>{camat}</Text>
               </View>
-              <Text>197312191994031003</Text>
+              <Text>{nip}</Text>
             </View>
           </View>
         </View>
@@ -498,8 +503,152 @@ const SuratTugas = ({ data }) => {
             <Text style={{ marginTop: 50, fontWeight: "bold" }}>
               AHMAD HAPID, A.P., M.Si
             </Text>
-            <Text>NIP. 19731219 199403 1 003</Text>
+            <Text>NIP. {nip}</Text>
           </View>
+        </View>
+      </Page>
+
+      <Page size="A4" style={styles.page}>
+        <Kopsurat />
+
+        <View
+          style={{
+            borderBottomWidth: 2,
+            borderBottomColor: "black",
+            alignSelf: "center",
+            paddingBottom: 2,
+            justifyContent: "center",
+            marginBottom: "10px",
+          }}
+        >
+          <Text style={{ fontWeight: "bold", fontSize: 14 }}>
+            SURAT PERJALANAN DINAS (SPD)
+          </Text>
+        </View>
+
+        {/* Tabel Keberangkatan & Kedatangan */}
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: "black",
+            fontSize: 9,
+            margin: 5,
+            marginBottom: 0,
+          }}
+        >
+          {/* I */}
+          <View
+            style={{
+              flexDirection: "row",
+              borderBottomWidth: 1,
+              borderColor: "black",
+              minHeight: 70,
+            }}
+          >
+            {/* Kolom kiri */}
+            <View
+              style={{
+                width: "50%",
+                borderRightWidth: 1,
+                borderColor: "black",
+                padding: 4,
+              }}
+            ></View>
+
+            {/* Kolom kanan */}
+            <View style={{ width: "50%", padding: 4, gap: "5px" }}>
+              <Text>Berangkat dari : Kecamaan Sukadiri</Text>
+              <View style={{ flexDirection: "row" }}>
+                <Text>Ke : </Text>
+                <Text style={{ flex: 1, flexWrap: "wrap" }}>
+                  {data?.lokasi}
+                </Text>
+              </View>
+              <Text>Pada tanggal : {data?.tanggal_mulai}</Text>
+            </View>
+          </View>
+
+          {/* II */}
+          <View
+            style={{
+              flexDirection: "row",
+              minHeight: 70,
+            }}
+          >
+            <View
+              style={{
+                width: "50%",
+                borderRightWidth: 1,
+                borderColor: "black",
+                padding: 4,
+              }}
+            >
+              <Text>II. Tiba di :</Text>
+              <Text style={{ marginTop: "10px" }}>Pada tanggal :</Text>
+              <Text style={{ marginTop: "10px" }}>Kepala :</Text>
+              <Text style={{ marginTop: "30px" }}>(...................)</Text>
+              <Text>NIP.</Text>
+            </View>
+
+            <View style={{ width: "50%", padding: 4 }}>
+              <Text>Berangkat dari :</Text>
+              <Text style={{ marginTop: "10px" }}>Ke :</Text>
+              <Text style={{ marginTop: "10px" }}>Pada tanggal :</Text>
+              <Text style={{ marginTop: "10px" }}>Kepala :</Text>
+              <Text style={{ marginTop: "20px" }}>(...................)</Text>
+              <Text>NIP.</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Catatan Lain-lain */}
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: "black",
+            borderTopWidth: 0,
+            fontSize: 9,
+            marginHorizontal: 5,
+            padding: 5,
+          }}
+        >
+          <Text>Catatan Lain-lain :</Text>
+          <Text style={{ minHeight: 30 }}></Text>
+        </View>
+
+        {/* Perhatian */}
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: "black",
+            borderTopWidth: 0,
+            fontSize: 9,
+            marginHorizontal: 5,
+            padding: 5,
+          }}
+        >
+          <Text>VIII. PERHATIAN :</Text>
+          <Text>
+            PPK yang menerbitkan SPD, pegawai yang melakukan perjalanan dinas,
+            para pejabat yang mengesahkan tanggal berangkat/tiba, serta
+            bendahara pengeluaran bertanggung jawab berdasarkan
+            peraturan-peraturan Keuangan Negara apabila negara menderita rugi
+            akibat kesalahan, kelalaian, dan kealpaannya.
+          </Text>
+        </View>
+
+        {/* Tanda tangan Camat */}
+        <View
+          style={{
+            marginTop: 20,
+            display: "flex",
+            alignItems: "flex-end",
+            paddingRight: 20,
+          }}
+        >
+          <Text>CAMAT SUKADIRI</Text>
+          <Text style={{ marginTop: 40, fontWeight: "bold" }}>{camat}</Text>
+          <Text>NIP. {nip}</Text>
         </View>
       </Page>
     </>

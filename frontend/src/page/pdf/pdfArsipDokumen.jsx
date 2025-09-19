@@ -6,7 +6,7 @@ import api from "../../services/api";
 import SuratTugas from "../../components/pdf/suratTugas";
 
 // Buat style untuk PDF
-export default function pdf() {
+export default function PdfArsipDokumen() {
   const { id } = useParams();
   const [dataRincianDana, SetDataRincianDana] = useState([]);
   const [dataUser, SetDataUser] = useState([]);
@@ -18,7 +18,7 @@ export default function pdf() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get(`/tugas/detail/${id}`);
+        const response = await api.get(`/surat-tugas/detail/${id}`);
         const tugasData = response.data.data;
         SetDataST(tugasData);
         const result = await api.get(`/laporan/generate/${id}`);

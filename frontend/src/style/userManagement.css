@@ -21,3 +21,10 @@
     visibility: visible;
     color: red;
 }
+
+  @media (max-width: 480px) {
+    .haeder-usermanajemen{
+        flex-direction: column;
+       gap: 10px;
+  }
+}

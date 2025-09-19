@@ -1,11 +1,13 @@
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { Button } from "@mui/material";
+import { Button, TextField, Box } from "@mui/material";
 import { Item, RincianDana } from "./itemCompt";
+import { useState } from "react";
 // import { useState } from "react";
 
 export const DataTable = ({ rows, columns, handlerClickAdd }) => {
   // const [selected, setSelected] = useState([]);
+  const [searchText, setSearchText] = useState("");
   const paginationModel = { page: 0, pageSize: 10 };
 
   // const handleSelectionModelChange = (newSelectionModel) => {
@@ -23,9 +25,26 @@ export const DataTable = ({ rows, columns, handlerClickAdd }) => {
         boxSizing: "border-box",
       }}
     >
-      <Button variant="contained" color="primary" onClick={handlerClickAdd}>
-        Tambah Data
-      </Button>
+      <Box
+        className="haeder-usermanajemen"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: "10px",
+        }}
+      >
+        <Button variant="contained" color="primary" onClick={handlerClickAdd}>
+          Tambah Data
+        </Button>
+
+        <TextField
+          size="small"
+          placeholder="Cari data...🔎"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+      </Box>
+
       <DataGrid
         // visibility
         columnVisibilityModel={{
@@ -36,11 +55,18 @@ export const DataTable = ({ rows, columns, handlerClickAdd }) => {
         disableRowSelectionOnClick
         rows={rows}
         columns={columns}
-        initialState={{ pagination: { paginationModel } }}
-        pageSizeOptions={[5, 10]}
+        initialState={{
+          pagination: { paginationModel },
+        }}
+        pageSizeOptions={[5, 10, 25, 50, 100]}
+        filterModel={{
+          items: [],
+          quickFilterValues: searchText ? [searchText] : [],
+        }}
         // checkboxSelection
         // onRowSelectionModelChange={handleSelectionModelChange}
         // selectionModel={selected}
+
         sx={{ border: 0 }}
       />
     </Paper>

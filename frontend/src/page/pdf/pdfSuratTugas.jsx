@@ -14,7 +14,7 @@ export const PdfSuratTUgas = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await api.get(`/tugas/detail/${id}`);
+      const response = await api.get(`/surat-tugas/detail/${id}`);
       const tugasData = response.data.data;
       setData(tugasData);
     };

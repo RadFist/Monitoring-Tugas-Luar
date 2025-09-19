@@ -45,7 +45,9 @@ const LaporanPdf = ({
           </View>
           <View style={{ flexDirection: "row", marginBottom: 5 }}>
             <Text style={{ width: 80 }}>Dasar</Text>
-            <Text>: {dataTugas?.dasar}</Text>
+            <Text style={{ flex: 1, flexWrap: "wrap" }}>
+              : {dataTugas?.dasar}
+            </Text>
           </View>
         </View>
         <View style={{ marginBottom: "15px" }}>
@@ -106,8 +108,8 @@ const LaporanPdf = ({
           </View>
 
           <View>
-            {dataRincianDana.lenght > 0 && (
-              <Text style={{ marginBottom: 10 }}>Rincian Dana</Text>
+            {dataRincianDana.length > 0 && (
+              <Text style={{ marginBottom: 10 }}>C.Rincian Dana</Text>
             )}
             <View style={{ marginLeft: 20 }}>
               {dataRincianDana.map((value, index) => {
