@@ -73,6 +73,12 @@ background: linear-gradient(90deg, #fbc02d, #f9e104, #fdd835);
     background-position: left;
 }
 
+.dataWrapCard .cardIndicator:nth-child(5) {
+ background: linear-gradient(90deg, #ff9800, #ffb74d, #ff9800);
+    background-size: 200% 200%;
+    background-position: left;
+}
+
 
 /* Jadwal Section */
 .schedule-section {

@@ -169,6 +169,10 @@ const InputTugas = () => {
       return alert("lokasi melebihi 45 char");
     }
 
+    if (formData.tugas.length > 45) {
+      return alert("judul melebihi 45 char");
+    }
+
     if (id) {
       try {
         await api.put("/PenugasanTugasLuar", {

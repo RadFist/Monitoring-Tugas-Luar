@@ -156,7 +156,7 @@ export const editPenugasan = async (req, res) => {
 
 export const listTugas = async (req, res) => {
   const dateFilter = req.query.date || "";
-  const statusApprovalFilter = req.query.status_approval || "";
+  const statusApprovalFilter = req.query.status_approval || "approve";
   const statusFilter = req.query.status || "";
 
   try {

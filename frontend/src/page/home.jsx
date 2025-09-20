@@ -9,8 +9,13 @@ import { HeaderSecond } from "../layout/headerSecond";
 import { useNavigate } from "react-router-dom";
 import { ListUserProductivity } from "../components/listManagement";
 import { loadingCompSpin as LoadingSpin } from "../components/LoadingComp";
+import { getToken } from "../utils/tokenManpulation";
+import { jwtDecode } from "jwt-decode";
 
 const Home = () => {
+  const token = getToken();
+  const payload = token ? jwtDecode(token) : "";
+  const level = payload.level;
   const [dataKegiatan, setDataKegiatan] = useState([]);
   const [dataTopPegawai, setDataTopPegawai] = useState([]);
   const [dataBarChart, setDataBarChart] = useState([]);
@@ -62,7 +67,7 @@ const Home = () => {
           />
         </Indicate>
 
-        <Indicate text="Total Pending" data={count.pending}>
+        <Indicate text="Tugas Proses" data={count.proses}>
           <img
             src="/svg/waiting-list-clock-svgrepo-com.svg"
             style={{ width: "90px" }}
@@ -75,6 +80,15 @@ const Home = () => {
             style={{ width: "90px" }}
           />
         </Indicate>
+
+        {level == "camat" && (
+          <Indicate text="Tugas pending" data={count.pending}>
+            <img
+              src="/svg/system-pending-line-svgrepo-com.svg"
+              style={{ width: "90px" }}
+            />
+          </Indicate>
+        )}
       </div>
       <div className="home-container">
         <section className="schedule-section">

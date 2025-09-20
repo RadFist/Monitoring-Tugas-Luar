@@ -248,7 +248,7 @@ const DetailPenugasan = () => {
           <ChevronLeftIcon /> Kembali
         </button>
         <h2 className="title-detail">Detail Penugasan</h2>
-        {level === "umpeg" && today < tugas.tanggal_mulai && (
+        {level === "admin" && today < tugas.tanggal_mulai && (
           <button
             className="btn-edit"
             onClick={() => navigate(`/Input-Tugas/Edit/${idDetail}`)}

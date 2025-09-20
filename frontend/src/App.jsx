@@ -47,7 +47,7 @@ function App() {
           <Route
             path="User-Management"
             element={
-              <PrivateRoute allowedLevels={["umpeg"]}>
+              <PrivateRoute allowedLevels={["admin"]}>
                 <UserManagement />
               </PrivateRoute>
             }
@@ -55,7 +55,7 @@ function App() {
           <Route
             path="Input-Tugas/Edit/:id"
             element={
-              <PrivateRoute allowedLevels={["umpeg"]}>
+              <PrivateRoute allowedLevels={["admin"]}>
                 <InputTugasLuar title="Input Tugas Luar" />
               </PrivateRoute>
             }
@@ -63,7 +63,7 @@ function App() {
           <Route
             path="Jabatan-Management"
             element={
-              <ManagJabat allowedLevels={["umpeg"]}>
+              <ManagJabat allowedLevels={["admin"]}>
                 <UserManagement />
               </ManagJabat>
             }

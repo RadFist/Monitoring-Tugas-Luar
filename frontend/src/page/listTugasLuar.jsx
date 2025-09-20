@@ -36,11 +36,14 @@ const ListTugas = () => {
     date: filterDate,
     status_approval: FilterStatusApproval,
     status: filterStatus || "none",
+    tugas: "semua",
   });
 
   const roleRoutes = {
     camat: "/tugas/approval",
     pegawai: "user/tugas/" + payload.id_user,
+    kasi:
+      filter.tugas === "saya" ? `user/tugas/${payload.id_user}` : "/allTugas",
   };
 
   let routeList = roleRoutes[level] || "/allTugas";
@@ -48,6 +51,8 @@ const ListTugas = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log(routeList);
+
         let routeFilter = "";
         const queryParams = [];
 
@@ -149,6 +154,27 @@ const ListTugas = () => {
   return (
     <div>
       <HeaderSecond text={level == "pegawai" ? "Tugas Anda" : "List Tugas"}>
+        {level === "kasi" && (
+          <FormControl size="small">
+            <p className="filterLabel">Tugas:</p>
+            <Select
+              value={filter.tugas}
+              onChange={(e) =>
+                setFilter((prev) => ({
+                  ...prev,
+                  tugas: e.target.value,
+                }))
+              }
+            >
+              {["semua", "saya"].map((status) => (
+                <MenuItem key={status} value={status}>
+                  {status.charAt(0).toUpperCase() + status.slice(1)}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
+
         <FormControl size="small" style={{ marginRight: "20px" }}>
           <p className="filterLabel">Tanggal:</p>
           <TextField
@@ -204,6 +230,7 @@ const ListTugas = () => {
           </FormControl>
         )}
       </HeaderSecond>
+
       <div className="content-list-tugas">
         {(loading && <Loading />) || (
           <div className="list-tugas">

@@ -104,7 +104,7 @@ const Header = ({
       </div>
 
       <div className="right-side">
-        {payload.level != "umpeg" && (
+        {payload.level != "admin" && (
           <Tooltip title="Notifikasi">
             <button
               className="icon-btn"

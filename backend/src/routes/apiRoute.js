@@ -45,7 +45,7 @@ import { getDataDashboard } from "../controllers/Dashboard.js";
 
 const router = express.Router();
 const authCamat = [authenticateToken, authRole("camat")];
-const authSuperAdmin = [authenticateToken, authRole("umpeg")];
+const authSuperAdmin = [authenticateToken, authRole("admin")];
 
 router.get("/dashboard", getDataDashboard);
 

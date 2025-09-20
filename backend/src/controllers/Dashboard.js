@@ -7,13 +7,17 @@ export const getDataDashboard = async (req, res) => {
   try {
     const data = await getListTugasGrupTime();
     const countUser = await customQuery(
-      `SELECT COUNT(id_user) as user FROM tb_user WHERE level != "umpeg"`
+      `SELECT COUNT(id_user) as user FROM tb_user WHERE level != "admin"`
     );
     const countTugas = await customQuery(
-      `SELECT COUNT(id_tugas_luar) as tugas FROM tb_tugas_luar WHERE status_approval = "approve"`
+      // `SELECT COUNT(id_tugas_luar) as tugas FROM tb_tugas_luar WHERE status_approval = "approve"`
+      `SELECT COUNT(id_tugas_luar) as tugas FROM tb_tugas_luar WHERE status_approval !="pending"`
     );
     const countArsip = await customQuery(
       `SELECT COUNT(id_tugas_luar) as arsip FROM tb_tugas_luar WHERE status_approval = "archived"`
+    );
+    const countProses = await customQuery(
+      `SELECT COUNT(id_tugas_luar) as proses FROM tb_tugas_luar WHERE status_approval != "archived" AND status_approval != "pending"`
     );
     const countPending = await customQuery(
       `SELECT COUNT(id_tugas_luar) as pending FROM tb_tugas_luar WHERE status_approval = "pending"`
@@ -76,6 +80,7 @@ export const getDataDashboard = async (req, res) => {
         tugas: countTugas.tugas,
         arsip: countArsip.arsip,
         pending: countPending.pending,
+        proses: countProses.proses,
       },
       userProductivity: countUserProductivity,
       TugasbyMonth: dataTugasbyMonth,

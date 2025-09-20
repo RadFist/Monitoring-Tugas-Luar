@@ -60,7 +60,7 @@ const Layout = () => {
 
       socket.emit("register-user", decoded.id_user);
 
-      if (decoded.level != "umpeg") {
+      if (decoded.level != "admin") {
         fetchData(decoded.id_user);
 
         socket.on("notification", (data) => {

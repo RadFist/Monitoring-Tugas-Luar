@@ -370,7 +370,7 @@ const UserManagment = () => {
               <option value="kasi">Kasi</option>
               <option value="pegawai">Pegawai</option>
               <option value="camat">Camat</option>
-              <option value="umpeg">umpeg</option>
+              <option value="admin">admin</option>
             </select>
           </div>
         </div>

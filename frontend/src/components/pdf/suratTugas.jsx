@@ -101,6 +101,9 @@ const SuratTugas = ({ data }) => {
                   <Text style={{ width: 60, fontWeight: "bold" }}>Tanggal</Text>
                   <Text style={{ width: 400 }}>
                     : {formatTanggalBulan(data?.tanggal_mulai)}
+                    {data?.tanggal_mulai != data?.tanggal_selesai
+                      ? ` - ${formatTanggalBulan(data?.tanggal_selesai)}`
+                      : ""}
                   </Text>
                 </View>
 
@@ -508,6 +511,7 @@ const SuratTugas = ({ data }) => {
         </View>
       </Page>
 
+      {/* 
       <Page size="A4" style={styles.page}>
         <Kopsurat />
 
@@ -526,7 +530,7 @@ const SuratTugas = ({ data }) => {
           </Text>
         </View>
 
-        {/* Tabel Keberangkatan & Kedatangan */}
+      
         <View
           style={{
             borderWidth: 1,
@@ -536,7 +540,7 @@ const SuratTugas = ({ data }) => {
             marginBottom: 0,
           }}
         >
-          {/* I */}
+        
           <View
             style={{
               flexDirection: "row",
@@ -545,7 +549,7 @@ const SuratTugas = ({ data }) => {
               minHeight: 70,
             }}
           >
-            {/* Kolom kiri */}
+            
             <View
               style={{
                 width: "50%",
@@ -555,7 +559,6 @@ const SuratTugas = ({ data }) => {
               }}
             ></View>
 
-            {/* Kolom kanan */}
             <View style={{ width: "50%", padding: 4, gap: "5px" }}>
               <Text>Berangkat dari : Kecamaan Sukadiri</Text>
               <View style={{ flexDirection: "row" }}>
@@ -568,7 +571,7 @@ const SuratTugas = ({ data }) => {
             </View>
           </View>
 
-          {/* II */}
+       
           <View
             style={{
               flexDirection: "row",
@@ -601,7 +604,7 @@ const SuratTugas = ({ data }) => {
           </View>
         </View>
 
-        {/* Catatan Lain-lain */}
+      
         <View
           style={{
             borderWidth: 1,
@@ -616,7 +619,7 @@ const SuratTugas = ({ data }) => {
           <Text style={{ minHeight: 30 }}></Text>
         </View>
 
-        {/* Perhatian */}
+  
         <View
           style={{
             borderWidth: 1,
@@ -637,7 +640,7 @@ const SuratTugas = ({ data }) => {
           </Text>
         </View>
 
-        {/* Tanda tangan Camat */}
+     
         <View
           style={{
             marginTop: 20,
@@ -651,6 +654,8 @@ const SuratTugas = ({ data }) => {
           <Text>NIP. {nip}</Text>
         </View>
       </Page>
+
+*/}
     </>
   );
 };

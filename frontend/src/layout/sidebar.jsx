@@ -51,7 +51,7 @@ const Sidebar = ({ displaySidebar = false, handlerClickArrow, userLevel }) => {
           >
             <DashboardIcon /> <span>Dashboard</span>
           </div>
-          {userLevel == "umpeg" && (
+          {userLevel == "admin" && (
             <>
               <div
                 className="menu-item"
